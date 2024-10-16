@@ -14,6 +14,7 @@ import Modul from "./pages/Modul/Modul.tsx";
 import Profile from "./pages/Profile/Profile.tsx";
 import ModulCreate from "./pages/Modul/ModulCreate.tsx";
 import EditProfile from "./pages/Profile/EditProfile.tsx";
+import IsiModul from "./pages/Modul/IsiModul.tsx";
 
 const router = createBrowserRouter([
   {
@@ -24,17 +25,19 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "modul", element: <Modul /> },
       { path: "modul/create", element: <ModulCreate /> },
+      { path: "modul/:id", element: <IsiModul /> },
       { path: "profile", element: <Profile /> },
       { path: "profile/edit", element: <EditProfile /> },
     ],
   },
   {
-    path:"/login",
-    element: <Login />
-  }, {
+    path: "/login",
+    element: <Login />,
+  },
+  {
     path: "/signup",
-    element: <SignUp />
-  }
+    element: <SignUp />,
+  },
 ]);
 // const router = createBrowserRouter(
 //   createRoutesFromElements(

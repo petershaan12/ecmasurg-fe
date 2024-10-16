@@ -25,7 +25,7 @@ const CardModul = () => {
         <div className="md:flex mt-5 justify-between text-xs md:text-base">
           <p>Evelyne Tambunan</p>
           <Link
-            to="modul/contoh"
+            to="/modul/5"
             className="flex items-center space-x-2 hover:underline text-xs md:text-base"
           >
             lihat <ArrowRight />{" "}

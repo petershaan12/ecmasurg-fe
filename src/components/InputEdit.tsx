@@ -14,11 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import React, { useState } from "react";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
@@ -31,8 +27,9 @@ import { Textarea } from "./ui/textarea";
 import { Calendar } from "./ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "../lib/utils";
+import { z } from "zod";
 
-const EditProfile = () => {
+const InputEdit = () => {
   const [date, setDate] = React.useState<Date>();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -252,12 +249,7 @@ const EditProfile = () => {
               )}
             />
             {previewImage && (
-              <img
-                src={previewImage}
-                alt="preview"
-                width={200}
-                height={200}
-              />
+              <img src={previewImage} alt="preview" width={200} height={200} />
             )}
             <FormError message={errorImage} />
             <FormError message={error} />
@@ -276,4 +268,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default InputEdit;
