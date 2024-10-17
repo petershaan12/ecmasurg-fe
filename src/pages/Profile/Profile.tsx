@@ -1,39 +1,22 @@
-// import React, { useEffect, useState } from "react";
 import MenuSamping from "../../components/MenuSamping";
-import { Avatar, AvatarImage, AvatarFallback } from "../../components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "../../components/ui/avatar";
+import { useSelector } from "react-redux";
+
+// type User = {
+//   name: string;
+//   email: string;
+//   dateOfBirth: string;
+//   phoneNumber: string;
+//   gender: string;
+//   created_at: Date;
+// };
 
 const Profile = () => {
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const apiURL = process.env.NEXT_PUBLIC_API_URL;
-
-//   useEffect(() => {
-//     const fetchUserProfile = async () => {
-//       const token = localStorage.getItem("token"); // Get the token from localStorage
-
-//       const res = await fetch(`${apiURL}/api/profile/me`, {
-//         method: "GET",
-//         headers: {
-//           Accept: "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-
-//       if (!res.ok) {
-//         // Handle unauthorized access
-//         window.location.href = "/login";
-//         return;
-//       }
-
-//       const data = await res.json();
-//       setUser(data);
-//       setLoading(false);
-//     };
-
-//     fetchUserProfile();
-//   }, [apiURL]);
-
-//   if (loading) return <div>Loading...</div>; // Show a loading state
+  const user = useSelector((state: any) => state.user);
 
   return (
     <>
@@ -54,10 +37,10 @@ const Profile = () => {
           </Avatar>
           <div className="flex flex-col my-5 items-center md:items-start">
             <h1 className="md:text-4xl text-xl uppercase font-bold">
-              PETER SHAAN
+              {user.name}
             </h1>
             <div className="mt-2 grid md:grid-cols-2 gap-5 justify-between text-lg">
-              <p>Bergabung Sejak 2024</p>
+              <p>Bergabung Sejak {new Date(user.created_at).getFullYear()}</p>
               <div className="flex items-center">
                 <img
                   src="/icons/point.png"
@@ -94,19 +77,19 @@ const Profile = () => {
             <h1 className="text-xl mb-5">Biodata </h1>
             <div className="bg-white rounded-xl p-5 space-y-3">
               <p>
-                <b>Nama:</b> Jonathan Hidson Simbolon
+                <b>Nama:</b> {user.name}
               </p>
               <p>
-                <b>Gender:</b> Male
+                <b>Gender:</b> {user.gender}
               </p>
               <p>
-                <b>Email:</b> peterhiku12@gmail.com
+                <b>Email:</b> {user.email}
               </p>
               <p>
-                <b>Date of Birth:</b> 3 Mei 2003
+                <b>Date of Birth:</b> {user.dateOfBirth}
               </p>
               <p>
-                <b>Phone Number:</b> 089529882952
+                <b>Phone Number:</b> {user.phoneNumber}
               </p>
               <div id="socialMedia" className="flex space-x-5 mt-5">
                 <a href="">
@@ -118,12 +101,7 @@ const Profile = () => {
                   />
                 </a>
                 <a href="">
-                  <img
-                    src="/icons/x.svg"
-                    width={30}
-                    height={30}
-                    alt="x"
-                  />
+                  <img src="/icons/x.svg" width={30} height={30} alt="x" />
                 </a>
                 <a href="">
                   <img

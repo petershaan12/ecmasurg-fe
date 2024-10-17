@@ -15,16 +15,8 @@ import { FormSuccess } from "../form-success";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
-
-// Define the Zod schema
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
-
-type LoginFormSchema = z.infer<typeof loginSchema>;
+import { LoginSchema } from "../../schema";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -32,26 +24,26 @@ const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  const form = useForm<LoginFormSchema>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: LoginFormSchema) => {
+  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
     setIsPending(true);
     try {
       // Send a POST request to Laravel API using axios
-      const apiUrl = process.env.REACT_APP_API_URL; // Use your environment variable
+      const apiUrl = process.env.REACT_PUBLIC_API_KEY; // Use your environment variable
       const response = await axios.post(`${apiUrl}/api/login`, data);
 
       if (response.status === 200) {
         const token = response.data.token; // Adjust based on your API response
-        Cookies.set("token", token, { expires: 7 });
+        localStorage.setItem("token", token);
         setSuccess("Login successful!");
         navigate("/"); // Redirect to homepage
         form.reset();

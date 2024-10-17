@@ -1,11 +1,11 @@
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MenuSamping from "../../components/MenuSamping";
 import Materi from "../../components/Modul/Materi";
 import Tugas from "../../components/Modul/Tugas";
 
 const IsiModul = () => {
-  const { id } = useParams();
+  // const { id } = useParams();
   const navigate = useNavigate();
 
   return (

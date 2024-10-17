@@ -7,7 +7,6 @@ import {
 import "./index.css";
 import ErrorPage from "./pages/NotFoundPage.tsx";
 import Login from "./pages/Login.tsx";
-import App from "./App.tsx";
 import Home from "./pages/Home.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Modul from "./pages/Modul/Modul.tsx";
@@ -15,11 +14,12 @@ import Profile from "./pages/Profile/Profile.tsx";
 import ModulCreate from "./pages/Modul/ModulCreate.tsx";
 import EditProfile from "./pages/Profile/EditProfile.tsx";
 import IsiModul from "./pages/Modul/IsiModul.tsx";
+import PrivateRoute from "./utils/PrivateRoute.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <PrivateRoute />,
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },

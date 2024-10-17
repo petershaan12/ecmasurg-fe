@@ -16,15 +16,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
-// Define the Zod schema
-const signupSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
-
-type SignupFormSchema = z.infer<typeof signupSchema>;
+import { SignupSchema } from "../../schema";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -32,8 +24,8 @@ const SignupForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, setIsPending] = useState<boolean>(false);
 
-  const form = useForm<SignupFormSchema>({
-    resolver: zodResolver(signupSchema),
+  const form = useForm<z.infer<typeof SignupSchema>>({
+    resolver: zodResolver(SignupSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -41,29 +33,28 @@ const SignupForm = () => {
     },
   });
 
-  const onSubmit = async (data: SignupFormSchema) => {
+  const onSubmit = async (data: z.infer<typeof SignupSchema>) => {
     setError("");
     setSuccess("");
     setIsPending(true);
-      try {
-        // Send a POST request to Laravel API using axios
-        const apiUrl = process.env.REACT_;
-        const response = await axios.post(`${apiUrl}/api/register`, data);
+    try {
+      // Send a POST request to Laravel API using axios
+      const apiUrl = process.env.REACT_PUBLIC_API_KEY;
+      const response = await axios.post(`${apiUrl}/api/register`, data);
 
-        if (response.status === 200) {
-          setSuccess("Signup successful!");
-          navigate("/login");
-          form.reset();
-        } else {
-          setError(response.data.message || "Signup failed");
-        }
-      } catch (err) {
-        setError("An error occurred during Signup.");
-        console.log(err);
-      } finally {
-        setIsPending(false); // Reset loading state
+      if (response.status === 200) {
+        setSuccess("Signup successful!");
+        navigate("/login");
+        form.reset();
+      } else {
+        setError(response.data.message || "Signup failed");
       }
-
+    } catch (err) {
+      setError("An error occurred during Signup.");
+      console.log(err);
+    } finally {
+      setIsPending(false); // Reset loading state
+    }
   };
 
   return (

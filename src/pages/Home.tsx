@@ -1,13 +1,48 @@
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import MenuSamping from "../components/MenuSamping";
+// import ProtectedRoute from "@/utils/ProtectedRoute";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchUsers } from "@/redux/fetchUser";
+import { useEffect } from "react";
+
+interface RootState {
+  user: any; // Replace 'any' with the actual type of your items
+  loading: boolean;
+  error: Error | null;
+}
+
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+  const loading = useSelector((state: RootState) => state.loading);
+  const error = useSelector((state: RootState) => state.error);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await dispatch(fetchUsers() as any);
+      console.log(data);
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  if (error) {
+    return <div>Error! {error.message}</div>;
+  }
+
+  if (loading) return <div>Loading...</div>; // Show a loading state
+
+  if (!user) return <Navigate to="/login" />;
+
   return (
     <>
       <header className="flex justify-between items-center">
         <p className="md:text-2xl">
-          <b>Hello Jo,</b> Welcome Back 👋
+          <b>Hello {user?.name ?? "Guest"},</b> Welcome Back 👋
         </p>
         <MenuSamping />
       </header>

@@ -8,9 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { Settings } from "lucide-react";
-// import Logout from "./Logout";
 import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
+import Logout from "./Auth/Logout";
 
 const MenuSamping = () => {
   return (
@@ -28,13 +28,13 @@ const MenuSamping = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem className="hover:cursor-pointer ">
-            <Link to="/profil" className="flex items-center">
+            <Link to="/profile" className="flex items-center">
               <Settings className="w-4 mr-2" />
               Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer ">
-            {/* <Logout /> */}
+            <Logout />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

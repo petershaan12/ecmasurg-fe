@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ModulSchema } from "../../schema";
@@ -22,20 +22,45 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import { z } from "zod";
+import axios from "axios";
 
 const InputModul = () => {
+  const apiURL = process.env.REACT_PUBLIC_API_KEY;
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [errorImage, setErrorImage] = useState<string | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [teachers, setTeachers] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const form = useForm<z.infer<typeof ModulSchema>>({
     resolver: zodResolver(ModulSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      name: "",
+      owner: "",
+      description: "",
+      bannerImage: "",
     },
   });
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const response = await axios.get(`${apiURL}/api/modul/asignteacher`, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }); // Fetch data guru dari Laravel API
+        setTeachers(response.data.data); // Menyimpan daftar guru ke state
+      } catch (error) {
+        console.error("Error fetching teachers:", error);
+        setError("Terjadi kesalahan saat mengambil daftar guru.");
+      }
+    };
+
+    fetchTeachers(); // Panggil fungsi untuk mengambil data guru
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrorImage("");
@@ -49,7 +74,7 @@ const InputModul = () => {
           reader.onloadend = () => {
             const base64String = reader.result as string;
             setPreviewImage(base64String);
-            form.setValue("image", base64String);
+            form.setValue("bannerImage", base64String);
           };
           reader.readAsDataURL(file);
         } else {
@@ -61,17 +86,40 @@ const InputModul = () => {
     }
   };
 
+  const onSubmit = async (data: z.infer<typeof ModulSchema>) => {
+    setError("");
+    setSuccess("");
+    setIsPending(true);
+    try {
+      // Send a POST request to Laravel API using axios
+      const response = await axios.post(`${apiURL}/api/modul/create`, data);
+
+      if (response.status === 201) {
+        setSuccess("Modul berhasil ditambahkan!");
+        form.reset();
+      } else {
+        console.log(response.data);
+        setError(response.data);
+      }
+    } catch (err) {
+      setError("Terjadi kesalahan saat menambahkan modul.");
+      console.error(err);
+    } finally {
+      setIsPending(false); // Reset loading state
+    }
+  };
+
   return (
     <>
       <Form {...form}>
         <form
-          // onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 mb-12"
         >
           <div className="space-y-4 md:min-w-[500px] min-w-[250px] text-start">
             <FormField
               control={form.control}
-              name="nama"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nama Modul</FormLabel>
@@ -90,19 +138,25 @@ const InputModul = () => {
             />
             <FormField
               control={form.control}
-              name="pemilik"
+              name="owner"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pemilik Modul</FormLabel>
                   <FormControl>
-                    <Select>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isPending}
+                    >
                       <SelectTrigger className=" bg-white">
-                        <SelectValue placeholder="Dr Joe" />
+                        <SelectValue placeholder="Choose The Owner of Modul" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
+                        {teachers.map((teacher: any) => (
+                          <SelectItem key={teacher.id} value={teacher.name}>
+                            {teacher.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -112,7 +166,7 @@ const InputModul = () => {
             />
             <FormField
               control={form.control}
-              name="nama"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Deskripsi Modul</FormLabel>
@@ -128,7 +182,7 @@ const InputModul = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
@@ -146,10 +200,10 @@ const InputModul = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
-              name="image"
+              name="bannerImage"
               render={() => (
                 <FormItem>
                   <FormLabel>Banner Image *jika perlu</FormLabel>

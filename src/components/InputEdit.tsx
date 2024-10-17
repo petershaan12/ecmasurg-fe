@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ModulSchema } from "../schema";
+import { EditProfileSchema } from "../schema";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
 import { Button } from "./ui/button";
@@ -28,6 +28,7 @@ import { Calendar } from "./ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 import { z } from "zod";
+import axios from "axios";
 
 const InputEdit = () => {
   const [date, setDate] = React.useState<Date>();
@@ -36,11 +37,17 @@ const InputEdit = () => {
   const [errorImage, setErrorImage] = useState<string | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
-  const form = useForm<z.infer<typeof ModulSchema>>({
-    resolver: zodResolver(ModulSchema),
+  const form = useForm<z.infer<typeof EditProfileSchema>>({
+    resolver: zodResolver(EditProfileSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      name: "",
+      gender: "",
+      bio: "",
+      phoneNumber: "",
+      dateOfBirth: undefined,
+      image: "",
+      oldPassword: "",
+      newPassword: "",
     },
   });
 
@@ -68,17 +75,41 @@ const InputEdit = () => {
     }
   };
 
+  const onSubmit = async (data: z.infer<typeof EditProfileSchema>) => {
+    setError("");
+    setSuccess("");
+    setIsPending(true);
+    try {
+      // Send a POST request to Laravel API using axios
+      const apiUrl = process.env.REACT_APP_API_URL; // Use your environment variable
+      const response = await axios.post(`${apiUrl}/api/edit-profile`, data);
+
+      if (response.status === 200) {
+        setSuccess("Profile updated successfully!");
+        form.reset();
+      } else {
+        console.log(response.data);
+        setError(response.data.message || "Profile update failed");
+      }
+    } catch (err) {
+      setError("An error occurred during profile update.");
+      console.error(err);
+    } finally {
+      setIsPending(false); 
+    }
+  };
+
   return (
     <>
       <Form {...form}>
         <form
-          // onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 mb-12"
         >
           <div className="space-y-4 md:min-w-[500px] min-w-[250px] text-start">
             <FormField
               control={form.control}
-              name="nama"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nama</FormLabel>
@@ -97,18 +128,22 @@ const InputEdit = () => {
             />
             <FormField
               control={form.control}
-              name="Gender"
+              name="gender"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gender</FormLabel>
                   <FormControl>
-                    <Select>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isPending}
+                    >
                       <SelectTrigger className=" bg-white">
-                        <SelectValue placeholder="Male" />
+                        <SelectValue placeholder="choose your gender" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="light">Male</SelectItem>
-                        <SelectItem value="dark">Female</SelectItem>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -118,7 +153,7 @@ const InputEdit = () => {
             />
             <FormField
               control={form.control}
-              name="phone"
+              name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
@@ -126,7 +161,7 @@ const InputEdit = () => {
                     <Input
                       {...field}
                       disabled={isPending}
-                      placeholder="089529882952"
+                      placeholder="08********"
                       type="number"
                       className="bg-white"
                     />
@@ -137,7 +172,7 @@ const InputEdit = () => {
             />
             <FormField
               control={form.control}
-              name="Bio"
+              name="bio"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Bio</FormLabel>
@@ -155,7 +190,7 @@ const InputEdit = () => {
             />
             <FormField
               control={form.control}
-              name="Date"
+              name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Date of Birth</FormLabel>
@@ -170,8 +205,8 @@ const InputEdit = () => {
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? (
-                            format(date, "PPP")
+                          {field.value ? (
+                            format(new Date(field.value), "PPP")
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -193,7 +228,7 @@ const InputEdit = () => {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="oldPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Old Password</FormLabel>
@@ -212,7 +247,7 @@ const InputEdit = () => {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="newPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>New Password</FormLabel>
