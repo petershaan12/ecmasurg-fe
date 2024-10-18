@@ -6,9 +6,9 @@ interface FetchDataBegin {
   type: typeof FETCH_DATA_BEGIN;
 }
 
-interface FetchDataSuccess<T> {
+interface FetchDataSuccess {
   type: typeof FETCH_DATA_SUCCESS;
-  payload: T;
+  payload: { data: any[] };
 }
 
 interface FetchDataFailure {
@@ -16,7 +16,7 @@ interface FetchDataFailure {
   payload: { error: string };
 }
 
-export type GeneralActionTypes<T = any> =
+export type GeneralActionTypes =
   | FetchDataBegin
-  | FetchDataSuccess<T>
+  | FetchDataSuccess
   | FetchDataFailure;

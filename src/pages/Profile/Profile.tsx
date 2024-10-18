@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 // };
 
 const Profile = () => {
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: any) => state.data);
 
   return (
     <>

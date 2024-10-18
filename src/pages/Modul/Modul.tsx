@@ -9,14 +9,12 @@ import { useDispatch } from "react-redux";
 import { fetchUsers } from "@/redux/fetchUser";
 
 const Modul = () => {
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: any) => state.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUsers() as any); // Ambil data pengguna saat komponen di-mount
   }, [dispatch]);
-
-  
 
   return (
     <ProtectedRoute>

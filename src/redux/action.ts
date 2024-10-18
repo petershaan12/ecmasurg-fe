@@ -1,5 +1,3 @@
-// generalActions.ts
-
 import {
   FETCH_DATA_BEGIN,
   FETCH_DATA_SUCCESS,
@@ -7,16 +5,16 @@ import {
   GeneralActionTypes,
 } from "./actionTypes";
 
-export const fetchDataBegin = (): GeneralActionTypes<any> => ({
+export const fetchDataBegin = (): GeneralActionTypes => ({
   type: FETCH_DATA_BEGIN,
 });
 
-export const fetchDataSuccess = <T>(data: T): GeneralActionTypes<T> => ({
+export const fetchDataSuccess = (data: any[]): GeneralActionTypes => ({
   type: FETCH_DATA_SUCCESS,
-  payload: data,
+  payload: { data },
 });
 
-export const fetchDataFailure = (error: string): GeneralActionTypes<any> => ({
+export const fetchDataFailure = (error: string): GeneralActionTypes => ({
   type: FETCH_DATA_FAILURE,
   payload: { error },
 });

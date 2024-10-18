@@ -4,9 +4,8 @@ import {
   FETCH_DATA_FAILURE,
 } from "./actionTypes";
 
-// Definisikan initialState yang lebih umum
 const initialState = {
-  data: null,
+  data: [] as any,
   loading: false,
   error: null,
 };
@@ -25,7 +24,7 @@ export default function generalReducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
-        data: action.payload, // Simpan payload yang lebih umum
+        data: action.payload.data, // Simpan payload yang lebih umum
       };
 
     case FETCH_DATA_FAILURE:
@@ -33,7 +32,7 @@ export default function generalReducer(state = initialState, action: any) {
         ...state,
         loading: false,
         error: action.payload.error, // Pastikan untuk mengakses error dengan benar
-        data: null, // Reset data jika ada error
+        data: [], // Reset data jika ada error
       };
 
     default:

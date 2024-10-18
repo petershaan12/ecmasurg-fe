@@ -9,15 +9,14 @@ import { fetchUsers } from "@/redux/fetchUser";
 import { useEffect } from "react";
 
 interface RootState {
-  user: any; // Replace 'any' with the actual type of your items
+  data: any; // Replace 'any' with the actual type of your items
   loading: boolean;
   error: Error | null;
 }
 
-
 const Home = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.data);
   const loading = useSelector((state: RootState) => state.loading);
   const error = useSelector((state: RootState) => state.error);
 
