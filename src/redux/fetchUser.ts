@@ -1,18 +1,14 @@
 import { Dispatch } from "redux";
-import {
-  fetchUsersBegin,
-  fetchUsersSuccess,
-  fetchUsersFailure,
-} from "./action";
-import { UserActionTypes } from "./actionTypes";
+import { GeneralActionTypes } from "./actionTypes";
+import { fetchDataBegin, fetchDataFailure, fetchDataSuccess } from "./action";
 
 const apiURL = process.env.REACT_PUBLIC_API_KEY;
 
 export function fetchUsers() {
   const token = localStorage.getItem("token");
 
-  return (dispatch: Dispatch<UserActionTypes>): Promise<any> => {
-    dispatch(fetchUsersBegin());
+  return (dispatch: Dispatch<GeneralActionTypes>): Promise<any> => {
+    dispatch(fetchDataBegin());
     return fetch(`${apiURL}/api/profile/me`, {
       method: "GET",
       headers: {
@@ -23,10 +19,10 @@ export function fetchUsers() {
       .then(handleErrors)
       .then((res) => res.json())
       .then((json) => {
-        dispatch(fetchUsersSuccess(json.data));
+        dispatch(fetchDataSuccess(json.data));
         return json.data;
       })
-      .catch((error: any) => dispatch(fetchUsersFailure(error)));
+      .catch((error: any) => dispatch(fetchDataFailure(error)));
   };
 }
 

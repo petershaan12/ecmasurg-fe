@@ -5,7 +5,7 @@ export const ModulSchema = z.object({
   owner: z.string().optional(),
   description: z.string().min(3).optional(),
   // password: z.string().min(6).optional(),
-  bannerImage: z.string().url().optional(),
+  bannerImage: z.any().optional(),
 });
 
 export const LoginSchema = z.object({

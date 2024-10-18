@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ModulSchema } from "../../schema";
@@ -24,8 +24,9 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const InputModul = () => {
+const InputModul = (userId: any) => {
   const apiURL = process.env.REACT_PUBLIC_API_KEY;
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -33,6 +34,8 @@ const InputModul = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [teachers, setTeachers] = useState([]);
   const [isPending, setIsPending] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof ModulSchema>>({
     resolver: zodResolver(ModulSchema),
     defaultValues: {
@@ -70,13 +73,7 @@ const InputModul = () => {
       const validTypes = ["image/png", "image/jpeg", "image/jpg"];
       if (validTypes.includes(fileType)) {
         if (file.size < 1024 * 1024 * 5) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const base64String = reader.result as string;
-            setPreviewImage(base64String);
-            form.setValue("bannerImage", base64String);
-          };
-          reader.readAsDataURL(file);
+          setPreviewImage(URL.createObjectURL(file));
         } else {
           setErrorImage("Image is more than 5MB");
         }
@@ -91,12 +88,41 @@ const InputModul = () => {
     setSuccess("");
     setIsPending(true);
     try {
+      teachers.forEach((teacher: any) => {
+        if (teacher.name === data.owner) {
+          data.owner = teacher.id;
+        }
+      });
+      const requestData = {
+        user_id: userId.userId,
+        asignd_teacher: data.owner,
+        judul: data.name,
+        description: data.description,
+        gambar_modul: data.bannerImage[0],
+      };
+      // console.log(formData);
       // Send a POST request to Laravel API using axios
-      const response = await axios.post(`${apiURL}/api/modul/create`, data);
+      const response = await axios.post(
+        `${apiURL}/api/modul/create`,
+        requestData,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (response.status === 201) {
         setSuccess("Modul berhasil ditambahkan!");
         form.reset();
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+
+        setPreviewImage(null);
+        navigate("/modul");
       } else {
         console.log(response.data);
         setError(response.data);
@@ -214,6 +240,7 @@ const InputModul = () => {
                       type="file"
                       className="bg-white"
                       onChange={handleImageChange}
+                      ref={fileInputRef}
                     />
                   </FormControl>
                   <FormMessage />

@@ -1,22 +1,22 @@
-// action.ts
+// generalActions.ts
 
 import {
-  FETCH_USERS_BEGIN,
-  FETCH_USERS_SUCCESS,
-  FETCH_USERS_FAILURE,
-  UserActionTypes,
+  FETCH_DATA_BEGIN,
+  FETCH_DATA_SUCCESS,
+  FETCH_DATA_FAILURE,
+  GeneralActionTypes,
 } from "./actionTypes";
 
-export const fetchUsersBegin = (): UserActionTypes => ({
-  type: FETCH_USERS_BEGIN,
+export const fetchDataBegin = (): GeneralActionTypes<any> => ({
+  type: FETCH_DATA_BEGIN,
 });
 
-export const fetchUsersSuccess = (users: any[]): UserActionTypes => ({
-  type: FETCH_USERS_SUCCESS,
-  payload: { users },
+export const fetchDataSuccess = <T>(data: T): GeneralActionTypes<T> => ({
+  type: FETCH_DATA_SUCCESS,
+  payload: data,
 });
 
-export const fetchUsersFailure = (error: string): UserActionTypes => ({
-  type: FETCH_USERS_FAILURE,
+export const fetchDataFailure = (error: string): GeneralActionTypes<any> => ({
+  type: FETCH_DATA_FAILURE,
   payload: { error },
 });

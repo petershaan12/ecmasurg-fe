@@ -1,24 +1,22 @@
-export const FETCH_USERS_BEGIN = "FETCH_USERS_BEGIN";
-export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
-export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE";
+export const FETCH_DATA_BEGIN = "FETCH_DATA_BEGIN";
+export const FETCH_DATA_SUCCESS = "FETCH_DATA_SUCCESS";
+export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE";
 
-// Define action type interfaces
-export interface FetchUsersBeginAction {
-  type: typeof FETCH_USERS_BEGIN;
+interface FetchDataBegin {
+  type: typeof FETCH_DATA_BEGIN;
 }
 
-export interface FetchUsersSuccessAction {
-  type: typeof FETCH_USERS_SUCCESS;
-  payload: { users: any[] }; // Adjust this type based on your user data structure
+interface FetchDataSuccess<T> {
+  type: typeof FETCH_DATA_SUCCESS;
+  payload: T;
 }
 
-export interface FetchUsersFailureAction {
-  type: typeof FETCH_USERS_FAILURE;
+interface FetchDataFailure {
+  type: typeof FETCH_DATA_FAILURE;
   payload: { error: string };
 }
 
-// Union type for actions
-export type UserActionTypes =
-  | FetchUsersBeginAction
-  | FetchUsersSuccessAction
-  | FetchUsersFailureAction;
+export type GeneralActionTypes<T = any> =
+  | FetchDataBegin
+  | FetchDataSuccess<T>
+  | FetchDataFailure;

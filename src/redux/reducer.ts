@@ -1,37 +1,39 @@
 import {
-  FETCH_USERS_BEGIN,
-  FETCH_USERS_SUCCESS,
-  FETCH_USERS_FAILURE,
+  FETCH_DATA_BEGIN,
+  FETCH_DATA_SUCCESS,
+  FETCH_DATA_FAILURE,
 } from "./actionTypes";
 
+// Definisikan initialState yang lebih umum
 const initialState = {
-  user: [],
+  data: null,
   loading: false,
   error: null,
 };
 
-export default function userReducer(state = initialState, action: any) {
+// General reducer untuk menangani berbagai jenis data
+export default function generalReducer(state = initialState, action: any) {
   switch (action.type) {
-    case FETCH_USERS_BEGIN:
+    case FETCH_DATA_BEGIN:
       return {
         ...state,
         loading: true,
         error: null,
       };
 
-    case FETCH_USERS_SUCCESS:
+    case FETCH_DATA_SUCCESS:
       return {
         ...state,
         loading: false,
-        user: action.payload.users,
+        data: action.payload, // Simpan payload yang lebih umum
       };
 
-    case FETCH_USERS_FAILURE:
+    case FETCH_DATA_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
-        user: [],
+        error: action.payload.error, // Pastikan untuk mengakses error dengan benar
+        data: null, // Reset data jika ada error
       };
 
     default:

@@ -29,7 +29,7 @@ const ModulCreate = () => {
 
       <main className="grid md:grid-cols-4 grid-cols-1 gap-8 mt-8">
         <section className="md:col-start-1 md:col-end-3 ">
-          <InputModul />
+          <InputModul userId={user.id} />
         </section>
         <section className="md:col-end-5">
           <div className="bg-primary rounded-xl p-5 text-white text-center space-y-6 flex flex-col items-center">

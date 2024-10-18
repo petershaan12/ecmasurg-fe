@@ -16,6 +16,8 @@ const Modul = () => {
     dispatch(fetchUsers() as any); // Ambil data pengguna saat komponen di-mount
   }, [dispatch]);
 
+  
+
   return (
     <ProtectedRoute>
       <header className="flex justify-between items-center">
