@@ -12,7 +12,11 @@ import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import Logout from "./Auth/Logout";
 
-const MenuSamping = () => {
+const MenuSamping = ({ user }: any) => {
+  const apiURL = process.env.REACT_PUBLIC_API_KEY;
+
+  if (!user) return null;
+
   return (
     <div className="flex space-x-5 items-center">
       <IoMdNotificationsOutline className="w-6 h-8" />
@@ -22,8 +26,17 @@ const MenuSamping = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage
+              src={`${apiURL}/storage/profiles/${user.photo_profile}`}
+            />
+            <AvatarFallback className="bg-primary/80 text-white uppercase">
+              {user.name
+                ? user.name
+                  .split(" ")
+                    .map((name: string) => name.slice(0, 1))
+                    .join("")
+                : "AB"}
+            </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

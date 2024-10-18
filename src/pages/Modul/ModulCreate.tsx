@@ -7,7 +7,7 @@ import { fetchUsers } from "@/redux/fetchUser";
 import { useEffect } from "react";
 
 const ModulCreate = () => {
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: any) => state.data);
   const dispatch = useDispatch();
 
   useEffect(() => {

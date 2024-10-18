@@ -1,7 +1,10 @@
+import { useSelector } from "react-redux";
 import InputEdit from "../../components/InputEdit";
 import MenuSamping from "../../components/MenuSamping";
 
 const EditProfile = () => {
+  const user = useSelector((state: any) => state.data);
+
   return (
     <>
       <header className="flex justify-between">
@@ -12,7 +15,7 @@ const EditProfile = () => {
       </header>
 
       <main className="grid md:grid-cols-4 grid-cols-1 gap-8 mt-8">
-        <InputEdit />
+        <InputEdit user={user} />
       </main>
     </>
   );

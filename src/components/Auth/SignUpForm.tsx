@@ -79,7 +79,7 @@ const SignupForm = () => {
                     <Input
                       {...field}
                       disabled={isPending}
-                      placeholder="johndoe_"
+                      placeholder="John Doe"
                       type="name"
                       className="bg-white"
                     />

@@ -3,13 +3,13 @@ import { Badge } from "../components/ui/badge";
 import MenuSamping from "../components/MenuSamping";
 // import ProtectedRoute from "@/utils/ProtectedRoute";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchUsers } from "@/redux/fetchUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface RootState {
-  data: any; // Replace 'any' with the actual type of your items
+  data: any;
   loading: boolean;
   error: Error | null;
 }
@@ -19,6 +19,7 @@ const Home = () => {
   const user = useSelector((state: RootState) => state.data);
   const loading = useSelector((state: RootState) => state.loading);
   const error = useSelector((state: RootState) => state.error);
+  const [belumLengkap, setBelumLengkap] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +29,22 @@ const Home = () => {
 
     fetchData();
   }, [dispatch]);
+
+  useEffect(() => {
+    // Update belumLengkap based on user data
+    if (user) {
+      const isComplete =
+        user.name &&
+        user.email &&
+        user.gender &&
+        user.phone_number &&
+        user.biografi &&
+        user.dateof_birth &&
+        user.photo_profile;
+
+      setBelumLengkap(!isComplete);
+    }
+  }, [user]); // Run this effect whenever user data changes
 
   if (error) {
     return <div>Error! {error.message}</div>;
@@ -43,7 +60,7 @@ const Home = () => {
         <p className="md:text-2xl">
           <b>Hello {user?.name ?? "Guest"},</b> Welcome Back 👋
         </p>
-        <MenuSamping />
+        <MenuSamping user={user} />
       </header>
 
       <main className="mt-6">
@@ -80,7 +97,7 @@ const Home = () => {
                       alt="learn icon"
                     />
                     <div className="mt-5">
-                      <h1 className="text-4xl font-bold drop-shadow-lg">5</h1>
+                      <h1 className="text-4xl font-bold drop-shadow-lg">1</h1>
                       <p className="text-lg">Course</p>
                       <div className="flex flex-col items-end">
                         <hr className="mt-5 w-[150px] " />
@@ -171,20 +188,22 @@ const Home = () => {
           </div>
 
           <div className="md:col-span-1">
-            <div className="bg-[#2E3C7E] p-5 text-white mt-8 rounded-2xl">
-              <h1 className="text-xl mb-5 font-medium">
-                Data Diri Kamu Belum Lengkap
-              </h1>
-              <p className="text-sm">
-                Silahkan Isi Data Diri Kamu dan Lengkapi untuk pendataan kamu
-                dalam modul pembelajaran ini
-              </p>
-              <div className="text-end">
-                <Button className="bg-white text-primary py-2 px-5 mt-5 text-end hover:bg-white/20 hover:text-white">
-                  ISI SEKARANG
-                </Button>
+            {belumLengkap && (
+              <div className="bg-[#2E3C7E] p-5 text-white mt-8 rounded-2xl">
+                <h1 className="text-xl mb-5 font-medium">
+                  Data Diri Kamu Belum Lengkap
+                </h1>
+                <p className="text-sm">
+                  Silahkan Isi Data Diri Kamu dan Lengkapi untuk pendataan kamu
+                  dalam modul pembelajaran ini
+                </p>
+                <div className="text-end">
+                  <Button className="bg-white text-primary py-2 px-5 mt-5 text-end hover:bg-white/20 hover:text-white">
+                    <Link to="/profile/edit">ISI SEKARANG</Link>
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
             <div className="mt-5">
               <h1 className="text-xl mb-5 text-center">About Us </h1>
 

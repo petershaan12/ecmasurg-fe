@@ -10,8 +10,6 @@ export function fetchUsers() {
 
   return async (dispatch: Dispatch<GeneralActionTypes>): Promise<any> => {
     dispatch(fetchDataBegin());
-    console.log("Fetching user data... Loading set to true");
-
     try {
       const response = await fetch(`${apiURL}/api/profile/me`, {
         method: "GET",
@@ -29,13 +27,10 @@ export function fetchUsers() {
 
       const json = await response.json();
       dispatch(fetchDataSuccess(json.data));
-      console.log("Data fetched successfully. Loading set to false");
       return json.data;
     } catch (error: any) {
       // Handle fetch errors and dispatch the failure action
       dispatch(fetchDataFailure(error));
-      console.error("Error fetching user data:", error);
-      console.log("Loading set to false due to error");
       throw error; // re-throw if you need to handle it outside
     }
   };

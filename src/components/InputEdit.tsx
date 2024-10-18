@@ -17,7 +17,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import React, { useState } from "react";
 import { format } from "date-fns";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditProfileSchema } from "../schema";
 import { FormError } from "./form-error";
@@ -29,8 +29,10 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 import { z } from "zod";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const InputEdit = () => {
+const InputEdit = ({ user }: any) => {
+  const navigate = useNavigate();
   const [date, setDate] = React.useState<Date>();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -40,14 +42,18 @@ const InputEdit = () => {
   const form = useForm<z.infer<typeof EditProfileSchema>>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
-      name: "",
-      gender: "",
-      bio: "",
-      phoneNumber: "",
-      dateOfBirth: undefined,
-      image: "",
-      oldPassword: "",
-      newPassword: "",
+      name: user.name || undefined,
+      gender: user.gender || undefined,
+      email: user.email || undefined,
+      bio: user.biografi || undefined,
+      phoneNumber: user.phone_number || undefined,
+      dateOfBirth: user.dateof_birth || undefined,
+      image: user.photo_profile || "",
+      oldPassword: undefined,
+      newPassword: undefined,
+      facebook: user.facebook,
+      instagram: user.instagram,
+      youtube: user.youtube,
     },
   });
 
@@ -59,13 +65,8 @@ const InputEdit = () => {
       const validTypes = ["image/png", "image/jpeg", "image/jpg"];
       if (validTypes.includes(fileType)) {
         if (file.size < 1024 * 1024 * 5) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const base64String = reader.result as string;
-            setPreviewImage(base64String);
-            form.setValue("image", base64String);
-          };
-          reader.readAsDataURL(file);
+          setPreviewImage(URL.createObjectURL(file));
+          form.setValue("image", e.target.files);
         } else {
           setErrorImage("Image is more than 5MB");
         }
@@ -79,14 +80,44 @@ const InputEdit = () => {
     setError("");
     setSuccess("");
     setIsPending(true);
+
+    console.log(data);
     try {
       // Send a POST request to Laravel API using axios
-      const apiUrl = process.env.REACT_APP_API_URL; // Use your environment variable
-      const response = await axios.post(`${apiUrl}/api/edit-profile`, data);
+      const apiUrl = process.env.REACT_PUBLIC_API_KEY;
+
+      const formData = new FormData();
+      if (data.name) formData.append("name", data.name);
+      if (data.email) formData.append("email", data.email);
+      if (data.gender) formData.append("gender", data.gender);
+      if (data.bio) formData.append("biografi", data.bio);
+      if (data.phoneNumber) formData.append("phone_number", data.phoneNumber);
+      if (data.dateOfBirth) formData.append("dateof_birth", data.dateOfBirth);
+      if (data.facebook) formData.append("facebook", data.facebook);
+      if (data.instagram) formData.append("instagram", data.instagram);
+      if (data.youtube) formData.append("youtube", data.youtube);
+
+      formData.append("roles", "user");
+      if (data.image) {
+        formData.append("photo_profile", data.image[0]);
+      }
+      formData.append("_method", "PATCH");
+      const response = await axios.post(
+        `${apiUrl}/api/profile/update/${user.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         setSuccess("Profile updated successfully!");
         form.reset();
+        navigate("/profile");
       } else {
         console.log(response.data);
         setError(response.data.message || "Profile update failed");
@@ -95,7 +126,7 @@ const InputEdit = () => {
       setError("An error occurred during profile update.");
       console.error(err);
     } finally {
-      setIsPending(false); 
+      setIsPending(false);
     }
   };
 
@@ -117,7 +148,26 @@ const InputEdit = () => {
                     <Input
                       {...field}
                       disabled={isPending}
-                      placeholder="Peter Shaan"
+                      placeholder="john doe"
+                      type="text"
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="pet**@gmail.com"
                       type="text"
                       className="bg-white"
                     />
@@ -216,7 +266,17 @@ const InputEdit = () => {
                         <Calendar
                           mode="single"
                           selected={date}
-                          onSelect={setDate}
+                          onSelect={(selectedDate) => {
+                            setDate(selectedDate);
+                            if (selectedDate) {
+                              const formattedDate = format(
+                                selectedDate,
+                                "yyyy-MM-dd"
+                              );
+                              field.onChange(formattedDate); // Mengonversi ke format YYYY-MM-DD
+                              console.log("Selected date:", formattedDate); // Debugging
+                            }
+                          }}
                           initialFocus
                         />
                       </PopoverContent>
@@ -226,7 +286,7 @@ const InputEdit = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="oldPassword"
               render={({ field }) => (
@@ -263,7 +323,7 @@ const InputEdit = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="image"
@@ -286,6 +346,63 @@ const InputEdit = () => {
             {previewImage && (
               <img src={previewImage} alt="preview" width={200} height={200} />
             )}
+            <FormField
+              control={form.control}
+              name="facebook"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Facebook Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="@username"
+                      type="text"
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="instagram"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Instagram Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="@username"
+                      type="text"
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="youtube"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Youtube URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="https://www.youtube.com/channel/UCd6h6zvzXo4vJ1ZJL1B9X8w"
+                      type="text"
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormError message={errorImage} />
             <FormError message={error} />
             <FormSuccess message={success} />

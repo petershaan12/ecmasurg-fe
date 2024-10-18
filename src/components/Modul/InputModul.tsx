@@ -74,6 +74,7 @@ const InputModul = (userId: any) => {
       if (validTypes.includes(fileType)) {
         if (file.size < 1024 * 1024 * 5) {
           setPreviewImage(URL.createObjectURL(file));
+          form.setValue("bannerImage", e.target.files);
         } else {
           setErrorImage("Image is more than 5MB");
         }
@@ -93,18 +94,22 @@ const InputModul = (userId: any) => {
           data.owner = teacher.id;
         }
       });
-      const requestData = {
-        user_id: userId.userId,
-        asignd_teacher: data.owner,
-        judul: data.name,
-        description: data.description,
-        gambar_modul: data.bannerImage[0],
-      };
-      // console.log(formData);
+
+      const formData = new FormData();
+      formData.append("user_id", userId.userId);
+      if (data.name && data.description && data.owner) {
+        formData.append("judul", data.name);
+        formData.append("description", data.description);
+        formData.append("asignd_teacher", data.owner);
+      }
+      if (data.bannerImage) {
+        formData.append("gambar_modul", data.bannerImage[0]);
+      }
+
       // Send a POST request to Laravel API using axios
       const response = await axios.post(
         `${apiURL}/api/modul/create`,
-        requestData,
+        formData,
         {
           headers: {
             Accept: "application/json",

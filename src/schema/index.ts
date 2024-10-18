@@ -21,6 +21,7 @@ export const SignupSchema = z.object({
 
 export const EditProfileSchema = z.object({
   name: z.string().optional(),
+  email: z.string().email("Invalid email address").optional(),
   gender: z.string().optional(),
   bio: z
     .string()
@@ -28,8 +29,11 @@ export const EditProfileSchema = z.object({
     .max(150, "Title must be at most 150 characters long")
     .optional(),
   phoneNumber: z.string().optional(),
-  dateOfBirth: z.date().optional(),
-  image: z.string().url().optional(),
+  dateOfBirth: z.string().optional(),
+  image: z.any().optional(),
   oldPassword: z.string().min(8).optional(),
   newPassword: z.string().min(8).optional(),
+  facebook: z.string().optional(),
+  instagram: z.string().optional(),
+  youtube: z.string().optional(),
 });

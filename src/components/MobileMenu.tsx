@@ -2,6 +2,7 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
 
 const MobileMenu = () => {
   const location = useLocation();
@@ -73,28 +74,31 @@ const MobileMenu = () => {
                   width={20}
                   height={20}
                 />
-                <span>Kasus Studi</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/studi"
-                className={`flex items-center space-x-3 px-5 py-3 text-white ${
-                  pathname === "/studi"
-                    ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
-                    : "opacity-40"
-                }`}
-              >
-                <img
-                  src="/navbar/studi.svg"
-                  alt="Studi Kasus"
-                  width={20}
-                  height={20}
-                />
                 <span>Studi Kasus</span>
               </Link>
             </li>
           </ul>
+
+          <div className="mt-10">
+            <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4 px-5">
+              More
+            </h3>
+            <ul className="space-y-4">
+              <li>
+                <Link
+                  to="/profile"
+                  className={`flex items-center space-x-3 px-5 py-3 text-white ${
+                    pathname.startsWith("/profil")
+                      ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
+                      : "opacity-40"
+                  }`}
+                >
+                  <CgProfile />
+                  <span>Profile</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
         </SheetContent>
       </Sheet>
     </nav>
