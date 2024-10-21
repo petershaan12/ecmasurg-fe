@@ -38,9 +38,10 @@ const SignupForm = () => {
     setSuccess("");
     setIsPending(true);
     try {
-      // Send a POST request to Laravel API using axios
-      const apiUrl = process.env.REACT_PUBLIC_API_KEY;
-      const response = await axios.post(`${apiUrl}/api/register`, data);
+      const response = await axios.post(
+        `${process.env.REACT_PUBLIC_API_KEY}/api/register`,
+        data
+      );
 
       if (response.status === 200) {
         setSuccess("Signup successful!");

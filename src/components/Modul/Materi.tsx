@@ -1,4 +1,15 @@
-const Materi = () => {
+import { format } from "date-fns";
+
+type MateriProps = {
+  subModul: {
+    judul: string;
+    created_at: string;
+  };
+};
+
+const Materi = ({ subModul }: MateriProps) => {
+  const formattedDate = format(new Date(subModul.created_at), "d MMM, h:mma");
+
   return (
     <div className="flex space-x-5 items-center mt-5">
       <div className="bg-[#FFD4D5] p-4 rounded-2xl w-[60px]">
@@ -10,10 +21,8 @@ const Materi = () => {
         />
       </div>
       <div>
-        <h3 className="font-bold">
-          Materi 1: Pengantar Anatomi dan Fisiologi Sistem Persarafan
-        </h3>
-        <p className="opacity-50">24 Sept, 10:20AM</p>
+        <h3 className="font-bold hover:underline">{subModul.judul}</h3>
+        <p className="opacity-50">{formattedDate}</p>
       </div>
     </div>
   );

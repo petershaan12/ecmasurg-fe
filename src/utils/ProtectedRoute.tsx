@@ -1,32 +1,30 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "@/redux/fetchUser";
 import { Navigate } from "react-router-dom";
-import { ReactNode } from "react";
+import { fetchUsers } from "@/redux/fetchUser"; // Import aksi fetchUsers
+import { RootState } from "@/redux/store"; // Import RootState jika ada
 
-interface RootState {
-  data: any; // Replace 'any' with the actual type of your items
-  loading: boolean;
-  error: Error | null;
-}
+const isAuthenticated = () => {
+  return localStorage.getItem("token") !== null;
+};
 
-const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.data);
-  const loading = useSelector((state: RootState) => state.loading);
-  const error = useSelector((state: RootState) => state.error);
+  const user = useSelector((state: RootState) => state.data); // Ambil data pengguna dari store
+  const loading = useSelector((state: RootState) => state.loading); // Ambil loading state
+  const error = useSelector((state: RootState) => state.error); // Ambil error state
 
   useEffect(() => {
-    if (!user && !loading) {
+    if (isAuthenticated() && !user) {
       dispatch(fetchUsers() as any);
     }
-  }, [user, loading, dispatch]);
+  }, [dispatch, user, loading]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error! {error.message}</div>;
-  if (!user) return <Navigate to="/login" />;
+  if (!isAuthenticated()) return <Navigate to="/login" />; // Redirect jika tidak terautentikasi
+  if (loading) return <div>Loading...</div>; // Tampilkan loading jika sedang mengambil data
+  if (error) return <div>Error! {error.message}</div>; // Tampilkan error jika ada
 
-  return children;
+  return <>{children}</>; // Render children jika semua kondisi terpenuhi
 };
 
 export default ProtectedRoute;

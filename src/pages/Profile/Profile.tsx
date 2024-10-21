@@ -1,44 +1,14 @@
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import MenuSamping from "../../components/MenuSamping";
 import {
   Avatar,
   AvatarImage,
   AvatarFallback,
 } from "../../components/ui/avatar";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchUsers } from "@/redux/fetchUser";
-import { Navigate } from "react-router-dom";
-
-interface RootState {
-  data: any; // Replace 'any' with the actual type of your items
-  loading: boolean;
-  error: Error | null;
-}
 
 const Profile = () => {
   const apiURL = process.env.REACT_PUBLIC_API_KEY;
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.data);
-  const loading = useSelector((state: RootState) => state.loading);
-  const error = useSelector((state: RootState) => state.error);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await dispatch(fetchUsers() as any);
-      console.log(data);
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  if (error) {
-    return <div>Error! {error.message}</div>;
-  }
-
-  if (loading) return <div>Loading...</div>; // Show a loading state
-
-  if (!user) return <Navigate to="/login" />;
+  const user = useSelector((state: any) => state.data);
 
   const formatDate = (dateString: any) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -56,7 +26,7 @@ const Profile = () => {
         <div className="flex space-x-5">
           <h1 className="text-2xl font-bold">Profile</h1>
         </div>
-        <MenuSamping user={user} />
+        <MenuSamping />
       </header>
 
       <main>
@@ -64,13 +34,16 @@ const Profile = () => {
           <Avatar className="cursor-pointer w-28 h-28 md:w-[180px] md:h-[180px] mx-auto md:mx-0 mt-8">
             <AvatarImage
               src={`${apiURL}/storage/profiles/${user.photo_profile}`}
+              className="object-cover"
             />
             <AvatarFallback className="bg-primary/80">
               <p className="text-4xl font-bold uppercase text-white">
                 {user.name
-                  .split(" ")
-                  .map((name: string) => name.slice(0, 1))
-                  .join("")}
+                  ? user.name
+                      .split(" ")
+                      .map((name: string) => name.slice(0, 1))
+                      .join("")
+                  : "AB"}
               </p>
             </AvatarFallback>
           </Avatar>
@@ -135,7 +108,10 @@ const Profile = () => {
               </p>
               <div id="socialMedia" className="flex space-x-5 mt-5">
                 {user.facebook && (
-                  <a href={`https://facebook.com/${user.facebook}`}>
+                  <a
+                    target="_blank"
+                    href={`https://facebook.com/${user.facebook}`}
+                  >
                     <img
                       src="/icons/facebook.svg"
                       width={30}
@@ -145,7 +121,10 @@ const Profile = () => {
                   </a>
                 )}
                 {user.instagram && (
-                  <a href={`https://instagram.com/${user.instagram}`}>
+                  <a
+                    target="_blank"
+                    href={`https://instagram.com/${user.instagram}`}
+                  >
                     <img
                       src="/icons/instagram.svg"
                       width={30}
@@ -155,7 +134,7 @@ const Profile = () => {
                   </a>
                 )}
                 {user.youtube && (
-                  <a href={`${user.youtube}`}>
+                  <a target="_blank" href={`${user.youtube}`}>
                     <img
                       src="/icons/youtube.svg"
                       width={30}

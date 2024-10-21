@@ -6,17 +6,20 @@ type CardModulProps = {
     id: number;
     judul: string;
     gambar_modul: string;
-    asignd_teacher: string;
+    asignd_teacher: {
+      id: number;
+      name: string;
+      // tambahkan properti lain jika diperlukan
+    };
   };
 };
 
 const CardModul = ({ modul }: CardModulProps) => {
-  const apiURL = process.env.REACT_PUBLIC_API_KEY;
   return (
-    <div className="md:w-[300px] h-[300px] relative w-full  drop-shadow">
+    <div className="md:w-[300px] h-[300px] relative w-full  drop-shadow ">
       {modul.gambar_modul ? (
         <img
-          src={`${apiURL}/storage/modul/${modul.gambar_modul}`}
+          src={`${process.env.REACT_PUBLIC_API_KEY}/storage/modul/${modul.gambar_modul}`}
           alt="Card Modul"
           width={300}
           height={40}
@@ -39,7 +42,7 @@ const CardModul = ({ modul }: CardModulProps) => {
           <p className="text-sm md:text-base">24 Course</p>
         </div>
         <div className="md:flex mt-5 justify-between text-xs md:text-base">
-          <p>{modul.asignd_teacher}</p>
+          <p>{modul.asignd_teacher.name}</p>
           <Link
             to={`/modul/${modul.id}`}
             className="flex items-center space-x-2 hover:underline text-xs md:text-base"

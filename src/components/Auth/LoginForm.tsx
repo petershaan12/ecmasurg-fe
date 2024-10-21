@@ -37,9 +37,10 @@ const LoginForm = () => {
     setSuccess("");
     setIsPending(true);
     try {
-      // Send a POST request to Laravel API using axios
-      const apiUrl = process.env.REACT_PUBLIC_API_KEY; // Use your environment variable
-      const response = await axios.post(`${apiUrl}/api/login`, data);
+      const response = await axios.post(
+        `${process.env.REACT_PUBLIC_API_KEY}/api/login`,
+        data
+      );
 
       if (response.status === 200) {
         const token = response.data.token; // Adjust based on your API response

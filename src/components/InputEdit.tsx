@@ -14,10 +14,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import React, { useState } from "react";
 import { format } from "date-fns";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditProfileSchema } from "../schema";
 import { FormError } from "./form-error";
@@ -30,8 +31,11 @@ import { cn } from "../lib/utils";
 import { z } from "zod";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { fetchUsers } from "@/redux/fetchUser";
+import { useDispatch } from "react-redux";
 
 const InputEdit = ({ user }: any) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [date, setDate] = React.useState<Date>();
   const [error, setError] = useState<string | undefined>("");
@@ -43,19 +47,20 @@ const InputEdit = ({ user }: any) => {
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
       name: user.name || undefined,
-      gender: user.gender || undefined,
-      email: user.email || undefined,
-      bio: user.biografi || undefined,
-      phoneNumber: user.phone_number || undefined,
-      dateOfBirth: user.dateof_birth || undefined,
-      image: user.photo_profile || "",
+      gender: user.gender,
+      email: user.email,
+      bio: user.biografi,
+      phoneNumber: user.phone_number,
+      dateOfBirth: user.dateof_birth,
+      image: "",
       oldPassword: undefined,
       newPassword: undefined,
-      facebook: user.facebook,
-      instagram: user.instagram,
-      youtube: user.youtube,
     },
   });
+  const [isFileSizeValid, setIsFileSizeValid] = useState(true);
+  const [facebook, setFacebook] = useState(user.facebook || "");
+  const [instagram, setInstagram] = useState(user.instagram || "");
+  const [youtube, setYoutube] = useState(user.youtube || "");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrorImage("");
@@ -64,14 +69,17 @@ const InputEdit = ({ user }: any) => {
       const fileType = file.type;
       const validTypes = ["image/png", "image/jpeg", "image/jpg"];
       if (validTypes.includes(fileType)) {
-        if (file.size < 1024 * 1024 * 5) {
+        if (file.size <= 2048 * 1024) {
           setPreviewImage(URL.createObjectURL(file));
           form.setValue("image", e.target.files);
+          setIsFileSizeValid(true);
         } else {
-          setErrorImage("Image is more than 5MB");
+          setErrorImage("Image is more than 2MB");
+          setIsFileSizeValid(false);
         }
       } else {
         setErrorImage("Only .png or .jpg files are accepted");
+        setIsFileSizeValid(false);
       }
     }
   };
@@ -82,6 +90,7 @@ const InputEdit = ({ user }: any) => {
     setIsPending(true);
 
     console.log(data);
+
     try {
       // Send a POST request to Laravel API using axios
       const apiUrl = process.env.REACT_PUBLIC_API_KEY;
@@ -93,14 +102,15 @@ const InputEdit = ({ user }: any) => {
       if (data.bio) formData.append("biografi", data.bio);
       if (data.phoneNumber) formData.append("phone_number", data.phoneNumber);
       if (data.dateOfBirth) formData.append("dateof_birth", data.dateOfBirth);
-      if (data.facebook) formData.append("facebook", data.facebook);
-      if (data.instagram) formData.append("instagram", data.instagram);
-      if (data.youtube) formData.append("youtube", data.youtube);
+      if (facebook) formData.append("facebook", facebook);
+      if (instagram) formData.append("instagram", instagram);
+      if (youtube) formData.append("youtube", youtube);
 
       formData.append("roles", "user");
       if (data.image) {
         formData.append("photo_profile", data.image[0]);
       }
+
       formData.append("_method", "PATCH");
       const response = await axios.post(
         `${apiUrl}/api/profile/update/${user.id}`,
@@ -117,6 +127,7 @@ const InputEdit = ({ user }: any) => {
       if (response.status === 200) {
         setSuccess("Profile updated successfully!");
         form.reset();
+        dispatch(fetchUsers() as any);
         navigate("/profile");
       } else {
         console.log(response.data);
@@ -138,6 +149,63 @@ const InputEdit = ({ user }: any) => {
           className="space-y-6 mb-12"
         >
           <div className="space-y-4 md:min-w-[500px] min-w-[250px] text-start">
+            <FormField
+              control={form.control}
+              name="image"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Profile Image</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center space-x-5 ">
+                      {previewImage ? (
+                        <Avatar className="cursor-pointer w-28 h-28 md:w-[120px] md:h-[120px] mx-auto md:mx-0 mt-8">
+                          <AvatarImage
+                            src={previewImage}
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="bg-primary/80">
+                            <p className="text-4xl font-bold uppercase text-white">
+                              {user.name
+                                ? user.name
+                                    .split(" ")
+                                    .map((name: string) => name.slice(0, 1))
+                                    .join("")
+                                : "AB"}
+                            </p>
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <Avatar className="cursor-pointer w-28 h-28 md:w-[120px] md:h-[120px] mx-auto md:mx-0 mt-8">
+                          <AvatarImage
+                            src={`${process.env.REACT_PUBLIC_API_KEY}/storage/profiles/${user.photo_profile}`}
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="bg-primary/80">
+                            <p className="text-2xl font-bold uppercase text-white">
+                              {user.name
+                                ? user.name
+                                    .split(" ")
+                                    .map((name: string) => name.slice(0, 1))
+                                    .join("")
+                                : "AB"}
+                            </p>
+                          </AvatarFallback>
+                        </Avatar>
+                      )}
+                      <Input
+                        disabled={isPending}
+                        id="picture"
+                        type="file"
+                        className="bg-white w-full"
+                        onChange={handleImageChange}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="name"
@@ -324,91 +392,58 @@ const InputEdit = ({ user }: any) => {
                 </FormItem>
               )}
             /> */}
-            <FormField
-              control={form.control}
-              name="image"
-              render={() => (
-                <FormItem>
-                  <FormLabel>Profile Image</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isPending}
-                      id="picture"
-                      type="file"
-                      className="bg-white"
-                      onChange={handleImageChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {previewImage && (
-              <img src={previewImage} alt="preview" width={200} height={200} />
-            )}
-            <FormField
-              control={form.control}
-              name="facebook"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Facebook Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="@username"
-                      type="text"
-                      className="bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="instagram"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Instagram Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="@username"
-                      type="text"
-                      className="bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="youtube"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Youtube URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="https://www.youtube.com/channel/UCd6h6zvzXo4vJ1ZJL1B9X8w"
-                      type="text"
-                      className="bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            <FormItem>
+              <FormLabel>Facebook Username</FormLabel>
+              <FormControl>
+                <Input
+                  value={facebook}
+                  onChange={(e) => setFacebook(e.target.value)}
+                  disabled={isPending}
+                  placeholder="username"
+                  type="text"
+                  className="bg-white"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+
+            <FormItem>
+              <FormLabel>Instagram Username</FormLabel>
+              <FormControl>
+                <Input
+                  value={instagram}
+                  onChange={(e) => setInstagram(e.target.value)}
+                  disabled={isPending}
+                  placeholder="username"
+                  type="text"
+                  className="bg-white"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+
+            <FormItem>
+              <FormLabel>Youtube URL</FormLabel>
+              <FormControl>
+                <Input
+                  value={youtube}
+                  onChange={(e) => setYoutube(e.target.value)}
+                  disabled={isPending}
+                  placeholder="https://www.youtube.com/channel/UCd6h6zvzXo4vJ1ZJL1B9X8w"
+                  type="text"
+                  className="bg-white"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+
             <FormError message={errorImage} />
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button
               type="submit"
-              disabled={isPending}
+              disabled={isPending || !isFileSizeValid}
               className="w-full text-white font-monument-regular "
             >
               Update Profile

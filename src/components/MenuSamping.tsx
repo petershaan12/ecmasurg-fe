@@ -11,10 +11,10 @@ import { Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import Logout from "./Auth/Logout";
+import { useSelector } from "react-redux";
 
-const MenuSamping = ({ user }: any) => {
-  const apiURL = process.env.REACT_PUBLIC_API_KEY;
-
+const MenuSamping = () => {
+  const user = useSelector((state: any) => state.data);
   if (!user) return null;
 
   return (
@@ -27,12 +27,12 @@ const MenuSamping = ({ user }: any) => {
         <DropdownMenuTrigger asChild>
           <Avatar>
             <AvatarImage
-              src={`${apiURL}/storage/profiles/${user.photo_profile}`}
+              src={`${process.env.REACT_PUBLIC_API_KEY}/storage/profiles/${user.photo_profile}`}
             />
             <AvatarFallback className="bg-primary/80 text-white uppercase">
               {user.name
                 ? user.name
-                  .split(" ")
+                    .split(" ")
                     .map((name: string) => name.slice(0, 1))
                     .join("")
                 : "AB"}

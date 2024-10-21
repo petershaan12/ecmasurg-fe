@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import MenuSamping from "../../components/MenuSamping";
-import InputModul from "../../components/Modul/InputModul";
+import InputIsiModul from "@/components/Modul/InputSubModul";
 import { ArrowLeft } from "lucide-react";
 
-const ModulCreate = () => {
+const SubModulCreate = () => {
   const navigate = useNavigate();
   return (
     <>
@@ -16,14 +16,14 @@ const ModulCreate = () => {
           >
             <ArrowLeft />
           </button>
-          <h1 className="text-2xl font-bold">Input Modul pembelajaran</h1>
+          <h1 className="text-2xl font-bold">Input Tugas</h1>
         </div>
         <MenuSamping />
       </header>
 
       <main className="grid md:grid-cols-4 grid-cols-1 gap-8 mt-8">
         <section className="md:col-start-1 md:col-end-3 ">
-          <InputModul />
+          <InputIsiModul />
         </section>
         <section className="md:col-end-5">
           <div className="bg-primary rounded-xl p-5 text-white text-center space-y-6 flex flex-col items-center">
@@ -40,4 +40,4 @@ const ModulCreate = () => {
   );
 };
 
-export default ModulCreate;
+export default SubModulCreate;

@@ -5,7 +5,7 @@ import {
 } from "./actionTypes";
 
 const initialState = {
-  data: [] as any,
+  data: null,
   loading: false,
   error: null,
 };
@@ -32,7 +32,7 @@ export default function generalReducer(state = initialState, action: any) {
         ...state,
         loading: false,
         error: action.payload.error, // Pastikan untuk mengakses error dengan benar
-        data: [], // Reset data jika ada error
+        data: null, // Reset data jika ada error
       };
 
     default:

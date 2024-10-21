@@ -16,7 +16,7 @@ const ModulCreate = () => {
           >
             <ArrowLeft />
           </button>
-          <h1 className="text-2xl font-bold">Input Modul pembelajaran</h1>
+          <h1 className="text-2xl font-bold">Edit Modul pembelajaran</h1>
         </div>
         <MenuSamping />
       </header>

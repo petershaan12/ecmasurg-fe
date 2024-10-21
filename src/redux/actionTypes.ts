@@ -8,7 +8,7 @@ interface FetchDataBegin {
 
 interface FetchDataSuccess {
   type: typeof FETCH_DATA_SUCCESS;
-  payload: { data: any[] };
+  payload: { data: any[] | null }; // Allow data to be an array or null
 }
 
 interface FetchDataFailure {

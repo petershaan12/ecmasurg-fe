@@ -9,7 +9,7 @@ export const fetchDataBegin = (): GeneralActionTypes => ({
   type: FETCH_DATA_BEGIN,
 });
 
-export const fetchDataSuccess = (data: any[]): GeneralActionTypes => ({
+export const fetchDataSuccess = (data: any[] | null): GeneralActionTypes => ({
   type: FETCH_DATA_SUCCESS,
   payload: { data },
 });

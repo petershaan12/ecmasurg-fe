@@ -1,11 +1,8 @@
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import MenuSamping from "../components/MenuSamping";
-// import ProtectedRoute from "@/utils/ProtectedRoute";
 import { useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { fetchUsers } from "@/redux/fetchUser";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 interface RootState {
@@ -15,20 +12,8 @@ interface RootState {
 }
 
 const Home = () => {
-  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.data);
-  const loading = useSelector((state: RootState) => state.loading);
-  const error = useSelector((state: RootState) => state.error);
   const [belumLengkap, setBelumLengkap] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await dispatch(fetchUsers() as any);
-      console.log(data);
-    };
-
-    fetchData();
-  }, [dispatch]);
 
   useEffect(() => {
     // Update belumLengkap based on user data
@@ -45,22 +30,13 @@ const Home = () => {
       setBelumLengkap(!isComplete);
     }
   }, [user]); // Run this effect whenever user data changes
-
-  if (error) {
-    return <div>Error! {error.message}</div>;
-  }
-
-  if (loading) return <div>Loading...</div>; // Show a loading state
-
-  if (!user) return <Navigate to="/login" />;
-
   return (
     <>
       <header className="flex justify-between items-center">
         <p className="md:text-2xl">
           <b>Hello {user?.name ?? "Guest"},</b> Welcome Back 👋
         </p>
-        <MenuSamping user={user} />
+        <MenuSamping />
       </header>
 
       <main className="mt-6">
@@ -99,12 +75,12 @@ const Home = () => {
                     <div className="mt-5">
                       <h1 className="text-4xl font-bold drop-shadow-lg">1</h1>
                       <p className="text-lg">Course</p>
-                      <div className="flex flex-col items-end">
+                      <Link to="/modul" className="flex flex-col items-end">
                         <hr className="mt-5 w-[150px] " />
                         <p className="mt-3 bg-[#5CCC37] hover:bg-green-600  text-white py-1 px-3 rounded-lg mr-2">
                           Lihat Course
                         </p>
-                      </div>
+                      </Link>
                     </div>
                   </div>
                   <div
@@ -128,7 +104,7 @@ const Home = () => {
                       <p className="text-lg">Games</p>
                       <div className="flex flex-col items-end">
                         <hr className="mt-5 w-[150px] " />
-                        <p className="mt-3 bg-[#EC4D36] hover:bg-green-600  text-white py-1 px-3 rounded-lg mr-2">
+                        <p className="mt-3 bg-[#EC4D36] hover:bg-orange-600  text-white py-1 px-3 rounded-lg mr-2">
                           Lihat Games
                         </p>
                       </div>
@@ -155,7 +131,7 @@ const Home = () => {
                       <p className="text-lg">Trophy</p>
                       <div className="flex flex-col items-end">
                         <hr className="mt-5 w-[150px] " />
-                        <p className="mt-3 bg-[#009BD8] hover:bg-green-600  text-white py-1 px-3 rounded-lg mr-2">
+                        <p className="mt-3 bg-[#009BD8] hover:bg-blue-600  text-white py-1 px-3 rounded-lg mr-2">
                           Lihat Trophy
                         </p>
                       </div>

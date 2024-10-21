@@ -25,13 +25,15 @@ import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-const InputModul = (userId: any) => {
+const InputModul = () => {
   const apiURL = process.env.REACT_PUBLIC_API_KEY;
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [errorImage, setErrorImage] = useState<string | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isFileSizeValid, setIsFileSizeValid] = useState(true);
   const [teachers, setTeachers] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -54,15 +56,15 @@ const InputModul = (userId: any) => {
             Accept: "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }); // Fetch data guru dari Laravel API
-        setTeachers(response.data.data); // Menyimpan daftar guru ke state
+        });
+        setTeachers(response.data.data);
       } catch (error) {
         console.error("Error fetching teachers:", error);
         setError("Terjadi kesalahan saat mengambil daftar guru.");
       }
     };
 
-    fetchTeachers(); // Panggil fungsi untuk mengambil data guru
+    fetchTeachers();
   }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,14 +74,17 @@ const InputModul = (userId: any) => {
       const fileType = file.type;
       const validTypes = ["image/png", "image/jpeg", "image/jpg"];
       if (validTypes.includes(fileType)) {
-        if (file.size < 1024 * 1024 * 5) {
+        if (file.size <= 2048 * 1024) {
           setPreviewImage(URL.createObjectURL(file));
           form.setValue("bannerImage", e.target.files);
+          setIsFileSizeValid(true);
         } else {
           setErrorImage("Image is more than 5MB");
+          setIsFileSizeValid(false);
         }
       } else {
         setErrorImage("Only .png or .jpg files are accepted");
+        setIsFileSizeValid(false);
       }
     }
   };
@@ -88,6 +93,8 @@ const InputModul = (userId: any) => {
     setError("");
     setSuccess("");
     setIsPending(true);
+
+    const toastId = toast.loading("Add modul...");
     try {
       teachers.forEach((teacher: any) => {
         if (teacher.name === data.owner) {
@@ -96,7 +103,6 @@ const InputModul = (userId: any) => {
       });
 
       const formData = new FormData();
-      formData.append("user_id", userId.userId);
       if (data.name && data.description && data.owner) {
         formData.append("judul", data.name);
         formData.append("description", data.description);
@@ -125,18 +131,23 @@ const InputModul = (userId: any) => {
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
-
         setPreviewImage(null);
+        toast.success("Modul berhasil ditambahkan!", {
+          id: toastId,
+        });
         navigate("/modul");
       } else {
         console.log(response.data);
+        toast.dismiss(toastId);
         setError(response.data);
       }
     } catch (err) {
+      toast.dismiss(toastId);
       setError("Terjadi kesalahan saat menambahkan modul.");
       console.error(err);
     } finally {
-      setIsPending(false); // Reset loading state
+      setIsPending(false);
+      toast.dismiss(toastId);
     }
   };
 
@@ -260,7 +271,7 @@ const InputModul = (userId: any) => {
             <FormSuccess message={success} />
             <Button
               type="submit"
-              disabled={isPending}
+              disabled={isPending || !isFileSizeValid}
               className="w-full text-white font-monument-regular "
             >
               Tambah Modul pembelajaran

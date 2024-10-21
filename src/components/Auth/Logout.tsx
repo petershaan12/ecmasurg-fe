@@ -3,6 +3,7 @@ import { LogOut } from "lucide-react";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { persistor } from "@/redux/store";
 
 const Logout = () => {
   const [isLoggedOut, setIsLoggedOut] = useState(false);
@@ -19,6 +20,7 @@ const Logout = () => {
 
       if (response.status === 200) {
         localStorage.removeItem("token");
+        persistor.purge();
         setIsLoggedOut(true); // Set status logout
       } else {
         console.error("Logout failed");

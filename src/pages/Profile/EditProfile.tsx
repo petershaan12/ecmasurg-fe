@@ -14,7 +14,7 @@ const EditProfile = () => {
         <MenuSamping />
       </header>
 
-      <main className="grid md:grid-cols-4 grid-cols-1 gap-8 mt-8">
+      <main className="grid md:grid-cols-1 grid-cols-1 gap-8 mt-8">
         <InputEdit user={user} />
       </main>
     </>

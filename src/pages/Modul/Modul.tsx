@@ -3,27 +3,21 @@ import { Link } from "react-router-dom";
 import MenuSamping from "../../components/MenuSamping";
 import CardModul from "../../components/Modul/CardModul";
 import { useSelector } from "react-redux";
-import ProtectedRoute from "@/utils/ProtectedRoute";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchUsers } from "@/redux/fetchUser";
+import axios from "axios";
 
 const Modul = () => {
   const user = useSelector((state: any) => state.data);
-  const [modulData, setModulData] = useState([]);
-  const [loadingModul, setLoadingModul] = useState<Boolean>(false);
-  const dispatch = useDispatch();
+  const [modul, setModul] = useState([]);
+  const [loading, setLoading] = useState<Boolean>(false);
 
   useEffect(() => {
-    dispatch(fetchUsers() as any); // Ambil data pengguna saat komponen di-mount
-
     const fetchModul = async () => {
-      setLoadingModul(true);
+      setLoading(true);
       try {
-        const response = await fetch(
-          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/read`,
+        const response = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/modul`,
           {
-            method: "GET",
             headers: {
               Accept: "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -31,22 +25,22 @@ const Modul = () => {
           }
         );
 
-        const json = await response.json();
-        setModulData(json.data);
-        setLoadingModul(false);
+        const json = response.data;
+        setModul(json.data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
-        setLoadingModul(false);
+        setLoading(false);
       }
     };
 
     fetchModul();
-  }, [dispatch]);
+  }, []);
 
-  if (loadingModul) return <div>Loading...</div>; // Show a loading state
+  if (loading) return <div>Loading...</div>; // Show a loading state
 
   return (
-    <ProtectedRoute>
+    <>
       <header className="flex justify-between items-center">
         <div className="flex space-x-5">
           <h1 className="md:text-2xl font-bold">Input pembelajaran</h1>
@@ -60,7 +54,7 @@ const Modul = () => {
             </Link>
           )}
         </div>
-        <MenuSamping user={user} />
+        <MenuSamping />
       </header>
 
       <main className="mt-8">
@@ -73,13 +67,13 @@ const Modul = () => {
             Tambah Sub Materi
           </Link>
         )}
-        <div className="grid grid-cols-2 gap-3 md:flex md:flex-wrap">
-          {modulData.map((modul: any) => (
+        <div className="grid grid-cols-2 gap-x-3 md:flex md:flex-wrap">
+          {modul.map((modul: any) => (
             <CardModul key={modul.id} modul={modul} />
           ))}
         </div>
       </main>
-    </ProtectedRoute>
+    </>
   );
 };
 
