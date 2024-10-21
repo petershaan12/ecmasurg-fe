@@ -10,12 +10,14 @@ import { toast } from "sonner";
 import { useSelector } from "react-redux";
 
 type Assignment = {
+  length: number;
   id: string;
   idsubmodul: string;
   judul: string;
   description: string;
   link_video: string;
   files: string[];
+  map: (arg0: (file: any, index: number) => JSX.Element) => JSX.Element[];
 };
 
 const AssignmentPage = () => {
@@ -96,8 +98,6 @@ const AssignmentPage = () => {
     if (files) {
       const newFiles = Array.from(files);
       const newFileNames = newFiles.map((file) => file.name);
-
-      // Filter new files to ensure we only add unique files and limit to 5
       const totalFiles = [...uploadedFiles, ...newFiles];
       if (totalFiles.length > 5) {
         alert("You can only upload a maximum of 5 files.");
@@ -173,8 +173,10 @@ const AssignmentPage = () => {
           },
         }
       );
-      toast.success("Files uploaded successfully!", {
+      // Simulate a delay for the toast message
+      toast.success("Files uploaded successfully! please refresh the page", {
         id: toastId,
+        duration: 10000,
       });
       setUploadedFiles([]); // Clear uploaded files after submission
       setFilePreview([]); // Clear file previews
@@ -183,7 +185,6 @@ const AssignmentPage = () => {
       setError("Gagal mengunggah file.");
     } finally {
       setIsPending(false);
-      toast.dismiss(toastId);
     }
   };
 
@@ -295,23 +296,26 @@ const AssignmentPage = () => {
           </div>
         )}
 
-        <div className="mt-4">
-          <h3 className="font-semibold">Files that already submitted:</h3>
-          <ul className="list-disc list-inside mt-2 pl-5 mb-5">
-            {tugasSubmit.map((fileName, index) => (
-              <li key={index} className="flex justify-between">
-                {fileName.files}
-                <Button
-                  type="button"
-                  onClick={() => handleRemoveFile(fileName)}
-                  className="text-red-500 ml-2 bg-transparent shadow-none hover:bg-transparent hover:text-red-950"
-                >
-                  Remove
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Files that already submitted */}
+        {tugasSubmit && tugasSubmit.length > 0 && (
+          <div className="mt-4">
+            <h3 className="font-semibold">Files that already submitted:</h3>
+            <ul className="list-disc list-inside mt-2 pl-5 mb-5">
+              {tugasSubmit.map((fileName: any, index) => (
+                <li key={index} className="flex justify-between">
+                  {fileName.files}
+                  <Button
+                    type="button"
+                    onClick={() => handleRemoveFile(fileName)}
+                    className="text-red-500 ml-2 bg-transparent shadow-none hover:bg-transparent hover:text-red-950"
+                  >
+                    Remove
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </main>
     </>
   );

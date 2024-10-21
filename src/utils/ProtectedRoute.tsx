@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     }
   }, [dispatch, user, loading]);
 
-  if (!isAuthenticated()) return <Navigate to="/login" />; // Redirect jika tidak terautentikasi
+  if (!isAuthenticated()) return <Navigate to="/signup" />; // Redirect jika tidak terautentikasi
   if (loading) return <div>Loading...</div>; // Tampilkan loading jika sedang mengambil data
   if (error) return <div>Error! {error.message}</div>; // Tampilkan error jika ada
 

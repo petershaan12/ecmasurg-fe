@@ -18,18 +18,12 @@ export function fetchUsers() {
         },
       });
 
-      // Handle errors from the response (e.g., non-200 status codes)
       if (response.status !== 200) {
         const error = response.data;
         if (response.status === 404) {
-          // Jika data tidak ditemukan, hapus token dari local storage
           localStorage.removeItem("token");
-          dispatch(
-            fetchDataFailure(
-              new Error("Token invalid atau data tidak ditemukan")
-            )
-          );
-          return; // Hentikan eksekusi lebih lanjut
+          dispatch(fetchDataFailure("Token invalid atau data tidak ditemukan"));
+          return;
         }
         throw new Error(error.message || "Failed to fetch data");
       }

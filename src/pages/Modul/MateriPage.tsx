@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import MenuSamping from "@/components/MenuSamping";
 import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 
 type Materi = {
   id: string;
@@ -17,7 +18,6 @@ type Materi = {
 const MateriPage = () => {
   const { id, idsubmodul } = useParams<{ id: string; idsubmodul: string }>();
   const [materi, setMateri] = useState<Materi | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const MateriPage = () => {
 
         setMateri(data);
       } catch (err) {
-        setError("Gagal memuat materi.");
+        toast.error("Gagal memuat materi.");
         console.error(err);
       }
     };

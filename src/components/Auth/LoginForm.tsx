@@ -49,14 +49,16 @@ const LoginForm = () => {
         navigate("/"); // Redirect to homepage
         form.reset();
       } else {
-        console.log(response.data);
         setError(response.data.message || "Login failed");
       }
-    } catch (err) {
-      setError("An error occurred during login.");
-      console.error(err);
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("An error occurred during Login.");
+      }
     } finally {
-      setIsPending(false); // Reset loading state
+      setIsPending(false);
     }
   };
 

@@ -47,7 +47,7 @@ const InputEdit = ({ user }: any) => {
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
       name: user.name || undefined,
-      gender: user.gender,
+      gender: user.gender || undefined,
       email: user.email,
       bio: user.biografi,
       phoneNumber: user.phone_number,

@@ -50,11 +50,14 @@ const SignupForm = () => {
       } else {
         setError(response.data.message || "Signup failed");
       }
-    } catch (err) {
-      setError("An error occurred during Signup.");
-      console.log(err);
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("An error occurred during Signup.");
+      }
     } finally {
-      setIsPending(false); // Reset loading state
+      setIsPending(false); 
     }
   };
 

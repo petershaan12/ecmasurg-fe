@@ -16,7 +16,6 @@ const Home = () => {
   const [belumLengkap, setBelumLengkap] = useState<boolean>(true);
 
   useEffect(() => {
-    // Update belumLengkap based on user data
     if (user) {
       const isComplete =
         user.name &&
@@ -29,7 +28,8 @@ const Home = () => {
 
       setBelumLengkap(!isComplete);
     }
-  }, [user]); // Run this effect whenever user data changes
+  }, [user]);
+
   return (
     <>
       <header className="flex justify-between items-center">
@@ -51,13 +51,13 @@ const Home = () => {
                 E-msaec <br /> Virtual Learning <br /> Environment
               </h1>
             </div>
-            {/* Documents section */}
+
             <section className="mt-10">
               <div id="activity">
                 <h1 className="text-xl mb-5">Your Activity </h1>
-                <div className=" grid grid-cols-2 md:grid-cols-4 gap-5">
+                <div className=" grid grid-cols-2 md:grid-cols-3 gap-5">
                   <div
-                    className="bg-[#8CE065] flex flex-col justify-between rounded-xl pl-6 py-4 text-white w-48 "
+                    className="bg-[#8CE065] flex flex-col justify-between rounded-xl pl-6 py-4 text-white md:w-48 lg:w-full "
                     style={{
                       backgroundImage: "url(/icons/course-bg.png)", // sesuaikan path gambarnya
                       backgroundSize: "cover",
@@ -84,7 +84,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div
-                    className="bg-[#F9A685] flex flex-col justify-between rounded-xl pl-6 py-4 text-white w-48 "
+                    className="bg-[#F9A685] flex flex-col justify-between rounded-xl pl-6 py-4 text-white md:w-48 lg:w-full  "
                     style={{
                       backgroundImage: "url(/icons/gamepad-bg.png)", // sesuaikan path gambarnya
                       backgroundSize: "cover",
@@ -104,14 +104,14 @@ const Home = () => {
                       <p className="text-lg">Games</p>
                       <div className="flex flex-col items-end">
                         <hr className="mt-5 w-[150px] " />
-                        <p className="mt-3 bg-[#EC4D36] hover:bg-orange-600  text-white py-1 px-3 rounded-lg mr-2">
+                        <p className="mt-3 bg-[#EC4D36] hover:bg-orange-600  text-white py-1 px-3 rounded-lg mr-2 ">
                           Lihat Games
                         </p>
                       </div>
                     </div>
                   </div>
                   <div
-                    className="bg-[#39C2E7] flex flex-col justify-between rounded-xl pl-6 py-4 text-white w-48 "
+                    className="bg-[#39C2E7] flex flex-col justify-between rounded-xl pl-6 py-4 text-white md:w-48 lg:w-full "
                     style={{
                       backgroundImage: "url(/icons/trophy-bg.png)", // sesuaikan path gambarnya
                       backgroundSize: "cover",
