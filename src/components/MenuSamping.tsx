@@ -47,7 +47,7 @@ const MenuSamping = () => {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer ">
-            <Logout />
+            <Logout  />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

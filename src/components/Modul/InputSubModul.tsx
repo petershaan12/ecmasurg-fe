@@ -1,6 +1,7 @@
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,6 +38,18 @@ const InputSubModul = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const time = new Date()
+    .toLocaleString("sv-SE", {
+      timeZone: "Asia/Jakarta", // Sesuaikan dengan timezone kamu
+      hour12: false, // Untuk format 24 jam
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    .replace(" ", "T"); // Ubah spasi dengan 'T' agar sesuai format ISO
+
   const form = useForm<z.infer<typeof IsiModulSchema>>({
     resolver: zodResolver(IsiModulSchema),
     defaultValues: {
@@ -44,6 +57,8 @@ const InputSubModul = () => {
       judul: "",
       description: "",
       link_video: "",
+      deadline: "",
+      time: time.toString(),
     },
   });
 
@@ -63,6 +78,14 @@ const InputSubModul = () => {
 
       if (data.link_video) {
         formData.append("link_video", data.link_video);
+      }
+
+      if (data.deadline) {
+        formData.append("deadline", data.deadline);
+      }
+
+      if (data.time) {
+        formData.append("time", data.time);
       }
 
       uploadedFiles.forEach((file) => {
@@ -103,11 +126,12 @@ const InputSubModul = () => {
         setError(response.data);
       }
     } catch (err) {
-      setError("Terjadi kesalahan saat menambahkan Task.");
+      setError(
+        "Terjadi kesalahan saat menambahkan Task. Make sure your Input filled"
+      );
       console.error(err);
       toast.dismiss(toastId);
     } finally {
-      toast.dismiss(toastId);
       setIsPending(false); // Reset loading state
     }
   };
@@ -157,7 +181,7 @@ const InputSubModul = () => {
               name="judul"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name Task</FormLabel>
+                  <FormLabel>Name of The Task</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -184,7 +208,7 @@ const InputSubModul = () => {
                       disabled={isPending}
                     >
                       <SelectTrigger className=" bg-white">
-                        <SelectValue placeholder="Choose The Owner of Modul" />
+                        <SelectValue placeholder="Choose The Type of task" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="material">Material</SelectItem>
@@ -219,7 +243,7 @@ const InputSubModul = () => {
               name="link_video"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Link Video Youtube</FormLabel>
+                  <FormLabel>Link Video / Youtube</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -233,6 +257,27 @@ const InputSubModul = () => {
                 </FormItem>
               )}
             />
+            {/* jika ada assignment kasi deadline */}
+            {form.watch("type") === "assignment" && (
+              <FormField
+                control={form.control}
+                name="deadline"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Due Date</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        type="datetime-local"
+                        className="bg-white"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <FormItem>
               <FormLabel>Upload Files</FormLabel>
@@ -248,7 +293,6 @@ const InputSubModul = () => {
               </FormControl>
               <FormMessage />
             </FormItem>
-
             {filePreview.length > 0 && (
               <div className="mt-2">
                 <strong>Files to be uploaded:</strong>
@@ -268,6 +312,29 @@ const InputSubModul = () => {
                 </ul>
               </div>
             )}
+
+            <FormField
+              control={form.control}
+              name="time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Assign to Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      type="datetime-local"
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Assign the task to a specific Date, The Default will be
+                    today
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button

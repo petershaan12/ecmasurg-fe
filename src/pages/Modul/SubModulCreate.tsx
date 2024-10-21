@@ -16,7 +16,7 @@ const SubModulCreate = () => {
           >
             <ArrowLeft />
           </button>
-          <h1 className="text-2xl font-bold">Input Tugas</h1>
+          <h1 className="text-2xl font-bold">Input Task Material/Assignment</h1>
         </div>
         <MenuSamping />
       </header>

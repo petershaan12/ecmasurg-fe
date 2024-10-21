@@ -1,6 +1,7 @@
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -46,6 +47,7 @@ const EditSubModul = ({ submodul }: any) => {
       judul: submodul.judul || "",
       description: submodul.description || "",
       link_video: submodul.link_video || "",
+      time: submodul.time || "",
     },
   });
 
@@ -102,7 +104,7 @@ const EditSubModul = ({ submodul }: any) => {
         toast.success("Task berhasil diedit!", {
           id: toastId,
         });
-        
+
         navigate(`/modul/${id}`);
       } else {
         console.log(response.data);
@@ -226,7 +228,7 @@ const EditSubModul = ({ submodul }: any) => {
               name="link_video"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Link Video Youtube</FormLabel>
+                  <FormLabel>Link Video / Youtube</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -240,6 +242,28 @@ const EditSubModul = ({ submodul }: any) => {
                 </FormItem>
               )}
             />
+
+            {/* jika ada assignment kasi deadline */}
+            {form.watch("type") === "assignment" && (
+              <FormField
+                control={form.control}
+                name="deadline"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Due Date</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        type="datetime-local"
+                        className="bg-white"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <FormItem>
               <FormLabel>Upload Files</FormLabel>
@@ -275,6 +299,28 @@ const EditSubModul = ({ submodul }: any) => {
                 </ul>
               </div>
             )}
+            <FormField
+              control={form.control}
+              name="time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Assign to Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      type="datetime-local"
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Assign the task to a specific Date, The Default will be
+                    today
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button

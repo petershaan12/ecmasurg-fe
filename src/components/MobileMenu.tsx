@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
+import Logout from "./Auth/Logout";
 
 const MobileMenu = () => {
   const location = useLocation();
@@ -96,6 +97,9 @@ const MobileMenu = () => {
                   <CgProfile />
                   <span>Profile</span>
                 </Link>
+              </li>
+              <li>
+                <Logout navbar={true} />
               </li>
             </ul>
           </div>

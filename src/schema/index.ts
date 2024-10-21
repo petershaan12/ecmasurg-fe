@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 export const ModulSchema = z.object({
-  name: z.string().optional(),
+  name: z.string(),
   owner: z.string().optional(),
   description: z.string().min(3).optional(),
   // password: z.string().mpin(6).optional(),
@@ -13,6 +13,8 @@ export const IsiModulSchema = z.object({
   judul: z.string(),
   description: z.string().min(3).optional(),
   link_video: z.string().optional(),
+  deadline: z.string().optional(),
+  time: z.string().optional(),
 });
 
 export const LoginSchema = z.object({

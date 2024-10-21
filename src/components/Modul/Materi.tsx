@@ -4,11 +4,12 @@ type MateriProps = {
   subModul: {
     judul: string;
     created_at: string;
+    time: string;
   };
 };
 
 const Materi = ({ subModul }: MateriProps) => {
-  const formattedDate = format(new Date(subModul.created_at), "d MMM, h:mma");
+  const formattedDate = format(new Date(subModul.time), "d MMM, h:mma");
 
   return (
     <div className="flex space-x-5 items-center mt-5">

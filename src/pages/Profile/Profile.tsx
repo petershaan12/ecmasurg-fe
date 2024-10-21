@@ -5,6 +5,8 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "../../components/ui/avatar";
+import Certificate from "@/components/Certificate";
+import MyModul from "@/components/Modul/MyModul";
 
 const Profile = () => {
   const apiURL = process.env.REACT_PUBLIC_API_KEY;
@@ -20,6 +22,7 @@ const Profile = () => {
     return date.toLocaleDateString("en-US", options); // Gunakan 'en-GB' untuk format DD/MM/YYYY
   };
 
+  console.log(user);
   return (
     <>
       <header className="flex justify-between">
@@ -30,7 +33,7 @@ const Profile = () => {
       </header>
 
       <main>
-        <div className="md:flex items-center justify-center md:justify-start text-center gap-5 mt-5 ml-8">
+        <div className="md:flex items-center justify-center md:justify-start text-center gap-5 mt-5 md:ml-8">
           <Avatar className="cursor-pointer w-28 h-28 md:w-[180px] md:h-[180px] mx-auto md:mx-0 mt-8">
             <AvatarImage
               src={`${apiURL}/storage/profiles/${user.photo_profile}`}
@@ -51,18 +54,20 @@ const Profile = () => {
             <h1 className="md:text-4xl text-xl uppercase font-bold">
               {user.name}
             </h1>
-            <div className="mt-2 grid md:grid-cols-2 gap-5 justify-between text-lg">
+            <div className="mt-2 grid md:grid-cols-2 gap-5 md:justify-between justify-center items-center text-lg">
               <p>Bergabung Sejak {new Date(user.created_at).getFullYear()}</p>
-              <div className="flex items-center">
-                <img
-                  src="/icons/point.png"
-                  width={30}
-                  height={30}
-                  alt="point"
-                  className="pt-1"
-                />
-                {user.point ? <p>{user.point} Points</p> : <p>0 Points</p>}
-              </div>
+              {user.roles === "user" && (
+                <div className="flex items-center justify-center">
+                  <img
+                    src="/icons/point.png"
+                    width={30}
+                    height={30}
+                    alt="point"
+                    className="pt-1"
+                  />
+                  {user.point ? <p>{user.point} Points</p> : <p>0 Points</p>}
+                </div>
+              )}
             </div>
             {user.biografi && (
               <p className="bg-[#D9D9D9] mt-3 px-2 italic">{user.biografi}</p>
@@ -72,19 +77,13 @@ const Profile = () => {
 
         <section className="grid md:grid-cols-2 mt-8">
           <div>
-            <h1 className="text-xl mb-5">Completed </h1>
-            <div className="flex items-center space-x-5">
-              <img
-                src="/icons/medali.png"
-                width={100}
-                height={100}
-                alt="otak"
-              />
-              <div>
-                <h1 className="text-xl font-bold">Sistem Persarafan</h1>
-                <p className="">Lulus Tanggal 26 April 2024</p>
-              </div>
-            </div>
+            {user.roles === "teacher" && <MyModul id={user.id} />}
+            {user.roles === "user" && (
+              <>
+                <h1 className="text-xl mb-5">Completed Course </h1>
+                <Certificate />
+              </>
+            )}
           </div>
           <div>
             <h1 className="text-xl mb-5">Biodata </h1>

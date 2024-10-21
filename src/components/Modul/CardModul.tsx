@@ -6,6 +6,7 @@ type CardModulProps = {
     id: number;
     judul: string;
     gambar_modul: string;
+    submodules_count: number;
     asignd_teacher: {
       id: number;
       name: string;
@@ -39,7 +40,9 @@ const CardModul = ({ modul }: CardModulProps) => {
             height={20}
             className="w-[20px] h-[20px] md:w-[40px] md:h-[40px]"
           />
-          <p className="text-sm md:text-base">24 Course</p>
+          <p className="text-sm md:text-base">
+            {modul.submodules_count} Course
+          </p>
         </div>
         <div className="md:flex mt-5 justify-between text-xs md:text-base">
           <p>{modul.asignd_teacher.name}</p>

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { persistor } from "@/redux/store";
 
-const Logout = () => {
+const Logout = ({ navbar = false }: { navbar?: boolean }) => {
   const [isLoggedOut, setIsLoggedOut] = useState(false);
   const navigate = useNavigate();
 
@@ -35,7 +35,10 @@ const Logout = () => {
   }
 
   return (
-    <button onClick={handleLogout} className="flex">
+    <button
+      onClick={handleLogout}
+      className={`flex ${navbar ? "text-white px-5 py-3 opacity-50" : ""}`}
+    >
       <LogOut className="w-4 mr-2" />
       Logout
     </button>

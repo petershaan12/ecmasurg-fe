@@ -25,6 +25,7 @@ type subModul = {
   judul: string;
   type: string;
   file: string;
+  time: string;
 };
 
 const SubModul = () => {
@@ -100,7 +101,7 @@ const SubModul = () => {
 
   const renderDateHeader = (subModul: any[]) => {
     return subModul.map((modul: any, index: number) => {
-      const modulDate = new Date(modul.created_at).toLocaleDateString("id-ID", {
+      const modulDate = new Date(modul.time).toLocaleDateString("id-ID", {
         weekday: "long",
         day: "numeric",
         month: "long",
@@ -111,7 +112,7 @@ const SubModul = () => {
       const isDifferentDate =
         index > 0 &&
         modulDate !==
-          new Date(subModul[index - 1].created_at).toLocaleDateString("id-ID", {
+          new Date(subModul[index - 1].time).toLocaleDateString("id-ID", {
             weekday: "long",
             day: "numeric",
             month: "long",

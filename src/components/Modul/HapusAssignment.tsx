@@ -14,11 +14,12 @@ import {
 } from "../ui/alert-dialog";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 
-interface HapusModulProps {
+interface HapusAssignment {
   id: string;
+  idsubmodul: string;
 }
 
-const HapusSubModul = ({ id }: HapusModulProps) => {
+const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
   const { id: idModul } = useParams<{ id: string }>();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -27,7 +28,7 @@ const HapusSubModul = ({ id }: HapusModulProps) => {
     try {
       setIsDeleting(true);
       const response = await axios.delete(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${idModul}/delete/${id}`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${idModul}/task/${idsubmodul}/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -57,14 +58,14 @@ const HapusSubModul = ({ id }: HapusModulProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <p className="text-red-500 hover:underline cursor-pointer">
-          <span>Delete</span>
+        <p className="text-red-500 hover:underline  cursor-pointer">
+          <span>Remove</span>
         </p>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure want to delete this SubModul?{" "}
+            Are you sure want to delete this task?{" "}
           </AlertDialogTitle>
           <AlertDialogDescription>
             This Action cannot be undone
@@ -85,4 +86,4 @@ const HapusSubModul = ({ id }: HapusModulProps) => {
   );
 };
 
-export default HapusSubModul;
+export default HapusAssignment;

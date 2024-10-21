@@ -15,9 +15,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import React, { useState } from "react";
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditProfileSchema } from "../schema";
@@ -25,9 +23,6 @@ import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { Calendar } from "./ui/calendar";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "../lib/utils";
 import { z } from "zod";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +32,6 @@ import { useDispatch } from "react-redux";
 const InputEdit = ({ user }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [date, setDate] = React.useState<Date>();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [errorImage, setErrorImage] = useState<string | undefined>();
@@ -313,42 +307,12 @@ const InputEdit = ({ user }: any) => {
                 <FormItem>
                   <FormLabel>Date of Birth</FormLabel>
                   <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "justify-start w-full bg-white text-left font-normal",
-                            !date && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {field.value ? (
-                            format(new Date(field.value), "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={(selectedDate) => {
-                            setDate(selectedDate);
-                            if (selectedDate) {
-                              const formattedDate = format(
-                                selectedDate,
-                                "yyyy-MM-dd"
-                              );
-                              field.onChange(formattedDate); // Mengonversi ke format YYYY-MM-DD
-                              console.log("Selected date:", formattedDate); // Debugging
-                            }
-                          }}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      type="date"
+                      className="bg-white"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

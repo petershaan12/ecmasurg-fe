@@ -147,7 +147,6 @@ const InputModul = () => {
       console.error(err);
     } finally {
       setIsPending(false);
-      toast.dismiss(toastId);
     }
   };
 

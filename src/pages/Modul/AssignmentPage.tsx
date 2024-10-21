@@ -1,21 +1,23 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import MenuSamping from "@/components/MenuSamping";
 import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
-import { toast } from "sonner";
+
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
+import Student from "@/components/Modul/Student";
+import Teacher from "@/components/Modul/Teacher";
 
 type Assignment = {
   length: number;
   id: string;
   idsubmodul: string;
   judul: string;
+  deadline: string;
   description: string;
   link_video: string;
+  modul_judul: string;
   files: string[];
   map: (arg0: (file: any, index: number) => JSX.Element) => JSX.Element[];
 };
@@ -24,13 +26,6 @@ const AssignmentPage = () => {
   const { id, idsubmodul } = useParams<{ id: string; idsubmodul: string }>();
   const user = useSelector((state: any) => state.data);
   const [tugas, setTugas] = useState<Assignment | null>(null);
-  const [tugasSubmit, setTugasSubmit] = useState<Assignment | null>(null);
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, setIsPending] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [filePreview, setFilePreview] = useState<string[]>([]);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -53,140 +48,18 @@ const AssignmentPage = () => {
 
       setTugas(data);
     } catch (err) {
-      setError("Gagal memuat tugas.");
-      console.error(err);
-    }
-  };
-
-  const fetchTugasSubmit = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/task/${idsubmodul}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      const data = response.data.data;
-      if (typeof data.files === "string") {
-        data.files = JSON.parse(data.files);
-      }
-      setTugasSubmit(data);
-    } catch (err) {
       toast.error("Gagal memuat tugas kamu.");
       console.error(err);
     }
   };
 
-  console.log(tugasSubmit);
-
   useEffect(() => {
     fetchTugas();
-    fetchTugasSubmit();
   }, [id, idsubmodul]);
 
   if (!tugas) {
     return <div>Loading...</div>;
   }
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-
-    if (files) {
-      const newFiles = Array.from(files);
-      const newFileNames = newFiles.map((file) => file.name);
-      const totalFiles = [...uploadedFiles, ...newFiles];
-      if (totalFiles.length > 5) {
-        alert("You can only upload a maximum of 5 files.");
-        return;
-      }
-
-      setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
-      setFilePreview((prevFiles) => [...prevFiles, ...newFileNames]);
-
-      // Clear the file input for re-upload
-      if (fileInputRef.current) {
-        setTimeout(() => {
-          fileInputRef.current!.value = "";
-        }, 0);
-      }
-    }
-  };
-
-  const handleRemoveFile = (fileName: string) => {
-    setFilePreview((prevFiles) =>
-      prevFiles.filter((file) => file !== fileName)
-    );
-
-    setUploadedFiles((prevFiles) =>
-      prevFiles.filter((file) => file.name !== fileName)
-    );
-  };
-
-  const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const files = event.dataTransfer.files;
-    if (files) {
-      const newFiles = Array.from(files);
-      const totalFiles = [...uploadedFiles, ...newFiles];
-
-      if (totalFiles.length > 5) {
-        toast.error("You can only upload a maximum of 5 files.");
-        return;
-      }
-
-      setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
-      setFilePreview((prevFiles) => [
-        ...prevFiles,
-        ...newFiles.map((file) => file.name),
-      ]);
-    }
-  };
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
-  const handleSubmit = async () => {
-    setError("");
-    setSuccess("");
-    setIsPending(true);
-    const formData = new FormData();
-    formData.append("user_id", user.id);
-    uploadedFiles.forEach((file) => {
-      formData.append("files[]", file);
-    });
-
-    const toastId = toast.loading("Uploading File...");
-
-    try {
-      await axios.post(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/task/${idsubmodul}/create`,
-        formData,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      // Simulate a delay for the toast message
-      toast.success("Files uploaded successfully! please refresh the page", {
-        id: toastId,
-        duration: 10000,
-      });
-      setUploadedFiles([]); // Clear uploaded files after submission
-      setFilePreview([]); // Clear file previews
-    } catch (error) {
-      toast.dismiss(toastId);
-      setError("Gagal mengunggah file.");
-    } finally {
-      setIsPending(false);
-    }
-  };
 
   return (
     <>
@@ -197,11 +70,11 @@ const AssignmentPage = () => {
           </button>
           <h1 className="text-base">
             <Link to="/modul" className="hover:underline">
-              Modul
+              Modul Pembelajaran
             </Link>{" "}
             /{" "}
             <Link to={`/modul/${id}`} className="hover:underline">
-              Sub Modul
+              {tugas.modul_judul}
             </Link>
             / {tugas.judul}
           </h1>
@@ -210,16 +83,33 @@ const AssignmentPage = () => {
       </header>
 
       <main className="mt-8">
-        {/* Judul */}
         <h1 className="text-2xl font-bold">{tugas.judul}</h1>
-
-        {/* Deskripsi */}
+        <p className="text-sm">
+          Deadline Submission{" "}
+          <b>
+            {new Date(tugas.deadline).toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
+          </b>{" "}
+        </p>
         <div className="bg-white p-5 rounded-lg shadow mt-5">
           <p className="mt-2">{tugas.description}</p>
 
           {tugas.link_video && (
             <p>
-              Silahkan nonton video ini <a href={tugas.link_video}>disini</a>
+              Silahkan nonton video ini{" "}
+              <a
+                href={tugas.link_video}
+                target="_blank"
+                className="underline text-blue-400"
+              >
+                disini
+              </a>
             </p>
           )}
 
@@ -246,75 +136,13 @@ const AssignmentPage = () => {
           )}
         </div>
 
-        {/* Pengumpulan Tugas */}
-        <div
-          className="border-dashed border-2  h-[200px] border-gray-400 p-4 mt-5 rounded-lg text-center"
-          onDrop={handleFileDrop}
-          onDragOver={handleDragOver}
-        >
-          <div className="flex justify-center flex-col items-center">
-            <p className="text-gray-500 mt-12">
-              Select a file or drag and drop here
-            </p>
-            <input
-              type="file"
-              multiple
-              onChange={handleFileChange}
-              ref={fileInputRef}
-              className="mt-2 text-center w-[200px]"
-            />
-          </div>
-        </div>
-
-        {/* Display uploaded file names */}
-        {filePreview.length > 0 && (
-          <div className="mt-4">
-            <h3 className="font-semibold">Files to Upload:</h3>
-            <ul className="list-disc list-inside mt-2 pl-5 mb-5">
-              {filePreview.map((fileName, index) => (
-                <li key={index} className="flex justify-between">
-                  {fileName}
-                  <Button
-                    type="button"
-                    onClick={() => handleRemoveFile(fileName)}
-                    className="text-red-500 ml-2 bg-transparent shadow-none hover:bg-transparent hover:text-red-950"
-                  >
-                    Remove
-                  </Button>
-                </li>
-              ))}
-            </ul>
-            <FormError message={error} />
-            <FormSuccess message={success} />
-            <Button
-              onClick={handleSubmit}
-              disabled={isPending}
-              className="mt-2 w-full text-white font-monument-regular"
-            >
-              Upload Files
-            </Button>
-          </div>
+        {/* Teacher akan Melihat */}
+        {user.roles === "teacher" && (
+          <Teacher id={id} idsubmodul={idsubmodul} />
         )}
-
-        {/* Files that already submitted */}
-        {tugasSubmit && tugasSubmit.length > 0 && (
-          <div className="mt-4">
-            <h3 className="font-semibold">Files that already submitted:</h3>
-            <ul className="list-disc list-inside mt-2 pl-5 mb-5">
-              {tugasSubmit.map((fileName: any, index) => (
-                <li key={index} className="flex justify-between">
-                  {fileName.files}
-                  <Button
-                    type="button"
-                    onClick={() => handleRemoveFile(fileName)}
-                    className="text-red-500 ml-2 bg-transparent shadow-none hover:bg-transparent hover:text-red-950"
-                  >
-                    Remove
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {/* Student akan Melihat */}
+        {user.roles === "user" && (
+          <Student id={id} idsubmodul={idsubmodul} userid={user.id} />
         )}
       </main>
     </>
