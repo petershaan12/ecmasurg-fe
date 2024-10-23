@@ -32,7 +32,7 @@ const HapusModul = ({ id }: HapusModulProps) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/modul/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -59,7 +59,7 @@ const HapusModul = ({ id }: HapusModulProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="w-full bg-red-500 hover:bg-red-800 text-white px-3 py-2 space-x-2 text-center rounded-xl flex justify-center items-center text-sm">
+        <Button className="w-full bg-red-500 hover:bg-red-800 text-white px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm">
           <FaRegTrashAlt />
           <span>Hapus Modul</span>
         </Button>

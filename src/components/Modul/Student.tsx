@@ -39,7 +39,7 @@ const Student = ({ id, idsubmodul, userid }: StudentProps) => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -139,7 +139,7 @@ const Student = ({ id, idsubmodul, userid }: StudentProps) => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );

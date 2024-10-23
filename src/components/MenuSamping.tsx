@@ -7,11 +7,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
-import { Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import MobileMenu from "./MobileMenu";
 import Logout from "./Auth/Logout";
 import { useSelector } from "react-redux";
+import { CgProfile } from "react-icons/cg";
 
 const MenuSamping = () => {
   const user = useSelector((state: any) => state.data);
@@ -41,13 +41,15 @@ const MenuSamping = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem className="hover:cursor-pointer ">
-            <Link to="/profile" className="flex items-center">
-              <Settings className="w-4 mr-2" />
+            <Link to="/profile" className="flex items-center w-full">
+              <CgProfile className="w-4 mr-2" />
               Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer ">
-            <Logout  />
+            <p className="w-full">
+              <Logout />
+            </p>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

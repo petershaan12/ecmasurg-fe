@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table"; // pastikan style importnya dari shadcdn atau sesuai library
 import { toast } from "sonner";
+import Loading from "../Loading";
 
 interface Submission {
   user: {
@@ -35,7 +36,7 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/task/${idsubmodul}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -67,7 +68,7 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
       <h2 className="text-xl font-bold mb-4">List Submission</h2>
 
       {isLoading ? (
-        <div>Loading...</div> // Indikator Loading
+        <Loading />
       ) : (
         <Table className="w-full border-collapse">
           <TableHeader>

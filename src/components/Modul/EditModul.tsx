@@ -24,15 +24,16 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-const InputModul = () => {
-  const apiURL = process.env.REACT_PUBLIC_API_KEY;
+const EditModul = () => {
+  const { id } = useParams();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [errorImage, setErrorImage] = useState<string | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isImageChanged, setIsImageChanged] = useState(false);
   const [isFileSizeValid, setIsFileSizeValid] = useState(true);
   const [teachers, setTeachers] = useState([]);
   const [isPending, setIsPending] = useState(false);
@@ -51,12 +52,15 @@ const InputModul = () => {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const response = await axios.get(`${apiURL}/api/modul/asignteacher`, {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/asignteacher`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
         setTeachers(response.data.data);
       } catch (error) {
         console.error("Error fetching teachers:", error);
@@ -64,6 +68,39 @@ const InputModul = () => {
       }
     };
 
+    const fetchModul = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/show/${id}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+        const modulData = response.data.data;
+
+        form.reset({
+          name: modulData.judul,
+          owner: modulData.asignd_teacher.name,
+          description: modulData.description,
+          bannerImage: modulData.gambar_modul ? modulData.gambar_modul : "",
+        });
+
+        console.log(modulData.gambar_modul);
+
+        if (modulData.gambar_modul) {
+          const imageUrl = `${process.env.REACT_PUBLIC_API_KEY}/storage/modul/${modulData.gambar_modul}`;
+          setPreviewImage(imageUrl);
+        }
+      } catch (error) {
+        console.error("Error fetching modul:", error);
+        setError("Terjadi kesalahan saat mengambil data modul.");
+      }
+    };
+
+    fetchModul();
     fetchTeachers();
   }, []);
 
@@ -77,6 +114,7 @@ const InputModul = () => {
         if (file.size <= 2048 * 1024) {
           setPreviewImage(URL.createObjectURL(file));
           form.setValue("bannerImage", e.target.files);
+          setIsImageChanged(true);
           setIsFileSizeValid(true);
         } else {
           setErrorImage("Image is more than 5MB");
@@ -94,7 +132,7 @@ const InputModul = () => {
     setSuccess("");
     setIsPending(true);
 
-    const toastId = toast.loading("Add modul...");
+    const toastId = toast.loading("Edit modul...");
     try {
       teachers.forEach((teacher: any) => {
         if (teacher.name === data.owner) {
@@ -108,13 +146,14 @@ const InputModul = () => {
         formData.append("description", data.description);
         formData.append("asignd_teacher", data.owner);
       }
-      if (data.bannerImage) {
+      if (isImageChanged) {
         formData.append("gambar_modul", data.bannerImage[0]);
       }
 
-      // Send a POST request to Laravel API using axios
+      formData.append("_method", "PATCH");
+
       const response = await axios.post(
-        `${apiURL}/api/modul/create`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/update/${id}`,
         formData,
         {
           headers: {
@@ -125,14 +164,15 @@ const InputModul = () => {
       );
 
       if (response.status === 201) {
-        setSuccess("Modul berhasil ditambahkan!");
+        setSuccess("Modul berhasil diedit!");
         form.reset();
 
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
         setPreviewImage(null);
-        toast.success("Modul berhasil ditambahkan!", {
+
+        toast.success("Modul berhasil diedit!", {
           id: toastId,
         });
         navigate("/modul");
@@ -223,25 +263,7 @@ const InputModul = () => {
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password for Generate Modul</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="Ex: 123456"
-                      type="text"
-                      className="bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
+
             <FormField
               control={form.control}
               name="bannerImage"
@@ -273,7 +295,7 @@ const InputModul = () => {
               disabled={isPending || !isFileSizeValid}
               className="w-full text-white font-monument-regular "
             >
-              Tambah Modul pembelajaran
+              Edit Modul pembelajaran
             </Button>
           </div>
         </form>
@@ -282,4 +304,4 @@ const InputModul = () => {
   );
 };
 
-export default InputModul;
+export default EditModul;

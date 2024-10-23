@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import Student from "@/components/Modul/Student";
 import Teacher from "@/components/Modul/Teacher";
+import Loading from "@/components/Loading";
 
 type Assignment = {
   length: number;
@@ -36,7 +37,7 @@ const AssignmentPage = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -58,7 +59,7 @@ const AssignmentPage = () => {
   }, [id, idsubmodul]);
 
   if (!tugas) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -66,7 +67,7 @@ const AssignmentPage = () => {
       <header className="flex justify-between">
         <div className="flex space-x-5 items-center">
           <button onClick={() => navigate(-1)}>
-            <ArrowLeft />
+            <ArrowLeft className="hover:bg-primary/20 rounded-full" />
           </button>
           <h1 className="text-base">
             <Link to="/modul" className="hover:underline">

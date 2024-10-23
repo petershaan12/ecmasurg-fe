@@ -1,5 +1,6 @@
 import { CgProfile } from "react-icons/cg";
 import { Link, useLocation } from "react-router-dom";
+import Logout from "./Auth/Logout";
 
 const Navbar = () => {
   const location = useLocation();
@@ -60,7 +61,7 @@ const Navbar = () => {
               <Link
                 to="/studi-kasus"
                 className={`flex items-center space-x-3 px-5 py-3 text-white ${
-                  pathname === "/studi-kasus"
+                  pathname.startsWith("/studi-kasus")
                     ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
                     : "opacity-40"
                 }`}
@@ -95,6 +96,9 @@ const Navbar = () => {
                 <CgProfile />
                 <span>Profile</span>
               </Link>
+            </li>
+            <li>
+              <Logout navbar={true} />
             </li>
           </ul>
         </div>

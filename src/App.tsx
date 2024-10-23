@@ -5,11 +5,12 @@ import { store, persistor } from "./redux/store";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "./components/ui/sonner";
+import Loading from "./components/Loading";
 
 function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+      <PersistGate loading={<Loading />} persistor={persistor}>
         <div className="min-h-screen flex">
           <Navbar />
           <main id="zero-state">

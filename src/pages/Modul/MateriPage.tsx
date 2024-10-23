@@ -4,6 +4,7 @@ import axios from "axios";
 import MenuSamping from "@/components/MenuSamping";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import Loading from "@/components/Loading";
 
 type Materi = {
   id: string;
@@ -28,7 +29,7 @@ const MateriPage = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
         );
@@ -50,7 +51,7 @@ const MateriPage = () => {
   }, [id, idsubmodul]);
 
   if (!materi) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const getEmbedUrl = (url: string) => {
@@ -73,9 +74,9 @@ const MateriPage = () => {
               navigate(-1);
             }}
           >
-            <ArrowLeft />
+            <ArrowLeft className="hover:bg-primary/20 rounded-full" />
           </button>
-          <h1 className="text-base truncate w-28 md:w-full">
+          <h1 className="text-base text-ellipsis overflow-hidden md:w-full w-28">
             <Link to="/modul" className="hover:underline">
               Modul Pembelajaran
             </Link>{" "}
@@ -90,7 +91,6 @@ const MateriPage = () => {
       </header>
 
       <main className="mt-8 ">
-        {/* Judul */}
         <h1 className="text-2xl font-bold">{materi.judul}</h1>
 
         {/* Youtube Link kalau ada */}
@@ -108,7 +108,6 @@ const MateriPage = () => {
           <div className="text-gray-500 mt-2">Video Tidak Tersedia.</div>
         )}
 
-        {/* Deskripsi */}
         <div className="bg-white  p-5 rounded-lg shadow mt-5">
           <h2 className="text-lg font-semibold">{materi.judul}</h2>
           <p className="mt-2">{materi.description}</p>

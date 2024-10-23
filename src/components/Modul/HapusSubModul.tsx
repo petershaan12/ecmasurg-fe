@@ -30,7 +30,7 @@ const HapusSubModul = ({ id }: HapusModulProps) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${idModul}/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );

@@ -10,7 +10,6 @@ type CardModulProps = {
     asignd_teacher: {
       id: number;
       name: string;
-      // tambahkan properti lain jika diperlukan
     };
   };
 };

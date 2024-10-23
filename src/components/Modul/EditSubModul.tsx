@@ -80,14 +80,13 @@ const EditSubModul = ({ submodul }: any) => {
 
       formData.append("_method", "PATCH");
 
-      // Send a POST request to Laravel API using axios
       const response = await axios.post(
         `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/update/${submodul.id}`,
         formData,
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -95,10 +94,10 @@ const EditSubModul = ({ submodul }: any) => {
       if (response.status === 200) {
         setSuccess("Task berhasil diedit!");
         form.reset();
-        setFilePreview([]); // Reset preview
+        setFilePreview([]);
 
         if (fileInputRef.current) {
-          fileInputRef.current.value = ""; // Reset input file
+          fileInputRef.current.value = "";
         }
 
         toast.success("Task berhasil diedit!", {
@@ -125,15 +124,12 @@ const EditSubModul = ({ submodul }: any) => {
     const files = event.target.files;
 
     if (files) {
-      // Buat array baru dari file yang dipilih
       const newFiles = Array.from(files);
       const newFileNames = newFiles.map((file) => file.name);
 
-      // Tambahkan file ke state untuk dikirim nanti
       setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
       setFilePreview((prevFiles) => [...prevFiles, ...newFileNames]);
 
-      // Kosongkan input file agar bisa upload file lagi tanpa konflik
       if (fileInputRef.current) {
         setTimeout(() => {
           fileInputRef.current!.value = "";

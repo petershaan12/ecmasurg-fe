@@ -8,15 +8,15 @@ const SubModulCreate = () => {
   return (
     <>
       <header className="flex justify-between">
-        <div className="flex space-x-5">
+        <div className="flex space-x-5 items-center">
           <button
             onClick={() => {
               navigate(-1);
             }}
           >
-            <ArrowLeft />
+            <ArrowLeft className="hover:bg-primary/20 rounded-full" />
           </button>
-          <h1 className="text-2xl font-bold">Input Task Material/Assignment</h1>
+          <h1 className="text-xl font-bold">Input Task/Sub Modul</h1>
         </div>
         <MenuSamping />
       </header>

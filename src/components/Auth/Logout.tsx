@@ -1,27 +1,23 @@
 import axios from "axios";
 import { LogOut } from "lucide-react";
-import Cookies from "js-cookie";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { persistor } from "@/redux/store";
 
 const Logout = ({ navbar = false }: { navbar?: boolean }) => {
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
-  const navigate = useNavigate();
-
   const handleLogout = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const response = await axios.get(`${apiUrl}/api/logout`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_PUBLIC_API_KEY}/api/logout`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
 
+      sessionStorage.removeItem("token");
       if (response.status === 200) {
-        localStorage.removeItem("token");
         persistor.purge();
-        setIsLoggedOut(true); // Set status logout
+        window.location.reload();
       } else {
         console.error("Logout failed");
       }
@@ -29,10 +25,6 @@ const Logout = ({ navbar = false }: { navbar?: boolean }) => {
       console.error("An error occurred during logout", error);
     }
   };
-
-  if (isLoggedOut) {
-    navigate("/login");
-  }
 
   return (
     <button

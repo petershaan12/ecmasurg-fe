@@ -3,6 +3,7 @@ import MenuSamping from "../../components/MenuSamping";
 import EditSubModul from "@/components/Modul/EditSubModul";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
+import Loading from "@/components/Loading";
 
 type subModul = {
   length: number;
@@ -29,7 +30,7 @@ const SubModulEdit = () => {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -49,21 +50,21 @@ const SubModulEdit = () => {
   }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <>
       <header className="flex justify-between">
-        <div className="flex space-x-5">
+        <div className="flex space-x-5 items-center">
           <button
             onClick={() => {
               navigate(-1);
             }}
           >
-            <ArrowLeft />
+            <ArrowLeft className="hover:bg-primary/20 rounded-full" />
           </button>
-          <h1 className="text-2xl font-bold">Edit Task</h1>
+          <h1 className="text-xl font-bold ">Edit Task/Sub Modul</h1>
         </div>
         <MenuSamping />
       </header>

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,12 +6,12 @@
   :root {
     --radius: 0.5rem
   }
+
 }
 
 #zero-state {
   @apply flex-grow md:p-16 p-8 overflow-y-auto h-screen;
 }
-
 
 @layer base {
   :root {
@@ -74,5 +75,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
   }
 }

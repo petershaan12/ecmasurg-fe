@@ -1,30 +1,60 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { fetchUsers } from "@/redux/fetchUser"; // Import aksi fetchUsers
-import { RootState } from "@/redux/store"; // Import RootState jika ada
+import { fetchUsers } from "@/redux/fetchUser";
+import { RootState } from "@/redux/store";
+import Loading from "@/components/Loading";
+import axios from "axios";
 
 const isAuthenticated = () => {
-  return localStorage.getItem("token") !== null;
+  return sessionStorage.getItem("token") !== null;
 };
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.data); // Ambil data pengguna dari store
-  const loading = useSelector((state: RootState) => state.loading); // Ambil loading state
-  const error = useSelector((state: RootState) => state.error); // Ambil error state
+  const user = useSelector((state: RootState) => state.data);
+  const loading = useSelector((state: RootState) => state.loading);
+  const error = useSelector((state: RootState) => state.error);
+
+  const [isTokenValid, setIsTokenValid] = useState(true);
 
   useEffect(() => {
+    const checkTokenValidity = async () => {
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        try {
+          await axios.get(
+            `${process.env.REACT_PUBLIC_API_KEY}/api/verifytoken`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setIsTokenValid(true);
+          console.log("token valid");
+        } catch (err) {
+          console.log("token invalid");
+          setIsTokenValid(false);
+          sessionStorage.removeItem("token");
+        }
+      } else {
+        setIsTokenValid(false);
+      }
+    };
+
+    checkTokenValidity();
+
     if (isAuthenticated() && !user) {
       dispatch(fetchUsers() as any);
     }
   }, [dispatch, user, loading]);
 
-  if (!isAuthenticated()) return <Navigate to="/signup" />; // Redirect jika tidak terautentikasi
-  if (loading) return <div>Loading...</div>; // Tampilkan loading jika sedang mengambil data
-  if (error) return <div>Error! {error.message}</div>; // Tampilkan error jika ada
-
-  return <>{children}</>; // Render children jika semua kondisi terpenuhi
+  if (!isTokenValid) return <Navigate to="/login" />;
+  if (!isAuthenticated()) return <Navigate to="/signup" />;
+  if (loading) return <Loading />;
+  if (error) return <div>Error! {error.message}</div>;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

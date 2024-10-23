@@ -20,6 +20,8 @@ import IsiModulCreate from "./pages/Modul/SubModulCreate.tsx";
 import IsiModulEdit from "./pages/Modul/SubModulEdit.tsx";
 import MateriPage from "./pages/Modul/MateriPage.tsx";
 import AssignmentPage from "./pages/Modul/AssignmentPage.tsx";
+import DetailStudi from "./pages/Studi/DetailStudi.tsx";
+import ModulEdit from "./pages/Modul/ModulEdit.tsx";
 
 const router = createBrowserRouter([
   {
@@ -27,17 +29,31 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "modul", element: <Modul /> },
-      { path: "modul/create", element: <ModulCreate /> },
-      { path: "modul/:id", element: <IsiModul /> },
-      { path: "modul/:id/materi/:idsubmodul", element: <MateriPage /> },
-      { path: "modul/:id/assignment/:idsubmodul", element: <AssignmentPage /> },
-      { path: "modul/:id/create", element: <IsiModulCreate /> },
-      { path: "modul/:id/edit/:idsubmodul", element: <IsiModulEdit /> },
-      { path: "profile", element: <Profile /> },
-      { path: "profile/edit", element: <EditProfile /> },
-      { path: "studi-kasus", element: <Studi /> },
+      { index: true, element: <Home key="home" /> },
+      { path: "modul", element: <Modul key="modul" /> },
+      { path: "modul/create", element: <ModulCreate key="modul-create" /> },
+      { path: "modul/:id/edit", element: <ModulEdit key="modul-edit" /> },
+      { path: "modul/:id", element: <IsiModul key="isi-modul" /> },
+      {
+        path: "modul/:id/materi/:idsubmodul",
+        element: <MateriPage key="materi-page" />,
+      },
+      {
+        path: "modul/:id/assignment/:idsubmodul",
+        element: <AssignmentPage key="assignment-page" />,
+      },
+      {
+        path: "modul/:id/create",
+        element: <IsiModulCreate key="isi-modul-create" />,
+      },
+      {
+        path: "modul/:id/edit/:idsubmodul",
+        element: <IsiModulEdit key="isi-modul-edit" />,
+      },
+      { path: "profile", element: <Profile key="profile" /> },
+      { path: "profile/edit", element: <EditProfile key="edit-profile" /> },
+      { path: "studi-kasus", element: <Studi key="studi" /> },
+      { path: "studi-kasus/:id", element: <DetailStudi key="detail-studi" /> },
     ],
   },
   {
@@ -55,21 +71,7 @@ const router = createBrowserRouter([
     element: <ErrorPage />,
   },
 ]);
-// const router = createBrowserRouter(
-//   createRoutesFromElements(
-//     <Route errorElement={<ErrorPage />}>
-//       <Route path="/" element={<App />}>
-//         <Route errorElement={<ErrorPage />}>
-//           <Route index element={<Home />} />
-//           <Route path="modul" element={<Modul />} />
-//           <Route path="profile" element={<Profile />} />
-//         </Route>
-//       </Route>
-//       <Route path="/login" element={<Login />} />
-//       <Route path="/signup" element={<SignUp />} />
-//     </Route>
-//   )
-// );
+
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

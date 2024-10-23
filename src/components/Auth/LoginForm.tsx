@@ -44,7 +44,7 @@ const LoginForm = () => {
 
       if (response.status === 200) {
         const token = response.data.token; // Adjust based on your API response
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
         setSuccess("Login successful!");
         navigate("/"); // Redirect to homepage
         form.reset();

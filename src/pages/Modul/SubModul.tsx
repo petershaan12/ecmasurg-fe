@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Edit } from "lucide-react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import MenuSamping from "../../components/MenuSamping";
 import Materi from "../../components/Modul/Materi";
@@ -9,6 +9,7 @@ import { FaPlus } from "react-icons/fa";
 import HapusModul from "@/components/Modul/HapusModul";
 import axios from "axios";
 import HapusSubModul from "@/components/Modul/HapusSubModul";
+import Loading from "@/components/Loading";
 
 type Modul = {
   judul: string;
@@ -47,7 +48,7 @@ const SubModul = () => {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -71,7 +72,7 @@ const SubModul = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -91,11 +92,11 @@ const SubModul = () => {
     fetchSubModul();
   }, [id]);
 
-  if (loading || loadingSubModul) return <div>Loading...</div>;
+  if (loading || loadingSubModul) return <Loading />;
 
   if (!modul) return <Navigate to="/404" />;
 
-  if (!subModul) return <div>Loading...</div>;
+  if (!subModul) return <Loading />;
 
   console.log(subModul);
 
@@ -135,13 +136,13 @@ const SubModul = () => {
               navigate(-1);
             }}
           >
-            <ArrowLeft />
+            <ArrowLeft className="hover:bg-primary/20 rounded-full" />
           </button>
-          <h1 className="text-base">
-            <Link to="/modul" className="hover:underline">
+          <h1 className="text-base flex items-center">
+            <Link to="/modul" className="hover:underline ">
               Modul Pembelajaran
             </Link>{" "}
-            / {modul?.judul ?? "Loading..."}
+            / {modul?.judul ?? <Loading />}
           </h1>
         </div>
         <MenuSamping />
@@ -162,13 +163,27 @@ const SubModul = () => {
           </div>
           <div>
             {user.roles === "teacher" && (
-              <div className="space-y-2 my-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 my-2">
                 <Link
                   to={`/modul/${id}/create`}
-                  className="bg-primary text-white px-3 py-2 space-x-2  text-center rounded-xl  flex justify-center items-center text-sm "
+                  className="bg-primary text-white px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
                 >
                   <FaPlus />
                   <span>Add Task</span>
+                </Link>
+                <Link
+                  to={`/modul/${id}/create-evaluation`}
+                  className="bg-primary text-white px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
+                >
+                  <FaPlus />
+                  <span>Add Evaluation</span>
+                </Link>
+                <Link
+                  to={`/modul/${id}/edit`}
+                  className="bg-yellow-400 text-black px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
+                >
+                  <Edit className="w-4" />
+                  <span>Edit This Modul</span>
                 </Link>
                 <HapusModul id={id as string} />
               </div>

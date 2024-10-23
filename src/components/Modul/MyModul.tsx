@@ -19,7 +19,7 @@ const MyModul = ({ id }: MyModulProps) => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
         );
@@ -34,19 +34,42 @@ const MyModul = ({ id }: MyModulProps) => {
     };
 
     fetchModul();
-  }, []);
+  }, [id]);
 
   return (
     <div>
       <h1 className="text-xl mb-5">Modul Pembelajaran </h1>
       {loading ? (
-        <p>Loading...</p> // Tampilkan loading saat data diambil
+        <div className="flex flex-col items-center justify-center mt-14">
+          <div className="flex space-x-2">
+            <div className="h-2 w-2 rounded-full bg-primary animate-bounce"></div>
+            <div className="h-2 w-2 rounded-full bg-primary animate-bounce2"></div>
+            <div className="h-2 w-2 rounded-full bg-primary animate-bounce"></div>
+          </div>
+          <div className="mt-4 text-center">
+            <p className="text-lg font-semibold text-gray-700">Loading...</p>
+            <p className="text-sm text-gray-500">Data still Loading!</p>
+          </div>
+        </div>
+      ) : modul.length === 0 ? (
+        <div className="flex space-x-5 items-center pt-8 px-8">
+          <img src="/not-item.webp" alt="item" width={100} height={100} />
+          <div>
+            <p className="mb-2 text-xl font-semibold">Belum ada modul</p>
+            <Link
+              to="/modul/create"
+              className="bg-primary text-white py-1 px-3 rounded-lg mt-5"
+            >
+              Buat Modul
+            </Link>
+          </div>
+        </div>
       ) : (
         <ul className="list-decimal ml-5">
           {modul.map((item: any) => (
             <li key={item.id}>
               <Link
-                to={`/modul/${item.id}`} // Arahkan ke link modul berdasarkan ID
+                to={`/modul/${item.id}`}
                 className="text-blue-500 underline font-bold"
               >
                 {item.judul} {/* Tampilkan judul modul */}

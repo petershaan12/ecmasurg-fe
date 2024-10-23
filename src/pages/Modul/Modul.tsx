@@ -5,6 +5,7 @@ import CardModul from "../../components/Modul/CardModul";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Loading from "@/components/Loading";
 
 const Modul = () => {
   const user = useSelector((state: any) => state.data);
@@ -20,7 +21,7 @@ const Modul = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
         );
@@ -37,7 +38,7 @@ const Modul = () => {
     fetchModul();
   }, []);
 
-  if (loading) return <div>Loading...</div>; // Show a loading state
+  if (loading) return <Loading />; // Show a loading state
 
   return (
     <>
