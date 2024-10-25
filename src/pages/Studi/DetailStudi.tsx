@@ -12,11 +12,17 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import DeleteStudi from "@/components/Studi/Hapus";
 
 type Comment = {
-  user: string;
+  user: {
+    id: string;
+    name: string;
+    roles: string;
+    photo_profile: string;
+  };
   comment: string;
 };
 
 type PostData = {
+  id: string;
   user: {
     id: string;
     name: string;
@@ -25,20 +31,24 @@ type PostData = {
   };
   description: string;
   photo_kasus: string;
-  likes: number;
-  comments: number;
+  likes_count: number;
+  comments_count: number;
+  comments: Comment[];
 };
 
 const DetailStudi: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [postData, setPostData] = useState<PostData | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
-  const [commentUser, setCommentUser] = useState("User Baru");
   const userPemilik = useSelector((state: any) => state.data);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [likes, setLikes] = useState(0);
+
+  const updateLikes = (isLiked: boolean) => {
+    setLikes((prevLikes) => (isLiked ? prevLikes + 1 : prevLikes - 1));
+  };
 
   const fetchPostData = async () => {
     try {
@@ -52,52 +62,27 @@ const DetailStudi: React.FC = () => {
         }
       );
       setPostData(response.data.data);
+      setLikes(response.data.data.likes_count);
+      setComments(response.data.data.comments);
     } catch (error) {
       console.error("Error fetching post data:", error);
-    }
-  };
-
-  console.log(postData);
-
-  // Fetch Comments Data
-  const fetchComments = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/comments/${id}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
-      );
-      setComments(response.data);
-    } catch (error) {
-      navigate("/studi-kasus");
-      console.error("Error fetching comments:", error);
     }
   };
 
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetchPostData();
-      fetchComments();
-      setLoading(false);
+      fetchPostData().then(() => setLoading(false));
     }
   }, [id]);
-
-  if (loading || !postData) {
-    return <Loading />;
-  }
 
   const handleAddComment = async () => {
     if (newComment.trim() === "") return;
 
     try {
-      await axios.post(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/comments/${id}`,
-        { comment: newComment, user: commentUser },
+      const response = await axios.post(
+        `${process.env.REACT_PUBLIC_API_KEY}/api/comment/${id}`,
+        { comment: newComment },
         {
           headers: {
             Accept: "application/json",
@@ -106,12 +91,30 @@ const DetailStudi: React.FC = () => {
         }
       );
 
-      setComments([...comments, { user: commentUser, comment: newComment }]);
+      const commentData = response.data.data;
+
+      // Ensure you structure the new comment correctly
+      const newCommentData: Comment = {
+        user: {
+          id: userPemilik.id,
+          name: userPemilik.name,
+          roles: userPemilik.roles,
+          photo_profile: userPemilik.photo_profile,
+        },
+        comment: commentData.comment,
+      };
+
+      // Update comments state with the new comment
+      setComments((prevComments) => [...prevComments, newCommentData]);
       setNewComment(""); // Reset input komentar
     } catch (error) {
       console.error("Error adding comment:", error);
     }
   };
+
+  if (loading || !postData) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -146,26 +149,25 @@ const DetailStudi: React.FC = () => {
               </div>
             </div>
 
-            <div className="relative">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 rounded-full hover:bg-gray-200"
-              >
-                <BsThreeDotsVertical className="w-5 h-5 text-gray-500" />
-              </button>
-
-              {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg">
-                  {userPemilik.id === postData.user.id && (
+            {userPemilik.id === postData.user.id && (
+              <div className="relative">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="p-2 rounded-full hover:bg-gray-200"
+                >
+                  <BsThreeDotsVertical className="w-5 h-5 text-gray-500" />
+                </button>
+                {isMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg">
                     <DeleteStudi
                       idPemilik={userPemilik.id}
                       idUser={postData.user.id}
                       idStudi={id}
                     />
-                  )}
-                </div>
-              )}
-            </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <p className="text-sm text-gray-700 mb-4">{postData.description}</p>
@@ -182,12 +184,12 @@ const DetailStudi: React.FC = () => {
 
           <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
             <button className="flex items-center space-x-2">
-              <Like />
+              <Like id={postData.id} updateLikes={updateLikes} />
             </button>
 
             <div className="flex items-center space-x-2">
-              <span>{postData.likes} like</span>
-              <span>{comments.length} Komentar</span>
+              <span>{likes} like</span>
+              <span>{postData.comments_count} Komentar</span>
             </div>
           </div>
 
@@ -198,7 +200,7 @@ const DetailStudi: React.FC = () => {
             <ul>
               {comments.map((comment, index) => (
                 <li key={index} className="mb-3">
-                  <p className="font-semibold">{comment.user}</p>
+                  <p className="font-semibold">{comment.user.name}</p>
                   <p className="text-sm text-gray-600">{comment.comment}</p>
                 </li>
               ))}

@@ -25,7 +25,6 @@ export function fetchUsers() {
 
       const json = response.data;
       dispatch(fetchDataSuccess(json.data));
-      console.log("fetch user done");
       return json.data;
     } catch (error: any) {
       dispatch(fetchDataFailure(error));

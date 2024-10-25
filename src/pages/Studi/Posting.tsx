@@ -47,17 +47,16 @@ const Posting = () => {
       }
       formData.append("user_id", user.id);
 
-      const response = await axios.post(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/studikasus/create`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log("Submitted successfully", response.data);
+     await axios.post(
+       `${process.env.REACT_PUBLIC_API_KEY}/api/studikasus/create`,
+       formData,
+       {
+         headers: {
+           "Content-Type": "multipart/form-data",
+           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+         },
+       }
+     );
       toast.success("Studi kasus berhasil diposting.");
       window.location.reload();
     } catch (error) {

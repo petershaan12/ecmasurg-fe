@@ -44,7 +44,7 @@ const CardModul = ({ modul }: CardModulProps) => {
           </p>
         </div>
         <div className="md:flex mt-5 justify-between text-xs md:text-base">
-          <p>{modul.asignd_teacher.name}</p>
+          <p className="text-sm">{modul.asignd_teacher.name}</p>
           <Link
             to={`/modul/${modul.id}`}
             className="flex items-center space-x-2 hover:underline text-xs md:text-base"

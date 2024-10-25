@@ -32,7 +32,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
             }
           );
           setIsTokenValid(true);
-          console.log("token valid");
         } catch (err) {
           console.log("token invalid");
           setIsTokenValid(false);

@@ -17,6 +17,13 @@ export const IsiModulSchema = z.object({
   time: z.string().optional(),
 });
 
+export const IsiEvaluasiSchema = z.object({
+  judul: z.string(),
+  deadline: z.string(),
+  time: z.string().optional(),
+});
+
+
 export const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),

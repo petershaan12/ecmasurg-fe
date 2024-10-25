@@ -26,6 +26,7 @@ import { z } from "zod";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import Loading from "../Loading";
 
 const EditModul = () => {
   const { id } = useParams();
@@ -35,6 +36,7 @@ const EditModul = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isFileSizeValid, setIsFileSizeValid] = useState(true);
+  const [loading, isLoading] = useState(true);
   const [teachers, setTeachers] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -69,6 +71,7 @@ const EditModul = () => {
     };
 
     const fetchModul = async () => {
+      isLoading(true);
       try {
         const response = await axios.get(
           `${process.env.REACT_PUBLIC_API_KEY}/api/modul/show/${id}`,
@@ -88,8 +91,6 @@ const EditModul = () => {
           bannerImage: modulData.gambar_modul ? modulData.gambar_modul : "",
         });
 
-        console.log(modulData.gambar_modul);
-
         if (modulData.gambar_modul) {
           const imageUrl = `${process.env.REACT_PUBLIC_API_KEY}/storage/modul/${modulData.gambar_modul}`;
           setPreviewImage(imageUrl);
@@ -97,6 +98,8 @@ const EditModul = () => {
       } catch (error) {
         console.error("Error fetching modul:", error);
         setError("Terjadi kesalahan saat mengambil data modul.");
+      } finally {
+        isLoading(false);
       }
     };
 
@@ -189,6 +192,8 @@ const EditModul = () => {
       setIsPending(false);
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <>

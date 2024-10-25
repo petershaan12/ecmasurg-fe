@@ -12,7 +12,7 @@ type PostProps = {
     id: string;
     name: string;
     roles: string;
-    photoprofile: string;
+    photo_profile: string;
   };
   description: string;
   photo_kasus: string;
@@ -24,12 +24,17 @@ const Post: React.FC<PostProps> = ({
   id,
   description,
   photo_kasus,
-  user: { id: userId, name, roles, photoprofile },
-  likes,
+  user: { id: userId, name, roles, photo_profile },
+  likes: initialLikes,
   comments,
 }) => {
   const userPemilik = useSelector((state: any) => state.data);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [likes, setLikes] = useState(initialLikes);
+
+  const updateLikes = (isLiked: boolean) => {
+    setLikes((prevLikes) => (isLiked ? prevLikes + 1 : prevLikes - 1));
+  };
 
   return (
     <div className="relative mx-auto bg-white rounded-xl shadow-md p-4 mb-6 border border-gray-200">
@@ -37,7 +42,7 @@ const Post: React.FC<PostProps> = ({
         <div className="flex items-center">
           <Avatar className="mr-2">
             <AvatarImage
-              src={`${process.env.REACT_PUBLIC_API_KEY}/storage/profiles/${photoprofile}`}
+              src={`${process.env.REACT_PUBLIC_API_KEY}/storage/profiles/${photo_profile}`}
             />
             <AvatarFallback className="bg-primary/80 text-white uppercase ">
               {name
@@ -87,7 +92,7 @@ const Post: React.FC<PostProps> = ({
       <div className="rounded-lg overflow-hidden mb-4">
         {photo_kasus && (
           <img
-            className="w-full h-48 object-cover"
+            className="w-full h-48 object-contain"
             src={`${process.env.REACT_PUBLIC_API_KEY}/storage/studi_kasus/${photo_kasus}`}
             alt="Post image"
           />
@@ -95,7 +100,7 @@ const Post: React.FC<PostProps> = ({
       </div>
       <div className="flex items-center justify-between text-sm text-gray-500">
         <div className="flex items-center space-x-2">
-          <Like />
+          <Like id={id} updateLikes={updateLikes} />
           <Link to={`/studi-kasus/${id}`}>Comment</Link>
         </div>
 

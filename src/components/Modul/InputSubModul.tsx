@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IsiModulSchema } from "../../schema";
@@ -37,18 +37,19 @@ const InputSubModul = () => {
   const [filePreview, setFilePreview] = useState<string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isOwner, setIsOwner] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const time = new Date()
     .toLocaleString("sv-SE", {
-      timeZone: "Asia/Jakarta", // Sesuaikan dengan timezone kamu
-      hour12: false, // Untuk format 24 jam
+      timeZone: "Asia/Jakarta",
+      hour12: false,
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
     })
-    .replace(" ", "T"); // Ubah spasi dengan 'T' agar sesuai format ISO
+    .replace(" ", "T");
 
   const form = useForm<z.infer<typeof IsiModulSchema>>({
     resolver: zodResolver(IsiModulSchema),
@@ -111,10 +112,9 @@ const InputSubModul = () => {
       if (response.status === 201) {
         setSuccess("Task berhasil ditambahkan!");
         form.reset();
-        setFilePreview([]); // Reset preview
-
+        setFilePreview([]);
         if (fileInputRef.current) {
-          fileInputRef.current.value = ""; // Reset input file
+          fileInputRef.current.value = "";
         }
         toast.success("Task berhasil ditambahkan!", {
           id: toastId,
@@ -167,6 +167,42 @@ const InputSubModul = () => {
       prevFiles.filter((file) => file.name !== fileName)
     );
   };
+
+  useEffect(() => {
+    const checkOwnership = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/is-owner`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.data.isOwner) {
+          setIsOwner(true);
+        } else {
+          toast.error("You are not authorized to create a submodule.");
+          navigate("/404"); // Redirect ke halaman unauthorized
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to verify module ownership.");
+        navigate("/404");
+      }
+    };
+
+    checkOwnership();
+  }, [id, navigate]);
+
+  if (isOwner === null) {
+    return <div>Loading...</div>; // Bisa tampilkan spinner loading
+  }
+
+  if (!isOwner) {
+    return null; // Jika bukan owner, jangan tampilkan form
+  }
 
   return (
     <>

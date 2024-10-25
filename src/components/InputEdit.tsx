@@ -83,7 +83,6 @@ const InputEdit = ({ user }: any) => {
     setSuccess("");
     setIsPending(true);
 
-    console.log(data);
 
     try {
       // Send a POST request to Laravel API using axios
@@ -124,7 +123,6 @@ const InputEdit = ({ user }: any) => {
         dispatch(fetchUsers() as any);
         navigate("/profile");
       } else {
-        console.log(response.data);
         setError(response.data.message || "Profile update failed");
       }
     } catch (err) {

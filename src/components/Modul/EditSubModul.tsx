@@ -51,7 +51,6 @@ const EditSubModul = ({ submodul }: any) => {
     },
   });
 
-  console.log(id);
   const onSubmit = async (data: z.infer<typeof IsiModulSchema>) => {
     setError("");
     setSuccess("");
@@ -72,10 +71,6 @@ const EditSubModul = ({ submodul }: any) => {
 
       uploadedFiles.forEach((file) => {
         formData.append("files[]", file);
-      });
-
-      formData.forEach((value, key) => {
-        console.log(key, value);
       });
 
       formData.append("_method", "PATCH");

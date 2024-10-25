@@ -29,6 +29,12 @@ type subModul = {
   time: string;
 };
 
+type evaluasi = {
+  id: number;
+  judul: string;
+  time: string;
+};
+
 const SubModul = () => {
   const { id } = useParams();
   const user = useSelector((state: any) => state.data);
@@ -36,8 +42,10 @@ const SubModul = () => {
 
   const [modul, setModul] = useState<Modul>();
   const [subModul, setSubModul] = useState<subModul[]>([]);
+  const [evaluasi, setEvaluasi] = useState<evaluasi[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingSubModul, setLoadingSubModul] = useState<boolean>(true);
+  const [loadingEvaluasi, setLoadingEvaluasi] = useState<boolean>(true);
 
   const fetchModul = async () => {
     setLoading(true);
@@ -55,10 +63,8 @@ const SubModul = () => {
 
       const json = await response.json();
       setModul(json.data);
-      setLoading(false);
     } catch (error) {
       console.error(error);
-      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -78,18 +84,38 @@ const SubModul = () => {
       );
 
       setSubModul(response.data.data);
-      setLoadingSubModul(false);
     } catch (error) {
       console.error(error);
-      setLoadingSubModul(false);
     } finally {
       setLoadingSubModul(false);
+    }
+  };
+
+  const fetchEvaluasi = async () => {
+    setLoadingSubModul(true);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/evaluasi`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setSubModul(response.data.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingEvaluasi(false);
     }
   };
 
   useEffect(() => {
     fetchModul();
     fetchSubModul();
+    fetchEvaluasi();
   }, [id]);
 
   if (loading || loadingSubModul) return <Loading />;
@@ -97,8 +123,6 @@ const SubModul = () => {
   if (!modul) return <Navigate to="/404" />;
 
   if (!subModul) return <Loading />;
-
-  console.log(subModul);
 
   const renderDateHeader = (subModul: any[]) => {
     return subModul.map((modul: any, index: number) => {
@@ -126,6 +150,8 @@ const SubModul = () => {
       };
     });
   };
+
+  const isModulOwner = user.roles === "teacher" && modul.asignd_teacher?.name === user.name;
 
   return (
     <>
@@ -162,7 +188,7 @@ const SubModul = () => {
             </div>
           </div>
           <div>
-            {user.roles === "teacher" && (
+            {isModulOwner && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 my-2">
                 <Link
                   to={`/modul/${id}/create`}
@@ -172,7 +198,7 @@ const SubModul = () => {
                   <span>Add Task</span>
                 </Link>
                 <Link
-                  to={`/modul/${id}/create-evaluation`}
+                  to={`/modul/${id}/evaluasi/create`}
                   className="bg-primary text-white px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
                 >
                   <FaPlus />
@@ -207,7 +233,7 @@ const SubModul = () => {
                   <Tugas subModul={item.modul} />
                 </Link>
               )}
-              {user.roles === "teacher" && (
+              {isModulOwner && (
                 <div className="flex space-x-2">
                   <Link
                     to={`/modul/${id}/edit/${item.modul.id}`}

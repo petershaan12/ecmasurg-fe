@@ -17,8 +17,8 @@ const Studi = () => {
     };
     description: string;
     photo_kasus: string;
-    likes: number;
-    comments: number;
+    likes_count: number;
+    comments_count: number;
   }
 
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -54,8 +54,6 @@ const Studi = () => {
     return <h1>Belum ada postingan</h1>;
   }
 
-  console.log(posts);
-
   return (
     <>
       <header className="flex justify-between items-center">
@@ -76,15 +74,15 @@ const Studi = () => {
                 user={post.user}
                 description={post.description}
                 photo_kasus={post.photo_kasus}
-                likes={post.likes}
-                comments={post.comments}
+                likes={post.likes_count}
+                comments={post.comments_count}
               />
             </div>
           ))}
         </div>
         <div
           id="trending"
-          className="md:col-span-1 bg-primary rounded-2xl px-4 py-5 text-white mt-10 md:mt-0" // Kolom 1/4
+          className="md:col-span-1 bg-primary rounded-2xl px-4 py-5 text-white mt-10 md:mt-0 h-fit" // Kolom 1/4
         >
           <h1 className="text-lg font-semibold">Trending</h1>
           <ul className="text-sm space-y-2 mt-4">
