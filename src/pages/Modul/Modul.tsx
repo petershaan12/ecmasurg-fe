@@ -38,13 +38,13 @@ const Modul = () => {
     fetchModul();
   }, []);
 
-  if (loading) return <Loading />; // Show a loading state
+  if (loading) return <Loading />;
 
   return (
     <>
       <header className="flex justify-between items-center">
-        <div className="flex space-x-5">
-          <h1 className="md:text-2xl font-bold">Input pembelajaran</h1>
+        <div className="flex space-x-5 items-center">
+          <h1 className="md:text-xl font-bold">Input pembelajaran</h1>
           {user.roles === "teacher" && (
             <Link
               to="/modul/create"

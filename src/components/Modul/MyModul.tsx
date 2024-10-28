@@ -48,7 +48,6 @@ const MyModul = ({ id }: MyModulProps) => {
           </div>
           <div className="mt-4 text-center">
             <p className="text-lg font-semibold text-gray-700">Loading...</p>
-            <p className="text-sm text-gray-500">Data still Loading!</p>
           </div>
         </div>
       ) : modul.length === 0 ? (

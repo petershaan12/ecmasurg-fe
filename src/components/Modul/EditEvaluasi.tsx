@@ -32,14 +32,19 @@ type EvaluasiForm = z.infer<typeof IsiEvaluasiSchema> & {
   [key: `type${number}`]: string;
 };
 
-const InputEvaluasi = () => {
+const EditEvaluasi = ({ evaluasi }: any) => {
   const { id } = useParams<{ id: string }>();
-  const apiURL = process.env.REACT_PUBLIC_API_KEY;
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
-  const [questionCount, setQuestionCount] = useState(3);
+
+  const initialQuestionCount = Object.keys(evaluasi).filter(
+    (key) => key.startsWith("question") && evaluasi[key] !== null
+  ).length;
+  const [questionCount, setQuestionCount] = useState(initialQuestionCount);
+
   const time = new Date()
     .toLocaleString("sv-SE", {
       timeZone: "Asia/Jakarta",
@@ -55,27 +60,28 @@ const InputEvaluasi = () => {
   const form = useForm<EvaluasiForm>({
     resolver: zodResolver(IsiEvaluasiSchema),
     defaultValues: {
-      judul: "",
-      deadline: "",
-      time: time.toString(),
+      judul: evaluasi.title || "",
+      deadline: evaluasi.deadline || "",
+      time: evaluasi.time || time.toString(),
     },
   });
 
   useEffect(() => {
-    form.setValue("question1", "Bagaimana Pembelajaran Hari Ini?");
-    form.setValue("question2", "Apa Saja Hal yang Belum Dipahami?");
-    form.setValue("question3", "Apakah Ada Masukan untuk Pengajar?");
-    form.setValue("type1", "0"); // Default type for question 1
-    form.setValue("type2", "1"); // Default type for question 2
-    form.setValue("type3", "0"); // Default type for question 3 (adjust as needed)
-  }, [form]);
+    for (let i = 1; i <= 5; i++) {
+      if (evaluasi[`question${i}`] && evaluasi[`type${i}`]) {
+        form.setValue(`question${i}`, evaluasi[`question${i}`]);
+        form.setValue(`type${i}`, evaluasi[`type${i}`]);
+      }
+    }
+  }, []);
 
   const onSubmit = async (data: EvaluasiForm) => {
     setError("");
     setSuccess("");
     setIsPending(true);
 
-    const toastId = toast.loading("Add Evaluasi...");
+    const toastId = toast.loading("Edit Evaluasi...");
+
     try {
       const formData = new FormData();
       if (data.judul && data.deadline && data.time) {
@@ -96,9 +102,10 @@ const InputEvaluasi = () => {
         }
       }
 
-      // Send a POST request to Laravel API using axios
+      formData.append("_method", "PATCH");
+
       const response = await axios.post(
-        `${apiURL}/api/modul/evaluasi/${id}/create`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/evaluasi/${id}/update/${evaluasi.id}`,
         formData,
         {
           headers: {
@@ -108,13 +115,12 @@ const InputEvaluasi = () => {
         }
       );
 
-      if (response.status === 201) {
-        setSuccess("Evaluasi berhasil ditambahkan!");
+      if (response.status === 200) {
         form.reset();
-        toast.success("Evaluasi berhasil ditambahkan!", {
+        toast.success("Evaluasi berhasil diedit!", {
           id: toastId,
         });
-        navigate(`/modul/${id}`);
+        navigate(`/modul/${evaluasi.modul_id}`);
       } else {
         console.log(response.data);
         toast.dismiss(toastId);
@@ -263,7 +269,7 @@ const InputEvaluasi = () => {
               disabled={isPending}
               className="w-full text-white font-monument-regular"
             >
-              Tambah Evaluasi
+              Edit Evaluasi
             </Button>
           </div>
         </form>
@@ -272,4 +278,4 @@ const InputEvaluasi = () => {
   );
 };
 
-export default InputEvaluasi;
+export default EditEvaluasi;

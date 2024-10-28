@@ -24,7 +24,7 @@ const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    const toastId = toast.loading("Hapus Modul...");
+    const toastId = toast.loading("Hapus Tugas...");
     try {
       setIsDeleting(true);
       const response = await axios.delete(
@@ -36,20 +36,20 @@ const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
         }
       );
       if (response.status === 200) {
-        toast.success("Modul berhasil dihapus!", {
+        toast.success("Tugas berhasil dihapus!", {
           id: toastId,
         });
         window.location.reload();
       } else {
-        toast.error("Terjadi kesalahan saat menghapus modul.", {
+        toast.error("Terjadi kesalahan saat menghapus tugas Kamu.", {
           id: toastId,
         });
       }
     } catch (error) {
-      toast.error("Gagal menghapus modul. Coba lagi.", {
+      toast.error("Gagal menghapus tugas Kamu. Coba lagi.", {
         id: toastId,
       });
-      console.error("Error deleting modul:", error);
+      console.error("Error deleting tugas Kamu:", error);
     } finally {
       setIsDeleting(false);
     }

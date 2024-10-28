@@ -24,19 +24,20 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import Loading from "../Loading";
+import { useSelector } from "react-redux";
 
 const EditModul = () => {
   const { id } = useParams();
+  const user = useSelector((state: any) => state.data);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [errorImage, setErrorImage] = useState<string | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isFileSizeValid, setIsFileSizeValid] = useState(true);
-  const [loading, isLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [teachers, setTeachers] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -71,7 +72,7 @@ const EditModul = () => {
     };
 
     const fetchModul = async () => {
-      isLoading(true);
+      setLoading(true);
       try {
         const response = await axios.get(
           `${process.env.REACT_PUBLIC_API_KEY}/api/modul/show/${id}`,
@@ -99,7 +100,7 @@ const EditModul = () => {
         console.error("Error fetching modul:", error);
         setError("Terjadi kesalahan saat mengambil data modul.");
       } finally {
-        isLoading(false);
+        setLoading(false);
       }
     };
 
@@ -193,7 +194,15 @@ const EditModul = () => {
     }
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <div>Loading...</div>;
+
+  const isModulOwner =
+    user.roles === "teacher" && form.getValues().owner === user.name;
+
+  if (!isModulOwner) {
+    toast.error("You are not authorized to edit this modul.");
+    return <Navigate to="/404" />;
+  }
 
   return (
     <>

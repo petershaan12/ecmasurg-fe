@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import MenuSamping from "../../components/MenuSamping";
-import InputModul from "../../components/Modul/InputModul";
 import { ArrowLeft } from "lucide-react";
 import EditModul from "@/components/Modul/EditModul";
 

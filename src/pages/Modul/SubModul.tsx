@@ -10,6 +10,8 @@ import HapusModul from "@/components/Modul/HapusModul";
 import axios from "axios";
 import HapusSubModul from "@/components/Modul/HapusSubModul";
 import Loading from "@/components/Loading";
+import Evaluasi from "@/components/Modul/Evaluasi";
+import HapusEvaluasi from "@/components/Modul/HapusEvaluasi";
 
 type Modul = {
   judul: string;
@@ -32,7 +34,9 @@ type subModul = {
 type evaluasi = {
   id: number;
   judul: string;
+  title: string;
   time: string;
+  type: string; // Add this line
 };
 
 const SubModul = () => {
@@ -46,6 +50,9 @@ const SubModul = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingSubModul, setLoadingSubModul] = useState<boolean>(true);
   const [loadingEvaluasi, setLoadingEvaluasi] = useState<boolean>(true);
+  const combinedItems = [...subModul, ...evaluasi].sort(
+    (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+  );
 
   const fetchModul = async () => {
     setLoading(true);
@@ -95,7 +102,7 @@ const SubModul = () => {
     setLoadingSubModul(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/evaluasi`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/evaluasi/${id}`,
         {
           headers: {
             Accept: "application/json",
@@ -104,7 +111,7 @@ const SubModul = () => {
         }
       );
 
-      setSubModul(response.data.data);
+      setEvaluasi(response.data.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -118,40 +125,14 @@ const SubModul = () => {
     fetchEvaluasi();
   }, [id]);
 
-  if (loading || loadingSubModul) return <Loading />;
+  if (loading || loadingSubModul || loadingEvaluasi) return <Loading />;
 
   if (!modul) return <Navigate to="/404" />;
 
   if (!subModul) return <Loading />;
 
-  const renderDateHeader = (subModul: any[]) => {
-    return subModul.map((modul: any, index: number) => {
-      const modulDate = new Date(modul.time).toLocaleDateString("id-ID", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
-
-      const isFirstModul = index === 0;
-      const isDifferentDate =
-        index > 0 &&
-        modulDate !==
-          new Date(subModul[index - 1].time).toLocaleDateString("id-ID", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          });
-
-      return {
-        dateHeader: isFirstModul || isDifferentDate ? modulDate : null,
-        modul,
-      };
-    });
-  };
-
-  const isModulOwner = user.roles === "teacher" && modul.asignd_teacher?.name === user.name;
+  const isModulOwner =
+    user.roles === "teacher" && modul.asignd_teacher?.name === user.name;
 
   return (
     <>
@@ -206,7 +187,7 @@ const SubModul = () => {
                 </Link>
                 <Link
                   to={`/modul/${id}/edit`}
-                  className="bg-yellow-400 text-black px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
+                  className="bg-[#FDFF79] text-black px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
                 >
                   <Edit className="w-4" />
                   <span>Edit This Modul</span>
@@ -217,38 +198,68 @@ const SubModul = () => {
           </div>
         </section>
 
-        {subModul && subModul.length > 0 ? (
-          renderDateHeader(subModul).map((item, index) => (
-            <section key={index} className="mt-6">
-              {item.dateHeader && (
-                <h3 className="font-bold text-[#737373]">{item.dateHeader}</h3>
-              )}
-              {item.modul.type === "material" && (
-                <Link to={`materi/${item.modul.id}`} replace={false}>
-                  <Materi subModul={item.modul} />
-                </Link>
-              )}
-              {item.modul.type === "assignment" && (
-                <Link to={`assignment/${item.modul.id}`} replace={false}>
-                  <Tugas subModul={item.modul} />
-                </Link>
-              )}
-              {isModulOwner && (
-                <div className="flex space-x-2">
-                  <Link
-                    to={`/modul/${id}/edit/${item.modul.id}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Edit
+        {/* Render combinedItems */}
+        <div className="mt-8">
+          {combinedItems && combinedItems.length > 0 ? (
+            combinedItems.map((item, index) => (
+              <section key={index} className="mt-6">
+                {/* Display Date Header */}
+                <h3 className="font-bold text-[#737373]">
+                  {new Date(item.time).toLocaleDateString("id-ID", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </h3>
+
+                {item.type === "material" && (
+                  <Link to={`materi/${item.id}`} replace={false}>
+                    <Materi subModul={item as subModul} />
                   </Link>
-                  <HapusSubModul id={item.modul.id} />
-                </div>
-              )}
-            </section>
-          ))
-        ) : (
-          <div className="mt-12">Belum ada Task yang ditambahkan</div>
-        )}
+                )}
+                {item.type === "assignment" && (
+                  <Link to={`assignment/${item.id}`} replace={false}>
+                    <Tugas subModul={item as subModul} />
+                  </Link>
+                )}
+                {!item.type && (
+                  <Link to={`evaluasi/${item.id}`} replace={false}>
+                    <Evaluasi evaluasi={item as evaluasi} />
+                  </Link>
+                )}
+
+                {/* Edit/Delete options for subModul items */}
+                {isModulOwner && item.type && (
+                  <div className="flex space-x-2">
+                    <Link
+                      to={`/modul/${id}/edit/${item.id}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Edit
+                    </Link>
+                    <HapusSubModul id={item.id.toString()} />
+                  </div>
+                )}
+                {isModulOwner && !item.type && (
+                  <div className="flex space-x-2">
+                    <Link
+                      to={`/modul/${id}/evaluasi/edit/${item.id}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Edit
+                    </Link>
+                    <HapusEvaluasi id={item.id.toString()} />
+                  </div>
+                )}
+              </section>
+            ))
+          ) : (
+            <div className="mt-12">
+              Belum ada Task atau Evaluasi yang ditambahkan
+            </div>
+          )}
+        </div>
       </main>
     </>
   );

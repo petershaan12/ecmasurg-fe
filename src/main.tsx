@@ -22,8 +22,9 @@ import MateriPage from "./pages/Modul/MateriPage.tsx";
 import AssignmentPage from "./pages/Modul/AssignmentPage.tsx";
 import DetailStudi from "./pages/Studi/DetailStudi.tsx";
 import ModulEdit from "./pages/Modul/ModulEdit.tsx";
-import Evaluasi from "./pages/Modul/Evaluasi/Evaluasi.tsx";
 import EvaluasiCreate from "./pages/Modul/Evaluasi/EvaluasiCreate.tsx";
+import EvaluasiPage from "./pages/Modul/Evaluasi/EvaluasiPage.tsx";
+import EvaluasiEdit from "./pages/Modul/Evaluasi/EvaluasiEdit.tsx";
 
 const router = createBrowserRouter([
   {
@@ -53,12 +54,16 @@ const router = createBrowserRouter([
         element: <IsiModulEdit key="isi-modul-edit" />,
       },
       {
-        path: "modul/:id/evaluasi",
-        element: <Evaluasi key="Evaluasi" />,
+        path: "modul/:id/evaluasi/:idevaluasi",
+        element: <EvaluasiPage key="Evaluasi" />,
       },
       {
         path: "modul/:id/evaluasi/create",
         element: <EvaluasiCreate key="isi-evaluasi-create" />,
+      },
+      {
+        path: "modul/:id/evaluasi/edit/:idevaluasi",
+        element: <EvaluasiEdit key="isi-evaluasi-edit" />,
       },
       { path: "profile", element: <Profile key="profile" /> },
       { path: "profile/edit", element: <EditProfile key="edit-profile" /> },

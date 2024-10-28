@@ -1,6 +1,6 @@
 import MenuSamping from "@/components/MenuSamping";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -120,7 +120,7 @@ const DetailStudi: React.FC = () => {
     <>
       <header className="flex justify-between items-center">
         <div className="flex space-x-5">
-          <h1 className="md:text-2xl font-bold">Studi Kasus</h1>
+          <h1 className="md:text-xl font-bold">Studi Kasus</h1>
         </div>
         <MenuSamping />
       </header>

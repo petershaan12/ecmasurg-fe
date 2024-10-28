@@ -27,7 +27,7 @@ const Profile = () => {
     <>
       <header className="flex justify-between">
         <div className="flex space-x-5">
-          <h1 className="text-2xl font-bold">Profile</h1>
+          <h1 className="md:text-xl font-bold">Profile</h1>
         </div>
         <MenuSamping />
       </header>
@@ -51,7 +51,7 @@ const Profile = () => {
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col my-5 items-center md:items-start">
-            <h1 className="md:text-4xl text-xl uppercase font-bold">
+            <h1 className="md:text-2xl text-xl uppercase font-bold">
               {user.name}
             </h1>
             <div className="mt-2 grid md:grid-cols-2 gap-5 md:justify-between justify-center items-center text-lg">

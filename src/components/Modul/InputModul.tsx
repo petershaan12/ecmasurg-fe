@@ -24,11 +24,13 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const InputModul = () => {
   const apiURL = process.env.REACT_PUBLIC_API_KEY;
+  const user = useSelector((state: any) => state.data);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [errorImage, setErrorImage] = useState<string | undefined>();
@@ -149,6 +151,10 @@ const InputModul = () => {
       setIsPending(false);
     }
   };
+
+  if (user.roles !== "teacher") {
+    return <Navigate to="/404" />;
+  }
 
   return (
     <>

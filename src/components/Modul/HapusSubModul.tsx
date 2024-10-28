@@ -14,16 +14,16 @@ import {
 } from "../ui/alert-dialog";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 
-interface HapusModulProps {
+interface HapusSubModulProps {
   id: string;
 }
 
-const HapusSubModul = ({ id }: HapusModulProps) => {
+const HapusSubModul = ({ id }: HapusSubModulProps) => {
   const { id: idModul } = useParams<{ id: string }>();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    const toastId = toast.loading("Hapus Modul...");
+    const toastId = toast.loading("Hapus Task...");
     try {
       setIsDeleting(true);
       const response = await axios.delete(
@@ -35,20 +35,20 @@ const HapusSubModul = ({ id }: HapusModulProps) => {
         }
       );
       if (response.status === 200) {
-        toast.success("Modul berhasil dihapus!", {
+        toast.success("Task berhasil dihapus!", {
           id: toastId,
         });
         window.location.reload();
       } else {
-        toast.error("Terjadi kesalahan saat menghapus modul.", {
+        toast.error("An error occurred while deleting the task.", {
           id: toastId,
         });
       }
     } catch (error) {
-      toast.error("Gagal menghapus modul. Coba lagi.", {
+      toast.error("Failed to delete this task. Try Again.", {
         id: toastId,
       });
-      console.error("Error deleting modul:", error);
+      console.error("Error deleting task:", error);
     } finally {
       setIsDeleting(false);
     }
@@ -64,7 +64,7 @@ const HapusSubModul = ({ id }: HapusModulProps) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure want to delete this SubModul?{" "}
+            Are you sure want to delete this Task?{" "}
           </AlertDialogTitle>
           <AlertDialogDescription>
             This Action cannot be undone
@@ -77,7 +77,7 @@ const HapusSubModul = ({ id }: HapusModulProps) => {
             disabled={isDeleting}
             onClick={handleDelete}
           >
-            {isDeleting ? "Menghapus..." : "Hapus"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

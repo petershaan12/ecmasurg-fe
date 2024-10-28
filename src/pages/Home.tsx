@@ -33,7 +33,7 @@ const Home = () => {
   return (
     <>
       <header className="flex justify-between items-center">
-        <p className="md:text-2xl">
+        <p className="md:text-xl">
           <b>Hello {user?.name ?? "Guest"},</b> Welcome Back 👋
         </p>
         <MenuSamping />

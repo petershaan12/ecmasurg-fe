@@ -172,9 +172,10 @@ const InputSubModul = () => {
     const checkOwnership = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/is-owner`,
+          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/isowner/${id}`,
           {
             headers: {
+              Accept: "application/json",
               Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
@@ -184,7 +185,7 @@ const InputSubModul = () => {
           setIsOwner(true);
         } else {
           toast.error("You are not authorized to create a submodule.");
-          navigate("/404"); // Redirect ke halaman unauthorized
+          setIsOwner(false);
         }
       } catch (error) {
         console.error(error);
@@ -197,11 +198,11 @@ const InputSubModul = () => {
   }, [id, navigate]);
 
   if (isOwner === null) {
-    return <div>Loading...</div>; // Bisa tampilkan spinner loading
+    return <div>Loading...</div>;
   }
 
   if (!isOwner) {
-    return null; // Jika bukan owner, jangan tampilkan form
+    return <p>Authorized</p>;
   }
 
   return (
@@ -248,7 +249,9 @@ const InputSubModul = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="material">Material</SelectItem>
-                        <SelectItem value="assignment">Assignment</SelectItem>
+                        <SelectItem value="assignment">
+                          Learning Activites
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>

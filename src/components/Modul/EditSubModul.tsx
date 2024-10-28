@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IsiModulSchema } from "../../schema";
@@ -37,6 +37,7 @@ const EditSubModul = ({ submodul }: any) => {
   const [filePreview, setFilePreview] = useState<string[]>(
     submodul.files ? JSON.parse(submodul.files) : []
   );
+  const [isOwner, setIsOwner] = useState<boolean | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
@@ -48,8 +49,46 @@ const EditSubModul = ({ submodul }: any) => {
       description: submodul.description || "",
       link_video: submodul.link_video || "",
       time: submodul.time || "",
+      deadline: submodul.deadline || "",
     },
   });
+
+  useEffect(() => {
+    const checkOwnership = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/isowner/${id}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.data.isOwner) {
+          setIsOwner(true);
+        } else {
+          toast.error("You are not authorized to create a submodule.");
+          setIsOwner(false);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to verify module ownership.");
+        navigate("/404");
+      }
+    };
+
+    checkOwnership();
+  }, [id, navigate]);
+
+  if (isOwner === null) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isOwner) {
+    return <p>Authorized</p>;
+  }
 
   const onSubmit = async (data: z.infer<typeof IsiModulSchema>) => {
     setError("");
@@ -63,6 +102,18 @@ const EditSubModul = ({ submodul }: any) => {
         formData.append("judul", data.judul);
         formData.append("description", data.description);
         formData.append("type", data.type);
+      }
+
+      if (data.deadline) {
+        const formattedTime = new Date(data.deadline)
+          .toISOString()
+          .slice(0, 16);
+        formData.append("deadline", formattedTime);
+      }
+
+      if (data.time) {
+        const formattedTime = new Date(data.time).toISOString().slice(0, 16);
+        formData.append("time", formattedTime);
       }
 
       if (data.link_video) {
@@ -188,7 +239,9 @@ const EditSubModul = ({ submodul }: any) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="material">Material</SelectItem>
-                        <SelectItem value="assignment">Assignment</SelectItem>
+                        <SelectItem value="assignment">
+                          Learning Activites
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>

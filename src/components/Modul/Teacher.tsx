@@ -68,7 +68,7 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
       <h2 className="text-xl font-bold mb-4">List Submission</h2>
 
       {isLoading ? (
-        <Loading />
+        <div>Loading..</div>
       ) : (
         <Table className="w-full border-collapse">
           <TableHeader>
