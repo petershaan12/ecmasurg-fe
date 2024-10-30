@@ -25,6 +25,7 @@ import ModulEdit from "./pages/Modul/ModulEdit.tsx";
 import EvaluasiCreate from "./pages/Modul/Evaluasi/EvaluasiCreate.tsx";
 import EvaluasiPage from "./pages/Modul/Evaluasi/EvaluasiPage.tsx";
 import EvaluasiEdit from "./pages/Modul/Evaluasi/EvaluasiEdit.tsx";
+import AssignmentSubmit from "./pages/Modul/AssignmentSubmit.tsx";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "modul/:id/assignment/:idsubmodul",
         element: <AssignmentPage key="assignment-page" />,
+      },
+      {
+        path: "modul/:id/assignment/:idsubmodul/submit",
+        element: <AssignmentSubmit key="assignment-submit" />,
       },
       {
         path: "modul/:id/create",

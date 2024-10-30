@@ -6,12 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-
-interface Question {
-  question: string;
-  type: string;
-}
+import EvaluasiStudent from "@/components/Modul/EvaluasiStudent";
 
 const EvaluasiPage: React.FC = () => {
   const { id, idevaluasi } = useParams<{ id: string; idevaluasi: string }>();
@@ -19,7 +14,6 @@ const EvaluasiPage: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: any) => state.data);
   const [evaluasi, setEvaluasi] = useState<any>({});
-  const [answers, setAnswers] = useState<Record<string, string | number>>({});
 
   useEffect(() => {
     const fetchEvaluasi = async () => {
@@ -45,86 +39,7 @@ const EvaluasiPage: React.FC = () => {
     fetchEvaluasi();
   }, []);
 
-  const handleInputChange = (questionKey: string, value: string | number) => {
-    setAnswers({
-      ...answers,
-      [questionKey]: value,
-    });
-  };
-
-  const handleSubmit = async () => {
-    try {
-      await axios.post(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/evaluasi/${id}/submit/${idevaluasi}`,
-        answers,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
-      );
-      toast.success("Evaluasi submitted successfully!");
-      navigate(`/modul/${id}`); // Redirect after successful submission
-    } catch (error) {
-      toast.error("Failed to submit evaluasi. Try again later.");
-      navigate(`/modul/${id}`);
-    }
-  };
-
   if (loading) return <Loading />;
-
-  const renderQuestion = (
-    index: number,
-    questionKey: string,
-    questionText: string,
-    type: string
-  ) => {
-    switch (type) {
-      case "0": // Textarea type question
-        return (
-          <div key={questionKey} className="mt-4 font-roboto">
-            <label htmlFor={questionKey} className="block text-sm font-bold">
-              {index + 1}. {questionText}
-            </label>
-            <textarea
-              id={questionKey}
-              rows={4}
-              className="mt-1 block w-full border border-black rounded-md p-2"
-              onChange={(e) => handleInputChange(questionKey, e.target.value)}
-            ></textarea>
-          </div>
-        );
-      case "1":
-        return (
-          <div key={questionKey} className="mt-4 font-roboto">
-            <label className="block text-sm font-bold">
-              {index + 1}. {questionText}{" "}
-              <span className=" opacity-80 font-light italic">
-                {" "}
-                1= Strongly Agree, 5 = Strongly Disagree.
-              </span>
-            </label>
-            <div className="mt-2 flex space-x-2">
-              {[1, 2, 3, 4, 5].map((num) => (
-                <button
-                  key={num}
-                  onClick={() => handleInputChange(questionKey, num)}
-                  className={`px-4 py-2 border w-full  border-black rounded-lg shadow-md font-bold ${
-                    answers[questionKey] === num
-                      ? "bg-primary text-white"
-                      : "bg-white"
-                  }`}
-                >
-                  {num}
-                </button>
-              ))}
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
 
   return (
     <>
@@ -167,30 +82,13 @@ const EvaluasiPage: React.FC = () => {
         </p>
 
         {/* Form Section */}
-        <div className="mt-6 space-y-4">
-          {Object.keys(evaluasi).map((_key, index) => {
-            const questionText = evaluasi[`question${index + 1}`];
-            const type = evaluasi[`type${index + 1}`];
-            if (questionText && type !== undefined) {
-              return renderQuestion(
-                index,
-                `question${index + 1}`,
-                questionText,
-                type
-              );
-            }
-            return null;
-          })}
-        </div>
-
-        <div className="mt-6">
-          <Button
-            className="px-4 py-2 w-full text-white rounded-md "
-            onClick={handleSubmit}
-          >
-            Kirim Evaluasi
-          </Button>
-        </div>
+        {user.roles === "user" && (
+          <EvaluasiStudent
+            evaluasi={evaluasi}
+            id={user.id}
+            idevaluasi={idevaluasi}
+          />
+        )}
       </main>
     </>
   );
