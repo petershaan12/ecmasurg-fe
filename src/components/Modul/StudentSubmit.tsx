@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import HapusAssignment from "@/components/Modul/HapusAssignment";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 type Assignment = {
   length: number;
@@ -13,6 +13,7 @@ type Assignment = {
   judul: string;
   description: string;
   link_video: string;
+  submited: boolean;
   files: string[];
   map: (arg0: (file: any, index: number) => JSX.Element) => JSX.Element[];
 };
@@ -24,10 +25,11 @@ type StudentProps = {
 };
 
 const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
-  const [tugasSubmit, setTugasSubmit] = useState<Assignment | null>(null);
+  const [tugasSubmit, setTugasSubmit] = useState<Assignment[] | null>(null);
   const [success, setSuccess] = useState<string | undefined>("");
   const [error, setError] = useState<string | undefined>("");
   const [isPending, setIsPending] = useState(false);
+  const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [filePreview, setFilePreview] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -147,7 +149,7 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
         id: toastId,
         duration: 10000,
       });
-      window.location.reload();
+      navigate(`/modul/${id}/assignment/${idsubmodul}`);
       setUploadedFiles([]);
       setFilePreview([]);
     } catch (error) {
@@ -157,6 +159,16 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
       setIsPending(false);
     }
   };
+
+  console.log(tugasSubmit);
+
+  if (tugasSubmit && tugasSubmit.length > 0) {
+    if (tugasSubmit[0].submited) {
+      navigate(`/modul/${id}/assignment/${idsubmodul}`);
+      toast.error("Tugas sudah di kumpulkan");
+    }
+  }
+
   return (
     <>
       {/* Pengumpulan Tugas Untuk Student  */}
@@ -206,15 +218,15 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
             disabled={isPending}
             className="mt-2 w-full text-white font-monument-regular"
           >
-            Upload Files
+            Kumpul Tugas
           </Button>
         </div>
       )}
       {/* Files that already submitted */}
       {tugasSubmit && tugasSubmit.length > 0 && (
         <div className="mt-4">
-          <h3 className="font-semibold">Files that already submitted:</h3>
-          <em className="text-sm">*only 5 files</em>
+          <h3 className="font-semibold">Files that submitted:</h3>
+          <em className="text-sm">Please Delete the file first</em>
           <ul className="list-disc list-inside mt-2 pl-5 mb-5 ">
             {tugasSubmit.map((file: any, index) => (
               <li key={index}>
@@ -225,7 +237,6 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
                 >
                   {file.files}
                 </a>
-                <HapusAssignment id={file.id} idsubmodul={idsubmodul || ""} />
               </li>
             ))}
           </ul>

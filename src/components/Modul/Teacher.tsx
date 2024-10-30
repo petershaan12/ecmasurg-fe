@@ -11,6 +11,7 @@ import {
 import { toast } from "sonner";
 
 interface Submission {
+  id: string;
   user: {
     name: string;
     id: string;
@@ -18,7 +19,7 @@ interface Submission {
   files: string[];
   created_at: string;
   grade?: number;
-  comments?: string;
+  feedback?: string;
 }
 
 type TeacherProps = {
@@ -44,9 +45,12 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
 
       const data = response.data.data.map((submission: Submission) => ({
         ...submission,
-        files: typeof submission.files === "string" ? JSON.parse(submission.files) : submission.files,
+        files:
+          typeof submission.files === "string"
+            ? JSON.parse(submission.files)
+            : submission.files,
         grade: submission.grade || 0,
-        comments: submission.comments || "",
+        feedback: submission.feedback || "",
       }));
 
       setSubmissions(data);
@@ -62,8 +66,11 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
     fetchSubmissions();
   }, [id, idsubmodul]);
 
-  // Handle input change for grade and comments directly in the submissions array
-  const handleInputChange = (index: number, field: "grade" | "comments", value: string | number) => {
+  const handleInputChange = (
+    index: number,
+    field: "grade" | "feedback",
+    value: string | number
+  ) => {
     setSubmissions((prevSubmissions) =>
       prevSubmissions.map((submission, i) =>
         i === index ? { ...submission, [field]: value } : submission
@@ -73,18 +80,18 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
 
   // Handle submission of grade and comments for a specific user
   const handleSubmitGrade = async (submission: Submission) => {
-    if (submission.grade === undefined || !submission.comments) {
+    if (submission.grade === undefined || !submission.feedback) {
       toast.error("Please enter both grade and comments.");
       return;
     }
 
     try {
       await axios.post(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/task/${idsubmodul}/grade`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/gradetask/${submission.id}`,
         {
           userId: submission.user.id,
           grade: submission.grade,
-          comments: submission.comments,
+          feedback: submission.feedback,
         },
         {
           headers: {
@@ -110,17 +117,25 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
           <TableHeader>
             <TableRow className="bg-gray-100">
               <TableHead className="border p-2 font-semibold">Name</TableHead>
-              <TableHead className="border p-2 font-semibold">File Submit</TableHead>
-              <TableHead className="border p-2 font-semibold">Jam Pengumpulan</TableHead>
+              <TableHead className="border p-2 font-semibold">
+                File Submit
+              </TableHead>
+              <TableHead className="border p-2 font-semibold">
+                Jam Pengumpulan
+              </TableHead>
               <TableHead className="border p-2 font-semibold">Grade</TableHead>
-              <TableHead className="border p-2 font-semibold">Comments</TableHead>
+              <TableHead className="border p-2 font-semibold">
+                Comments
+              </TableHead>
               <TableHead className="border p-2 font-semibold">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {submissions.map((submission, index) => (
               <TableRow key={submission.user.id}>
-                <TableCell className="border p-2">{submission.user.name}</TableCell>
+                <TableCell className="border p-2">
+                  {submission.user.name}
+                </TableCell>
                 <TableCell className="border p-2">
                   <ul>
                     {submission.files.map((file, i) => (
@@ -151,22 +166,28 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
                     type="number"
                     placeholder="Grade"
                     value={submission.grade || ""}
-                    onChange={(e) => handleInputChange(index, "grade", Number(e.target.value))}
+                    onChange={(e) =>
+                      handleInputChange(index, "grade", Number(e.target.value))
+                    }
                     className="border rounded p-1 w-full"
                   />
                 </TableCell>
                 <TableCell className="border p-2">
                   <input
-                    type="text"
+                    type="textarea"
                     placeholder="Comments"
-                    value={submission.comments || ""}
-                    onChange={(e) => handleInputChange(index, "comments", e.target.value)}
-                    className="border rounded p-1 w-full"
+                    value={submission.feedback || ""}
+                    onChange={(e) =>
+                      handleInputChange(index, "feedback", e.target.value)
+                    }
+                    className="border rounded p-1 w-full h-24"
                   />
                 </TableCell>
                 <TableCell className="border p-2">
                   <button
-                    onClick={() => handleSubmitGrade(submission)}
+                    onClick={() =>
+                      handleSubmitGrade({ ...submission, id: submission.id })
+                    }
                     className="bg-blue-500 text-white px-3 py-1 rounded"
                   >
                     Submit

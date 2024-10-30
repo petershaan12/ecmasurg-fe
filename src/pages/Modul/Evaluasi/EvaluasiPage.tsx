@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import EvaluasiStudent from "@/components/Modul/EvaluasiStudent";
+import EvaluasiTeacher from "@/components/Modul/EvaluasiTeacher";
 
 const EvaluasiPage: React.FC = () => {
   const { id, idevaluasi } = useParams<{ id: string; idevaluasi: string }>();
@@ -85,9 +86,12 @@ const EvaluasiPage: React.FC = () => {
         {user.roles === "user" && (
           <EvaluasiStudent
             evaluasi={evaluasi}
-            id={user.id}
+            idmodul={id}
             idevaluasi={idevaluasi}
           />
+        )}
+        {user.roles === "teacher" && (
+          <EvaluasiTeacher idmodul={id} idevaluasi={idevaluasi} />
         )}
       </main>
     </>

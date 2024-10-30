@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { toast } from "sonner"; // Menggunakan toast dari Sonner untuk notifikasi
 import {
   AlertDialog,
@@ -15,21 +14,20 @@ import {
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { Button } from "../ui/button";
 
-interface HapusAssignment {
+interface HapusEvaluasiStudent {
   id: string;
-  idsubmodul: string;
+  idevaluasi: any;
 }
 
-const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
-  const { id: idModul } = useParams<{ id: string }>();
+const HapusEvaluasiStudent = ({ id, idevaluasi }: HapusEvaluasiStudent) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    const toastId = toast.loading("Hapus Tugas...");
+    const toastId = toast.loading("Hapus evaluasi...");
     try {
       setIsDeleting(true);
       const response = await axios.delete(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${idModul}/task/${idsubmodul}/delete/${id}`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/answerevaluasi/${idevaluasi}/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -37,20 +35,20 @@ const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
         }
       );
       if (response.status === 200) {
-        toast.success("Tugas berhasil dihapus!", {
+        toast.success("evaluasi berhasil dihapus!", {
           id: toastId,
         });
         window.location.reload();
       } else {
-        toast.error("Terjadi kesalahan saat menghapus tugas Kamu.", {
+        toast.error("Terjadi kesalahan saat menghapus evaluasi Kamu.", {
           id: toastId,
         });
       }
     } catch (error) {
-      toast.error("Gagal menghapus tugas Kamu. Coba lagi.", {
+      toast.error("Gagal menghapus evaluasi Kamu. Coba lagi.", {
         id: toastId,
       });
-      console.error("Error deleting tugas Kamu:", error);
+      console.error("Error deleting evaluasi Kamu:", error);
     } finally {
       setIsDeleting(false);
     }
@@ -60,7 +58,7 @@ const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className="bg-red-500 w-full mt-2 hover:bg-red-800">
-          <span>Remove Submission</span>
+          <span>Delete</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -87,4 +85,4 @@ const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
   );
 };
 
-export default HapusAssignment;
+export default HapusEvaluasiStudent;

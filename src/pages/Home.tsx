@@ -1,5 +1,4 @@
 import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
 import MenuSamping from "../components/MenuSamping";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -83,7 +82,7 @@ const Home = () => {
                       </Link>
                     </div>
                   </div>
-                  <div
+                  {/* <div
                     className="bg-[#F9A685] flex flex-col justify-between rounded-xl pl-6 py-4 text-white md:w-48 lg:w-full  "
                     style={{
                       backgroundImage: "url(/icons/gamepad-bg.png)", // sesuaikan path gambarnya
@@ -136,11 +135,11 @@ const Home = () => {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
-              <h1 className="text-xl mb-5 mt-8">Your Documents </h1>
+              {/* <h1 className="text-xl mb-5 mt-8">Your Documents </h1>
               <div className="bg-white flex space-x-5 items-center  justify-between px-5 py-3 rounded-2xl h-[100px] relative">
                 <div className="flex space-x-5 items-center">
                   <div className="bg-[#D4FFDA] p-2 rounded-2xl">
@@ -159,7 +158,7 @@ const Home = () => {
                 <Badge className="bg-[#AFEF86] text-[#272835] hover:bg-green-900 hover:text-white font-bold py-1 px-3 text-xs">
                   Submitted
                 </Badge>
-              </div>
+              </div> */}
             </section>
           </div>
 

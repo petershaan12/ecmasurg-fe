@@ -6,11 +6,11 @@ import { toast } from "sonner";
 
 type EvaluasiProps = {
   evaluasi: any;
-  id: string;
+  idmodul: any;
   idevaluasi: any;
 };
 
-const EvaluasiStudent = ({ evaluasi, id, idevaluasi }: EvaluasiProps) => {
+const EvaluasiStudent = ({ evaluasi, idmodul, idevaluasi }: EvaluasiProps) => {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<Record<string, string | number>>({});
   const renderQuestion = (
@@ -74,10 +74,19 @@ const EvaluasiStudent = ({ evaluasi, id, idevaluasi }: EvaluasiProps) => {
   };
 
   const handleSubmit = async () => {
+
+    const formattedAnswers = Object.keys(answers).reduce(
+      (acc, questionKey, index) => {
+        acc[`answer${index + 1}`] = String(answers[questionKey]);
+        return acc;
+      },
+      {} as Record<string, string>
+    );
+
     try {
       await axios.post(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/evaluasi/${id}/submit/${idevaluasi}`,
-        answers,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/answerevaluasi/${idevaluasi}`,
+        formattedAnswers,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -85,10 +94,10 @@ const EvaluasiStudent = ({ evaluasi, id, idevaluasi }: EvaluasiProps) => {
         }
       );
       toast.success("Evaluasi submitted successfully!");
-      navigate(`/modul/${id}`); // Redirect after successful submission
+      navigate(`/modul/${idmodul}`); // Redirect after successful submission
     } catch (error) {
       toast.error("Failed to submit evaluasi. Try again later.");
-      navigate(`/modul/${id}`);
+      navigate(`/modul/${idmodul}`);
     }
   };
 

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import HapusAssignment from "./HapusAssignment";
 
 type StudentProps = {
   id: string | undefined;
@@ -10,64 +12,100 @@ type StudentProps = {
 };
 
 type SubmissionData = {
-  fileName: string;
+  id: string;
+  files: { fileName: string; url: string }[]; // Menggunakan array untuk menampung beberapa file
   grade: number;
-  comments: string;
+  feedback: string;
+  submited: boolean;
 };
 
 const Student = ({ id, idsubmodul, userid }: StudentProps) => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [submission, setSubmission] = useState<SubmissionData | null>(null);
 
   useEffect(() => {
-    // Dummy data fetching simulation with axios
-    axios
-      .get("/api/submission", {
-        params: { id, idsubmodul, userid },
-      })
-      .then((response) => {
-        // In a real case, response data would come from your backend.
-        // Here we're setting dummy data directly.
-        setSubmission({
-          fileName: "1.png",
-          grade: 100,
-          comments: "Great work! Well done on the assignment.",
+    const fetchTugasSubmit = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/task/${idsubmodul}/show/${userid}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        data.forEach((submission: any) => {
+          if (typeof submission.files === "string") {
+            submission.files = JSON.parse(submission.files); // Mengubah menjadi array jika berbentuk string JSON
+          }
         });
-      })
-      .catch((error) => {
-        console.error("Error fetching submission data:", error);
-      });
+
+        setSubmission(data[0]);
+      } catch (err) {
+        toast.error("Gagal memuat tugas kamu.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTugasSubmit();
   }, [id, idsubmodul, userid]);
 
+  if (loading) return <p className="mt-8">Loading...</p>;
+
   return (
-    <div className="mt-12 w-full">
-      <div className="flex space-x-12">
+    <div className="mt-8 w-full">
+      {submission && submission.submited ? (
         <div>
-          <h3>File Submissions</h3>
-          {submission ? (
-            <p>
-              <a href="#">{submission.fileName}</a>
+          <div className="flex space-x-12">
+            <div>
+              <h3>File Submissions</h3>
+              <ul className="list-disc list-inside mt-2 pl-5 mb-5 ">
+                {submission &&
+                  submission.files.map((file: any, index) => (
+                    <li key={index}>
+                      <a
+                        href={`${process.env.REACT_PUBLIC_API_KEY}/storage/task_collection/${file}`}
+                        className="underline"
+                        download
+                      >
+                        {file}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3>Grade</h3>
+              <p className="text-2xl font-bold mt-2">
+                {submission ? submission.grade : "Loading..."}
+              </p>
+            </div>
+          </div>
+
+          <div className="my-8">
+            <h3>Comments</h3>
+            <p className="italic ml-2">
+              {submission ? submission.feedback : "Loading..."}
             </p>
-          ) : (
-            <p>Loading...</p>
-          )}
+          </div>
+
+          <div className="w-full">
+            <HapusAssignment id={submission.id} idsubmodul={idsubmodul || ""} />
+          </div>
         </div>
-
-        <div>
-          <h3>Grade</h3>
-          <p className="font-bold text-2xl">
-            {submission ? submission.grade : "Loading..."}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-12">
-        <h3>Comments</h3>
-        <p>{submission ? submission.comments : "Loading..."}</p>
-      </div>
-
-      <Button className="mt-8">
-        <Link to="submit">Edit Submission</Link>
-      </Button>
+      ) : (
+        <Link to="submit">
+          <Button className="w-full">Create Submission</Button>
+        </Link>
+      )}
     </div>
   );
 };
