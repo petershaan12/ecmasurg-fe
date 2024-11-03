@@ -2,7 +2,9 @@ import { Button } from "../components/ui/button";
 import MenuSamping from "../components/MenuSamping";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import animationdata from "../../public/Emsaec.json";
 
 interface RootState {
   data: any;
@@ -11,6 +13,7 @@ interface RootState {
 }
 
 const Home = () => {
+  const animateRef = useRef<LottieRefCurrentProps>(null);
   const user = useSelector((state: RootState) => state.data);
   const [belumLengkap, setBelumLengkap] = useState<boolean>(true);
 
@@ -41,14 +44,12 @@ const Home = () => {
       <main className="mt-6">
         <section className="grid md:grid-cols-4 gap-12 justify-between items-start">
           <div className="md:col-span-3">
-            <div className="flex items-center space-x-8 ">
-              <img src="/logo.png" height={200} width={200} alt="Otak" />
-              <h1
-                className="md:text-2xl text-xl font-bold"
-                style={{ lineHeight: "1.8" }}
-              >
-                E-msaec <br /> Virtual Learning <br /> Environment
-              </h1>
+            <div className="flex items-center md:w-[500px]">
+              <Lottie
+                animationData={animationdata}
+                lottieRef={animateRef}
+                loop={true} // Set loop to true
+              />
             </div>
 
             <section className="mt-10">
@@ -82,7 +83,7 @@ const Home = () => {
                       </Link>
                     </div>
                   </div>
-                  {/* <div
+                  <div
                     className="bg-[#F9A685] flex flex-col justify-between rounded-xl pl-6 py-4 text-white md:w-48 lg:w-full  "
                     style={{
                       backgroundImage: "url(/icons/gamepad-bg.png)", // sesuaikan path gambarnya
@@ -135,7 +136,7 @@ const Home = () => {
                         </p>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </div>
 

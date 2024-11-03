@@ -68,7 +68,7 @@ const Modul = () => {
             Tambah Sub Materi
           </Link>
         )}
-        <div className="grid grid-cols-2 gap-x-3 md:flex md:flex-wrap">
+        <div className="grid grid-cols-2 gap-x-3 md:flex md:flex-wrap gap-y-5">
           {modul.map((modul: any) => (
             <CardModul key={modul.id} modul={modul} />
           ))}
