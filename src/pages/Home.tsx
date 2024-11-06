@@ -126,18 +126,11 @@ const Home = () => {
                         iconSrc={`/icons/${item.toLowerCase()}.svg`}
                         count={item === "Course" ? 4 : 0}
                         bgButton={
-                          item === "Course"
+                          item == "Course"
                             ? "#5CCC37"
                             : item === "Games"
                             ? "#EC4D36"
                             : "#009BD8"
-                        }
-                        bgHover={
-                          item === "Course"
-                            ? "bg-green-600"
-                            : item === "Games"
-                            ? "bg-orange-600"
-                            : "bg-blue-600"
                         }
                       />
                     </motion.div>

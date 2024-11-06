@@ -59,7 +59,7 @@ const Posting = () => {
           },
         }
       );
-      toast.success("Studi kasus berhasil diposting.");
+      toast.success("Forum Diskusi berhasil diposting.");
       window.location.reload();
     } catch (error) {
       console.error("Submission failed", error);
@@ -70,7 +70,7 @@ const Posting = () => {
 
   const [text] = useTypewriter({
     words: [
-      "Posting Studi Kasus Disini",
+      "Posting Forum Diskusi Disini",
       "Apa sih Masalah Stress Pada Otak ?",
       "Terobosan Baru dalam pengobatan penyakit langka",
     ],
@@ -100,7 +100,7 @@ const Posting = () => {
 
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader className="flex flex-col items-center gap-4">
-            <DialogTitle>Posting Studi Kasus</DialogTitle>
+            <DialogTitle>Posting Forum Diskusi</DialogTitle>
             <div className="flex w-full items-center gap-x-3">
               <Avatar>
                 <AvatarImage

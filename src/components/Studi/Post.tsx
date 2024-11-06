@@ -78,7 +78,7 @@ const Post: React.FC<PostProps> = ({
                 />
               )}
               <Link
-                to={`/studi-kasus/${id}`}
+                to={`/forum-diskusi/${id}`}
                 className="hover:bg-primary/50 hover:text-white w-full block px-4 py-2 text-sm"
               >
                 View Detail
@@ -101,12 +101,12 @@ const Post: React.FC<PostProps> = ({
       <div className="flex items-center justify-between text-sm text-gray-500">
         <div className="flex items-center space-x-2">
           <Like id={id} updateLikes={updateLikes} />
-          <Link to={`/studi-kasus/${id}`}>Comment</Link>
+          <Link to={`/forum-diskusi/${id}`}>Comment</Link>
         </div>
 
         <div className="flex items-center space-x-2">
           <span>{likes} like</span>
-          <Link to={`/studi-kasus/${id}`}>
+          <Link to={`/forum-diskusi/${id}`}>
             <span>{comments} Komentar</span>
           </Link>
         </div>

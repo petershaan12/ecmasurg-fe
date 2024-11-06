@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CgProfile } from "react-icons/cg";
+import { CgGames, CgProfile } from "react-icons/cg";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiChevronsRight } from "react-icons/fi";
@@ -43,15 +43,26 @@ const Sidebar = () => {
           icon=""
         />
         <Option
-          title="Studi Kasus"
+          title="Forum Diskusi"
           selected={selected}
           setSelected={setSelected}
           open={open}
-          to="/studi-kasus"
+          to="/forum-diskusi"
           iconSrc="/navbar/kasus.svg"
           pathname={pathname}
           icon=""
         />
+        <Option
+          title="Game"
+          selected={selected}
+          setSelected={setSelected}
+          open={open}
+          to="/game"
+          iconSrc=""
+          pathname={pathname}
+          icon={<CgGames />}
+        />
+
         <Option
           title="Profile"
           selected={selected}
@@ -62,7 +73,6 @@ const Sidebar = () => {
           pathname={pathname}
           icon={<CgProfile />}
         />
-
         <LogoutNavbar open={open} />
       </div>
 

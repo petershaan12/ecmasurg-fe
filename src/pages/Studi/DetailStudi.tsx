@@ -120,7 +120,7 @@ const DetailStudi: React.FC = () => {
     <>
       <header className="flex justify-between items-center">
         <div className="flex space-x-5">
-          <h1 className="md:text-xl font-bold">Studi Kasus</h1>
+          <h1 className="md:text-xl font-bold">Forum Diskusi</h1>
         </div>
         <MenuSamping />
       </header>

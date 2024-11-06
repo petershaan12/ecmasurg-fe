@@ -26,6 +26,7 @@ import EvaluasiCreate from "./pages/Modul/Evaluasi/EvaluasiCreate.tsx";
 import EvaluasiPage from "./pages/Modul/Evaluasi/EvaluasiPage.tsx";
 import EvaluasiEdit from "./pages/Modul/Evaluasi/EvaluasiEdit.tsx";
 import AssignmentSubmit from "./pages/Modul/AssignmentSubmit.tsx";
+import Game from "./pages/Game/Game.tsx";
 
 const router = createBrowserRouter([
   {
@@ -72,8 +73,12 @@ const router = createBrowserRouter([
       },
       { path: "profile", element: <Profile key="profile" /> },
       { path: "profile/edit", element: <EditProfile key="edit-profile" /> },
-      { path: "studi-kasus", element: <Studi key="studi" /> },
-      { path: "studi-kasus/:id", element: <DetailStudi key="detail-studi" /> },
+      { path: "forum-diskusi", element: <Studi key="studi" /> },
+      {
+        path: "forum-diskusi/:id",
+        element: <DetailStudi key="detail-studi" />,
+      },
+      { path: "games", element: <Game key="game" /> },
     ],
   },
   {

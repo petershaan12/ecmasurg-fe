@@ -62,7 +62,7 @@ const MobileMenu = () => {
             </li>
             <li>
               <Link
-                to="/studi-kasus"
+                to="/forum-diskusi"
                 className={`flex items-center space-x-3 px-5 py-3 text-sm text-white ${
                   pathname === "/kasus-studi"
                     ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
@@ -75,7 +75,7 @@ const MobileMenu = () => {
                   width={20}
                   height={20}
                 />
-                <span className="font-medium">Studi Kasus</span>
+                <span className="font-medium">Forum Diskusi</span>
               </Link>
             </li>
             <li>

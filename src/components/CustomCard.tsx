@@ -18,7 +18,6 @@ interface CustomCardProps {
   iconSrc: string;
   count: string | number;
   bgButton: string;
-  bgHover: string;
 }
 
 const ROTATION_RANGE = 32.5;
@@ -33,7 +32,6 @@ const CustomCard: React.FC<CustomCardProps> = ({
   iconSrc,
   count,
   bgButton,
-  bgHover,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -67,6 +65,12 @@ const CustomCard: React.FC<CustomCardProps> = ({
     y.set(0);
   };
 
+  const bgButtonConvert = bgButton;
+
+  if ((linkTo = "/course")) {
+    linkTo = "/modul";
+  }
+
   return (
     <motion.div
       ref={ref}
@@ -98,7 +102,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
           <Link to={linkTo} className="flex flex-col items-end">
             <hr className="mt-2 w-[150px]" />
             <p
-              className={`mt-3 bg-[${bgButton}] hover:${bgHover} text-white py-1 px-3 rounded-lg mr-2`}
+              className={`mt-3 bg-[${bgButtonConvert}] text-white py-1 px-3 rounded-lg mr-2`}
             >
               {linkText}
             </p>
