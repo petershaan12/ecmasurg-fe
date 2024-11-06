@@ -5,6 +5,7 @@ import Posting from "./Posting";
 import axios from "axios";
 import Loading from "@/components/Loading";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 const Studi = () => {
   interface PostType {
@@ -80,9 +81,12 @@ const Studi = () => {
             </div>
           ))}
         </div>
-        <div
-          id="trending"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
           className="md:col-span-1 bg-primary rounded-2xl px-4 py-5 text-white mt-10 md:mt-0 h-fit" // Kolom 1/4
+          id="trending"
         >
           <h1 className="text-lg font-semibold">Trending</h1>
           <ul className="text-sm space-y-2 mt-4">
@@ -117,7 +121,7 @@ const Studi = () => {
               </a>
             </li>
           </ul>
-        </div>
+        </motion.div>
       </main>
     </>
   );

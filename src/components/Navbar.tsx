@@ -1,110 +1,189 @@
+import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { Link, useLocation } from "react-router-dom";
-import Logout from "./Auth/Logout";
+import { motion } from "framer-motion";
+import { FiChevronsRight } from "react-icons/fi";
+import LogoutNavbar from "./Auth/LogoutNavbar";
 
-const Navbar = () => {
+const Sidebar = () => {
+  const [open, setOpen] = useState(true);
+  const [selected, setSelected] = useState("Beranda");
   const location = useLocation();
   const pathname = location.pathname;
 
   return (
-    <aside className="w-64 h-screen hidden md:block">
-      <nav className="bg-[#002979] h-screen w-72 text-white flex flex-col rounded-tr-3xl rounded-br-3xl ">
-        <div className="mb-8">
-          {/* Logo */}
-          <div className="flex justify-center items-center w-100 mb-16 mt-10 ">
-            <img
-              src="/navbar/logo.svg"
-              alt="EduMedSurg"
-              width={150}
-              height={40}
-            />
-          </div>
-          {/* Main Links */}
-          <ul className="space-y-4">
-            <li>
-              <Link
-                to="/"
-                className={`flex items-center space-x-3 px-5 py-3 text-white ${
-                  pathname === "/"
-                    ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)]"
-                    : "opacity-40 font-medium"
-                }`}
-              >
-                <img
-                  src="/navbar/beranda.svg"
-                  alt="Beranda"
-                  width={20}
-                  height={20}
-                />
-                <span>Beranda</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/modul"
-                className={`flex items-center space-x-3 px-5 py-3 text-white ${
-                  pathname.startsWith("/modul")
-                    ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
-                    : "opacity-40"
-                }`}
-              >
-                <img
-                  src="/navbar/modul.svg"
-                  alt="Modul"
-                  width={20}
-                  height={20}
-                />
-                <span>Modul</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/studi-kasus"
-                className={`flex items-center space-x-3 px-5 py-3 text-white ${
-                  pathname.startsWith("/studi-kasus")
-                    ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
-                    : "opacity-40"
-                }`}
-              >
-                <img
-                  src="/navbar/kasus.svg"
-                  alt="Studi Kasus"
-                  width={20}
-                  height={20}
-                />
-                <span>Studi Kasus</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
+    <motion.nav
+      layout
+      className="hidden md:block sticky top-0 h-screen shrink-0 border-r border-slate-300 bg-[#002979] p-2"
+      style={{
+        width: open ? "250px" : "fit-content",
+      }}
+    >
+      <TitleSection open={open} />
 
-        {/* More Section */}
-        <div className="mt-10">
-          <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4 px-5">
-            More
-          </h3>
-          <ul className="space-y-4">
-            <li>
-              <Link
-                to="/profile"
-                className={`flex items-center space-x-3 px-5 py-3 text-white ${
-                  pathname.startsWith("/profil")
-                    ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
-                    : "opacity-40"
-                }`}
-              >
-                <CgProfile />
-                <span>Profile</span>
-              </Link>
-            </li>
-            <li>
-              <Logout navbar={true} />
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </aside>
+      <div className="space-y-7 mt-10">
+        <Option
+          title="Beranda"
+          selected={selected}
+          setSelected={setSelected}
+          open={open}
+          to="/"
+          iconSrc="/navbar/beranda.svg"
+          pathname={pathname}
+          icon=""
+        />
+        <Option
+          title="Modul"
+          selected={selected}
+          setSelected={setSelected}
+          open={open}
+          to="/modul"
+          iconSrc="/navbar/modul.svg"
+          pathname={pathname}
+          icon=""
+        />
+        <Option
+          title="Studi Kasus"
+          selected={selected}
+          setSelected={setSelected}
+          open={open}
+          to="/studi-kasus"
+          iconSrc="/navbar/kasus.svg"
+          pathname={pathname}
+          icon=""
+        />
+        <Option
+          title="Profile"
+          selected={selected}
+          setSelected={setSelected}
+          open={open}
+          to="/profile"
+          iconSrc="/navbar/profil.svg"
+          pathname={pathname}
+          icon={<CgProfile />}
+        />
+
+        <LogoutNavbar open={open} />
+      </div>
+
+      <ToggleClose open={open} setOpen={setOpen} />
+    </motion.nav>
   );
 };
 
-export default Navbar;
+const Option = ({
+  title,
+  setSelected,
+  open,
+  to,
+  iconSrc,
+  pathname,
+  icon,
+}: any) => {
+  return (
+    <Link
+      to={to}
+      className={`relative flex h-10 w-full items-center rounded-md transition-colors hover:bg-[linear-gradient(90deg,#1C4185,#002979)] hover:font-bold hover:opacity-100 ${
+        pathname === to
+          ? `${
+              open ? "bg-[linear-gradient(90deg,#1C4185,#002979)]" : ""
+            } font-bold text-white`
+          : "text-white opacity-40"
+      }`}
+      onClick={() => setSelected(title)}
+    >
+      <motion.div
+        layout
+        className="grid h-full w-10 place-content-center text-lg"
+      >
+        {icon ? icon : <img src={iconSrc} alt={title} width={20} height={20} />}
+      </motion.div>
+      {open && (
+        <motion.span
+          layout
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.125 }}
+          className="text-sm font-medium"
+        >
+          {title}
+        </motion.span>
+      )}
+    </Link>
+  );
+};
+
+const TitleSection = ({ open }: any) => {
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ type: "spring", stiffness: 100 }}
+      className="flex justify-center items-center mb-16 mt-10"
+    >
+      {open ? (
+        <motion.img
+          layout
+          key="logo"
+          src="/navbar/logo.svg"
+          alt="EduMedSurg"
+          width={150}
+          height={40}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+        />
+      ) : (
+        <motion.img
+          layout
+          key="logo_only"
+          src="/navbar/logo_only.svg"
+          alt="EduMedSurg"
+          width={30}
+          height={30}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+        />
+      )}
+    </motion.div>
+  );
+};
+
+const ToggleClose = ({ open, setOpen }: any) => {
+  return (
+    <motion.button
+      layout
+      onClick={() => setOpen((pv: any) => !pv)}
+      className="absolute bottom-0 left-0 right-0 transition-colors  text-white"
+    >
+      <div className="flex items-center p-2">
+        <motion.div
+          layout
+          className="grid size-10 place-content-center text-lg"
+        >
+          <FiChevronsRight
+            className={`transition-transform ${open && "rotate-180"}`}
+          />
+        </motion.div>
+        {open && (
+          <motion.span
+            layout
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.125 }}
+            className="text-xs font-medium "
+          >
+            Hide
+          </motion.span>
+        )}
+      </div>
+    </motion.button>
+  );
+};
+
+export default Sidebar;

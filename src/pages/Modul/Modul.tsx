@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "@/components/Loading";
+import CardModulHorizontal from "@/components/Modul/CardModulHorizontal";
+import { motion } from "framer-motion";
 
 const Modul = () => {
   const user = useSelector((state: any) => state.data);
@@ -68,9 +70,28 @@ const Modul = () => {
             Tambah Sub Materi
           </Link>
         )}
-        <div className="grid grid-cols-2 gap-x-3 md:flex md:flex-wrap gap-y-5">
-          {modul.map((modul: any) => (
-            <CardModul key={modul.id} modul={modul} />
+        <div className="hidden md:flex md:flex-wrap gap-x-5 gap-y-5">
+          {modul.map((modul: any, index: number) => (
+            <motion.div
+              key={modul.id}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+            >
+              <CardModul key={modul.id} modul={modul} />
+            </motion.div>
+          ))}
+        </div>
+        <div className="md:hidden grid gap-y-5">
+          {modul.map((modul: any, index: number) => (
+            <motion.div
+              key={modul.id}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+            >
+              <CardModulHorizontal key={modul.id} modul={modul} />
+            </motion.div>
           ))}
         </div>
       </main>

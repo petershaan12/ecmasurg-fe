@@ -1,4 +1,4 @@
-import { IoMdNotificationsOutline } from "react-icons/io";
+// import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import {
@@ -19,7 +19,6 @@ const MenuSamping = () => {
 
   return (
     <div className="flex space-x-5 items-center">
-      <IoMdNotificationsOutline className="w-6 h-8" />
       <Link to="/profile/edit" className="hover:cursor-pointer">
         <IoSettingsOutline className="w-6 h-8" />
       </Link>

@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+
 import { Link } from "react-router-dom";
 
 type CardModulProps = {
@@ -14,23 +15,23 @@ type CardModulProps = {
   };
 };
 
-const CardModul = ({ modul }: CardModulProps) => {
+const CardModulHorizontal = ({ modul }: CardModulProps) => {
   return (
-    <div className="w-full md:w-[300px] relative drop-shadow-lg flex flex-col items-center">
+    <div className="w-full h-[200px] relative flex drop-shadow-sm">
       {modul.gambar_modul ? (
         <img
           src={`${process.env.REACT_PUBLIC_API_KEY}/storage/modul/${modul.gambar_modul}`}
           alt="Card Modul"
-          width={300}
+          width={200}
           height={150}
-          className="h-[200px] w-full object-cover rounded-t-xl"
+          className="md:h-[200px] md:w-[200px] w-[100px]  object-cover rounded-l-xl"
         />
       ) : (
-        <div className="h-[200px] w-full object-cover rounded-t-xl bg-primary"></div>
+        <div className="h-[200px] w-[200px] object-cover rounded-l-xl bg-primary"></div>
       )}
 
-      <div className="w-full bg-white rounded-b-xl p-5 flex flex-col items-start">
-        <h1 className="text-lg font-bold mb-2">{modul.judul}</h1>
+      <div className="w-full bg-white rounded-r-xl p-5 flex flex-col justify-between">
+        <h1 className=" font-bold mb-2">{modul.judul}</h1>
         <div className="flex items-center space-x-2 mb-3">
           <img
             src="/icons/teach.svg"
@@ -55,4 +56,4 @@ const CardModul = ({ modul }: CardModulProps) => {
   );
 };
 
-export default CardModul;
+export default CardModulHorizontal;

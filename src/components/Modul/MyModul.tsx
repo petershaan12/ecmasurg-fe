@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 type MyModulProps = {
   id: string;
@@ -51,7 +52,12 @@ const MyModul = ({ id }: MyModulProps) => {
           </div>
         </div>
       ) : modul.length === 0 ? (
-        <div className="flex space-x-5 items-center pt-8 px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex space-x-5 items-center pt-8 px-8"
+        >
           <img src="/not-item.webp" alt="item" width={100} height={100} />
           <div>
             <p className="mb-2 text-xl font-semibold">Belum ada modul</p>
@@ -62,7 +68,7 @@ const MyModul = ({ id }: MyModulProps) => {
               Buat Modul
             </Link>
           </div>
-        </div>
+        </motion.div>
       ) : (
         <ul className="list-decimal ml-5">
           {modul.map((item: any) => (

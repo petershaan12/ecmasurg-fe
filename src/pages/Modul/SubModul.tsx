@@ -12,6 +12,7 @@ import HapusSubModul from "@/components/Modul/HapusSubModul";
 import Loading from "@/components/Loading";
 import Evaluasi from "@/components/Modul/Evaluasi";
 import HapusEvaluasi from "@/components/Modul/HapusEvaluasi";
+import { motion } from "framer-motion";
 
 type Modul = {
   judul: string;
@@ -202,7 +203,13 @@ const SubModul = () => {
         <div className="mt-8">
           {combinedItems && combinedItems.length > 0 ? (
             combinedItems.map((item, index) => (
-              <section key={index} className="mt-6">
+              <motion.section
+                key={index}
+                className="mt-6"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
                 {/* Display Date Header */}
                 <h3 className="font-bold text-[#737373]">
                   {new Date(item.time).toLocaleDateString("id-ID", {
@@ -252,11 +259,23 @@ const SubModul = () => {
                     <HapusEvaluasi id={item.id.toString()} />
                   </div>
                 )}
-              </section>
+              </motion.section>
             ))
           ) : (
-            <div className="mt-12">
-              Belum ada Task atau Evaluasi yang ditambahkan
+            <div className="mt-36">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="flex space-x-5 items-center justify-center mx-auto pt-8 px-8 w-full "
+              >
+                <img src="/not-item.webp" alt="item" width={150} height={100} />
+                <div>
+                  <p className="mb-2 text-xl font-semibold w-56">
+                    Belum ada sub modul yang ditambahkan
+                  </p>
+                </div>
+              </motion.div>
             </div>
           )}
         </div>

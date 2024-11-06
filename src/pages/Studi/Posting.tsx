@@ -14,6 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { useTypewriter } from "react-simple-typewriter";
 
 const Posting = () => {
   const user = useSelector((state: any) => state.data);
@@ -47,16 +49,16 @@ const Posting = () => {
       }
       formData.append("user_id", user.id);
 
-     await axios.post(
-       `${process.env.REACT_PUBLIC_API_KEY}/api/studikasus/create`,
-       formData,
-       {
-         headers: {
-           "Content-Type": "multipart/form-data",
-           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-         },
-       }
-     );
+      await axios.post(
+        `${process.env.REACT_PUBLIC_API_KEY}/api/studikasus/create`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
       toast.success("Studi kasus berhasil diposting.");
       window.location.reload();
     } catch (error) {
@@ -66,19 +68,34 @@ const Posting = () => {
     }
   };
 
+  const [text] = useTypewriter({
+    words: [
+      "Posting Studi Kasus Disini",
+      "Apa sih Masalah Stress Pada Otak ?",
+      "Terobosan Baru dalam pengobatan penyakit langka",
+    ],
+    loop: true,
+    onLoopDone: () => console.log(`Loop completed after 3 runs.`),
+  });
+
   return (
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <div className="relative">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="relative"
+          >
             <Input
               className="bg-white border-2 border-black rounded-lg h-12 pr-10"
-              placeholder="Posting Studi Kasus"
+              placeholder={text}
             />
             <span className="absolute inset-y-0 right-0 flex items-center pr-3">
               <img src="/icons/send.svg" alt="paper-plane" />
             </span>
-          </div>
+          </motion.div>
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[600px]">

@@ -7,6 +7,31 @@ import {
 } from "../../components/ui/avatar";
 import Certificate from "@/components/Certificate";
 import MyModul from "@/components/Modul/MyModul";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.2,
+      duration: 0.5,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.4,
+      duration: 0.5,
+    },
+  },
+};
 
 const Profile = () => {
   const apiURL = process.env.REACT_PUBLIC_API_KEY;
@@ -33,24 +58,34 @@ const Profile = () => {
       </header>
 
       <main>
-        <div className="md:flex items-center justify-center md:justify-start text-center gap-5 mt-5 md:ml-8">
-          <Avatar className="cursor-pointer w-28 h-28 md:w-[180px] md:h-[180px] mx-auto md:mx-0 mt-8">
-            <AvatarImage
-              src={`${apiURL}/storage/profiles/${user.photo_profile}`}
-              className="object-cover"
-            />
-            <AvatarFallback className="bg-primary/80">
-              <p className="text-4xl font-bold uppercase text-white">
-                {user.name
-                  ? user.name
-                      .split(" ")
-                      .map((name: string) => name.slice(0, 1))
-                      .join("")
-                  : "AB"}
-              </p>
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col my-5 items-center md:items-start">
+        <motion.div
+          className="md:flex items-center justify-center md:justify-start text-center gap-5 mt-5 md:ml-8"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
+          <motion.div variants={itemVariants}>
+            <Avatar className="cursor-pointer md:w-[180px] md:h-[180px] mx-auto md:mx-0 mt-8">
+              <AvatarImage
+                src={`${apiURL}/storage/profiles/${user.photo_profile}`}
+                className="object-cover"
+              />
+              <AvatarFallback className="bg-primary/80">
+                <p className="text-4xl font-bold uppercase text-white">
+                  {user.name
+                    ? user.name
+                        .split(" ")
+                        .map((name: string) => name.slice(0, 1))
+                        .join("")
+                    : "AB"}
+                </p>
+              </AvatarFallback>
+            </Avatar>
+          </motion.div>
+          <motion.div
+            className="flex flex-col my-5 items-center md:items-start"
+            variants={itemVariants}
+          >
             <h1 className="md:text-2xl text-xl uppercase font-bold">
               {user.name}
             </h1>
@@ -72,8 +107,8 @@ const Profile = () => {
             {user.biografi && (
               <p className="bg-[#D9D9D9] mt-3 px-2 italic">{user.biografi}</p>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         <section className="grid md:grid-cols-2 mt-8">
           <div>
@@ -85,9 +120,14 @@ const Profile = () => {
               </>
             )}
           </div>
-          <div>
+          <motion.div variants={containerVariants}>
             <h1 className="text-xl mb-5">Biodata </h1>
-            <div className="bg-white rounded-xl p-5 space-y-3">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-white rounded-xl p-5 space-y-3"
+            >
               <p>
                 <b>Nama:</b> {user.name}
               </p>
@@ -143,8 +183,8 @@ const Profile = () => {
                   </a>
                 )}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </section>
       </main>
     </>
