@@ -57,7 +57,7 @@ const Sidebar = () => {
           selected={selected}
           setSelected={setSelected}
           open={open}
-          to="/game"
+          to="/games"
           iconSrc=""
           pathname={pathname}
           icon={<CgGames />}

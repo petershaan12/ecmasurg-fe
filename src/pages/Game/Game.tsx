@@ -10,7 +10,9 @@ const Game = () => {
         <MenuSamping />
       </header>
 
-      <main></main>
+      <main>
+        
+      </main>
     </>
   );
 };

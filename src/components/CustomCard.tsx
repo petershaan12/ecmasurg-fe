@@ -65,8 +65,6 @@ const CustomCard: React.FC<CustomCardProps> = ({
     y.set(0);
   };
 
-  const bgButtonConvert = bgButton;
-
   if ((linkTo = "/course")) {
     linkTo = "/modul";
   }
@@ -102,7 +100,10 @@ const CustomCard: React.FC<CustomCardProps> = ({
           <Link to={linkTo} className="flex flex-col items-end">
             <hr className="mt-2 w-[150px]" />
             <p
-              className={`mt-3 bg-[${bgButtonConvert}] text-white py-1 px-3 rounded-lg mr-2`}
+              className={`mt-3 text-white py-1 px-3 rounded-lg mr-2`}
+              style={{
+                backgroundColor: bgButton,
+              }}
             >
               {linkText}
             </p>

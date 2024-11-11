@@ -126,7 +126,7 @@ const Home = () => {
                         iconSrc={`/icons/${item.toLowerCase()}.svg`}
                         count={item === "Course" ? 4 : 0}
                         bgButton={
-                          item == "Course"
+                          item === "Course"
                             ? "#5CCC37"
                             : item === "Games"
                             ? "#EC4D36"
