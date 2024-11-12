@@ -16,19 +16,21 @@ const MobileMenu = () => {
         </SheetTrigger>
         <SheetContent className="flex flex-col bg-[#002979] md:hidden border-l-primary/50 p-0 w-full  ">
           <div className="flex justify-center items-center w-100 mb-10 mt-10 p-4">
-            <img
-              src="/navbar/logo.svg"
-              alt="EduMedSurg"
-              width={150}
-              height={40}
-            />
+            <Link to="/">
+              <img
+                src="/navbar/logo.svg"
+                alt="EduMedSurg"
+                width={150}
+                height={40}
+              />
+            </Link>
           </div>
           <ul className="space-y-6">
             <li>
               <Link
-                to="/"
+                to="/home"
                 className={`flex items-center space-x-3 px-5 py-3 text-sm text-white ${
-                  pathname === "/"
+                  pathname === "/home"
                     ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)]"
                     : "opacity-40 font-medium"
                 }`}
@@ -44,9 +46,9 @@ const MobileMenu = () => {
             </li>
             <li>
               <Link
-                to="/modul"
+                to="/home/modul"
                 className={`flex items-center space-x-3 px-5 py-3 text-sm text-white ${
-                  pathname === "/modul"
+                  pathname === "/home/modul"
                     ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
                     : "opacity-40"
                 }`}
@@ -62,9 +64,9 @@ const MobileMenu = () => {
             </li>
             <li>
               <Link
-                to="/forum-diskusi"
+                to="/home/forum-diskusi"
                 className={`flex items-center space-x-3 px-5 py-3 text-sm text-white ${
-                  pathname === "/kasus-studi"
+                  pathname === "/home/forum-diskusi"
                     ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
                     : "opacity-40"
                 }`}
@@ -80,9 +82,9 @@ const MobileMenu = () => {
             </li>
             <li>
               <Link
-                to="/profile"
+                to="/home/profile"
                 className={`flex items-center space-x-3 px-5 py-3 text-sm text-white ${
-                  pathname.startsWith("/profil")
+                  pathname.startsWith("/home/profil")
                     ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
                     : "opacity-40"
                 }`}

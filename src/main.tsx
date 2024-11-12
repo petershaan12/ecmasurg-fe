@@ -33,12 +33,12 @@ import Landing from "./Landing.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/home",
+    path: "/",
     element: <Landing />, // Menjadikan LandingPage sebagai halaman utama
     errorElement: <ErrorPage />,
   },
   {
-    path: "/",
+    path: "/home",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [

@@ -12,7 +12,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +23,12 @@ const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, setIsPending] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate("/home");
+    }
+  }, [navigate]);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -46,7 +52,7 @@ const LoginForm = () => {
         const token = response.data.token; // Adjust based on your API response
         sessionStorage.setItem("token", token);
         setSuccess("Login successful!");
-        navigate("/"); 
+        navigate("/home");
         form.reset();
       } else {
         setError(response.data.message || "Login failed");

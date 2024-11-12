@@ -29,7 +29,9 @@ const Logout = ({ navbar = false }: { navbar?: boolean }) => {
   return (
     <button
       onClick={handleLogout}
-      className={`flex ${navbar ? "text-white px-5 py-3 opacity-50" : ""}`}
+      className={`flex items-center ${
+        navbar ? "text-white px-5 py-3 opacity-50" : ""
+      }`}
     >
       <LogOut className="w-4 mr-2" />
       Logout
