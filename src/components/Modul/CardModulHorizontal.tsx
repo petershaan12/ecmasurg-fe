@@ -31,7 +31,7 @@ const CardModulHorizontal = ({ modul }: CardModulProps) => {
       )}
 
       <div className="w-full bg-white rounded-r-xl p-5 flex flex-col justify-between">
-        <h1 className=" font-bold mb-2">{modul.judul}</h1>
+        <h1 className=" font-bold mb-2 ">{modul.judul}</h1>
         <div className="flex items-center space-x-2 mb-3">
           <img
             src="/icons/teach.svg"
@@ -40,9 +40,9 @@ const CardModulHorizontal = ({ modul }: CardModulProps) => {
             height={20}
             className="w-[20px] h-[20px]"
           />
-          <p className="text-sm md:text-base">{modul.total_count} Course</p>
+          <p className="text-sm">{modul.total_count} Course</p>
         </div>
-        <div className="flex justify-between w-full text-xs md:text-base">
+        <div className="flex justify-between w-full text-sm md:text-base">
           <p className="text-sm">{modul.asignd_teacher.name}</p>
           <Link
             to={`/modul/${modul.id}`}

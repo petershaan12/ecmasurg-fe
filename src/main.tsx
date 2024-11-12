@@ -26,9 +26,17 @@ import EvaluasiCreate from "./pages/Modul/Evaluasi/EvaluasiCreate.tsx";
 import EvaluasiPage from "./pages/Modul/Evaluasi/EvaluasiPage.tsx";
 import EvaluasiEdit from "./pages/Modul/Evaluasi/EvaluasiEdit.tsx";
 import AssignmentSubmit from "./pages/Modul/AssignmentSubmit.tsx";
-import Game from "./pages/Game/Game.tsx";
+import Quiz from "./pages/Quiz/Quiz.tsx";
+import QuizCreate from "./pages/Quiz/QuizCreate.tsx";
+import DetailQuiz from "./pages/Quiz/DetailQuiz.tsx";
+import Landing from "./Landing.tsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/home",
+    element: <Landing />, // Menjadikan LandingPage sebagai halaman utama
+    errorElement: <ErrorPage />,
+  },
   {
     path: "/",
     element: <App />,
@@ -78,7 +86,9 @@ const router = createBrowserRouter([
         path: "forum-diskusi/:id",
         element: <DetailStudi key="detail-studi" />,
       },
-      { path: "games", element: <Game key="game" /> },
+      { path: "quiz", element: <Quiz key="quiz" /> },
+      { path: "quiz/:category", element: <DetailQuiz key="quiz-detail" /> },
+      { path: "quiz/create", element: <QuizCreate key="quiz-detail" /> },
     ],
   },
   {

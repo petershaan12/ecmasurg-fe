@@ -53,11 +53,11 @@ const Sidebar = () => {
           icon=""
         />
         <Option
-          title="Game"
+          title="Quiz"
           selected={selected}
           setSelected={setSelected}
           open={open}
-          to="/games"
+          to="/quiz"
           iconSrc=""
           pathname={pathname}
           icon={<CgGames />}

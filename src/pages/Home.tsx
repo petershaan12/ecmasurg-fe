@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import animationdata from "../../public/Emsaec.json";
+import animationdata from "@/components/Emsaec.json";
 import axios from "axios";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import CardModulHorizontal from "@/components/Modul/CardModulHorizontal";
@@ -103,7 +103,7 @@ const Home = () => {
               <div id="activity">
                 <h1 className="text-xl mb-5">Your Activity </h1>
                 <div className=" grid grid-cols-2 md:grid-cols-3 gap-5">
-                  {["Course", "Games", "Trophy"].map((item, index) => (
+                  {["Course", "Quiz", "Trophy"].map((item, index) => (
                     <motion.div
                       key={item}
                       initial={{ opacity: 0, y: 50 }}
@@ -114,7 +114,7 @@ const Home = () => {
                         bgColor={
                           item === "Course"
                             ? "#8CE065"
-                            : item === "Games"
+                            : item === "Quiz"
                             ? "#F9A685"
                             : "#39C2E7"
                         }
@@ -124,11 +124,11 @@ const Home = () => {
                         linkText={`Lihat ${item}`}
                         linkTo={`/${item.toLowerCase()}`}
                         iconSrc={`/icons/${item.toLowerCase()}.svg`}
-                        count={item === "Course" ? 4 : 0}
+                        count={item === "Course" ? 4 : item === "Quiz" ? 1 : 0}
                         bgButton={
                           item === "Course"
                             ? "#5CCC37"
-                            : item === "Games"
+                            : item === "Quiz"
                             ? "#EC4D36"
                             : "#009BD8"
                         }
