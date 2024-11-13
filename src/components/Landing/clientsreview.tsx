@@ -21,7 +21,7 @@ export default function ClientSreview() {
   return (
     <>
       <section
-        className="relative md:py-24 py-16 px-8 md:px-32 bg-[#fdf3f2]"
+        className="container mx-auto relative md:py-24 py-16 px-8 md:px-32 bg-[#fdf3f2]"
         id="testi"
       >
         <div ref={ref} className="container">
@@ -97,7 +97,7 @@ export default function ClientSreview() {
               </motion.li>
             </ul>
 
-            <ul className="space-y-8 hidden sm:block">
+            <ul className="space-y-8 block">
               <motion.li
                 variants={{
                   hidden: { opacity: 0, y: 75 },
@@ -140,7 +140,7 @@ export default function ClientSreview() {
               </motion.li>
             </ul>
 
-            <ul className="space-y-8 hidden lg:block">
+            <ul className="space-y-8 lg:block">
               <motion.li
                 variants={{
                   hidden: { opacity: 0, y: 75 },

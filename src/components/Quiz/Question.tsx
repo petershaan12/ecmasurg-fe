@@ -10,9 +10,7 @@ const Question = () => {
 
   return (
     <div className="flex items-center flex-col">
-      <h4 className="text-center font-medium md:text-xl ">
-        {question?.question}
-      </h4>
+      <h4 className="text-center font-medium   ">{question?.question}</h4>
       <Options question={question} />
     </div>
   );

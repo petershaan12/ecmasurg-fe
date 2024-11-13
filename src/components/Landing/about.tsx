@@ -14,10 +14,13 @@ const About = () => {
     }
   }, [isInView]);
   return (
-    <section className="relative px-6 lg:px-44 md:py-16 pt-10 " id="about">
+    <section
+      className="relative px-6 pb-0 pt-10 flex items-center justify-center"
+      id="about"
+    >
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        <div className="lg:col-span-5 h-full lg:-ml-24 order-1">
-          <div className="lg:absolute lg:bottom-0 w-72 md:w-[450px] -mt-8 mx-auto ">
+        <div className="lg:col-span-6 h-full lg:-ml-24 order-1 md:order-0">
+          <div className="w-72 md:w-[450px] mx-auto lg:mx-0 lg:ml-auto lg:mr-0 ">
             <motion.img
               variants={{
                 hidden: { opacity: 0, x: 75 },
@@ -31,7 +34,7 @@ const About = () => {
             />
           </div>
         </div>
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-6 md:order-1">
           <div ref={ref} className="lg:ml-7 text-black">
             <motion.h3
               variants={{

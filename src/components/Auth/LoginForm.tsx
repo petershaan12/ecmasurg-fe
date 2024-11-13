@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginSchema } from "../../schema";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ const LoginForm = () => {
     setError("");
     setSuccess("");
     setIsPending(true);
+
+    const toastId = toast.loading("Login...");
     try {
       const response = await axios.post(
         `${process.env.REACT_PUBLIC_API_KEY}/api/login`,
@@ -50,14 +53,23 @@ const LoginForm = () => {
 
       if (response.status === 200) {
         const token = response.data.token; // Adjust based on your API response
+        toast.success("Berhasil Login!", {
+          id: toastId,
+        });
         sessionStorage.setItem("token", token);
         setSuccess("Login successful!");
         navigate("/home");
         form.reset();
       } else {
+        toast.success("Gagal Login! Periksa Koneksi Anda", {
+          id: toastId,
+        });
         setError(response.data.message || "Login failed");
       }
     } catch (err: any) {
+      toast.error("An error occurred during logout.", {
+        id: toastId,
+      });
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
       } else {
@@ -69,7 +81,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex justify-center flex-col">
+    <div className="flex justify-center flex-col w-[300px] md:w-full">
       <div className="text-center flex flex-col items-center justify-center">
         <Link to="/">
           <img src="/logo.svg" alt="logo" width={200} height={100} />

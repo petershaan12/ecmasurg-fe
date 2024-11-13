@@ -7,9 +7,12 @@ import { motion } from "framer-motion";
 import { useTypewriter } from "react-simple-typewriter";
 import axios from "axios";
 import { persistor } from "./redux/store";
-import { ArrowUp, Home, LogOut } from "lucide-react";
+import { ArrowUp, Home, LogOut, Menu } from "lucide-react";
 import { animateScroll as scroll } from "react-scroll";
 import About from "./components/Landing/about";
+import { Sheet, SheetContent, SheetTrigger } from "./components/ui/sheet";
+import { toast } from "sonner";
+import { Toaster } from "./components/ui/sonner";
 
 const Landing = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -50,6 +53,7 @@ const Landing = () => {
   };
 
   const handleLogout = async () => {
+    const toastId = toast.loading("Logout...");
     try {
       const response = await axios.get(
         `${process.env.REACT_PUBLIC_API_KEY}/api/logout`,
@@ -59,15 +63,23 @@ const Landing = () => {
           },
         }
       );
-
       sessionStorage.removeItem("token");
       if (response.status === 200) {
         persistor.purge();
+        toast.success("Berhasil Logout!", {
+          id: toastId,
+        });
         window.location.reload();
       } else {
+        toast.success("Gagal Logout! Periksa Koneksi Anda", {
+          id: toastId,
+        });
         console.error("Logout failed");
       }
     } catch (error) {
+      toast.error("An error occurred during logout.", {
+        id: toastId,
+      });
       console.error("An error occurred during logout", error);
     }
   };
@@ -75,15 +87,15 @@ const Landing = () => {
   const scrollToSection = (id: any) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   return (
     <div>
       <nav
-        className={`absolute w-full top-0 z-50 transition-colors duration-300 bg-transparent py-8
-        flex md:justify-between justify-center md:px-6 lg:px-44  items-center `}
+        className={`container mx-auto w-full top-0 z-50 transition-colors duration-300 bg-transparent py-8 px-8
+          flex justify-between items-center absolute left-1/2 transform -translate-x-1/2`}
       >
         <div>
           <motion.img
@@ -100,6 +112,54 @@ const Landing = () => {
           />
         </div>
 
+        {/* mobile view */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger className="border border-white/10 rounded-lg align-middle px-2 py-1">
+              <Menu className="text-white" />
+            </SheetTrigger>
+            <SheetContent className="flex flex-col bg-black/40 backdrop-blur-md md:hidden w-1/2 py-24">
+              <ul className="space-y-6 text-center">
+                <li>
+                  <Link
+                    className={`mt-12 flex items-center text-white text-center px-4 py-2  rounded-md bg-primary border-primary border-2`}
+                    to={isLogin ? "/home" : "/login"}
+                  >
+                    {isLogin ? (
+                      <>
+                        <Home className="w-4 mr-2" />
+                        Beranda
+                      </>
+                    ) : (
+                      <span className="mx-auto">Login</span>
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  {isLogin ? (
+                    <button
+                      className={`flex items-center text-white
+         px-4 py-2  rounded-md border-2 border-white hover:bg-primary/30`}
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="w-4 mr-2" /> Logout
+                    </button>
+                  ) : (
+                    <Link
+                      className={`flex items-center text-white
+           px-4 py-2  rounded-md border-2 border-white hover:bg-primary/30`}
+                      to="/signup"
+                    >
+                      <span className="mx-auto">Sign Up</span>
+                    </Link>
+                  )}
+                </li>
+              </ul>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* desktop view */}
         <ul className="items-center space-x-5 hidden  text-sm md:flex">
           <motion.li
             initial={{ opacity: 0, y: 20 }}
@@ -185,7 +245,7 @@ const Landing = () => {
       <section
         className="py-36 lg:py-56 w-full table relative bg-[url('../public/landing/bg-1.jpg')] bg-top bg-no-repeat bg-cover"
         id="home"
-        style={{ backgroundAttachment: "fixed" }}
+        style={{ backgroundAttachment: "fixed", backgroundPosition: "center" }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/50"></div>
         <div className="container relative text-center  mx-auto text-white px-6 md:px-0">
@@ -246,6 +306,8 @@ const Landing = () => {
       >
         <ArrowUp />
       </a>
+
+      <Toaster />
     </div>
   );
 };

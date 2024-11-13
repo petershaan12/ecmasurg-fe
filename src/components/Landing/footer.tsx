@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <>
       <footer className="footer bg-slate-900 relative text-gray-200  px-5 md:px-32 ">
-        <div className="text-center py-6 pt-12">
+        <div className="text-center py-6 pt-12 ">
           <motion.img
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -20,7 +20,7 @@ export default function Footer() {
         </div>
 
         <div className="py-[30px] px-0 border-t border-white/20">
-          <div className="container text-center">
+          <div className="container text-center mx-auto ">
             <div className="flex justify-center items-center">
               <p className="text-white md:text-sm text-xs">
                 ©{new Date().getFullYear()} E-msaec.
