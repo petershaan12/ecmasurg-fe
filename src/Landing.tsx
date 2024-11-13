@@ -122,7 +122,7 @@ const Landing = () => {
               <ul className="space-y-6 text-center">
                 <li>
                   <Link
-                    className={`mt-12 flex items-center text-white text-center px-4 py-2  rounded-md bg-primary border-primary border-2`}
+                    className={`mt-12 flex items-center w-fit text-white text-center px-4 py-2  rounded-md bg-primary border-primary border-2`}
                     to={isLogin ? "/home" : "/login"}
                   >
                     {isLogin ? (
