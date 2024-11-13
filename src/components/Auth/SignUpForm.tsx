@@ -17,7 +17,6 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { SignupSchema } from "../../schema";
-import { Typewriter } from "react-simple-typewriter";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -68,25 +67,13 @@ const SignupForm = () => {
     }
   };
 
-  return (
+return (
     <div className="flex justify-center flex-col">
       <div className="text-center flex flex-col items-center justify-center">
-        <img src="/logo.svg" alt="logo" width={200} height={100} />
-        <p>
-          <Typewriter
-            words={[
-              "Welcome to Our E-msaec Website",
-              "Selamat datang di Website E-msaec kami", // Indonesian
-              "Willkommen auf unserer E-msaec-Website", // German
-            ]}
-            loop={5}
-            cursor
-            cursorStyle="|"
-            typeSpeed={70}
-            deleteSpeed={50}
-            delaySpeed={1000}
-          />
-        </p>
+        <Link to="/">
+          <img src="/logo.svg" alt="logo" width={200} height={100} />
+        </Link>
+        <p>Welcome to Our E-msaec Website</p>
       </div>
       <Form {...form}>
         <form

@@ -7,6 +7,7 @@ const Question = () => {
     question: "No question available",
   };
 
+
   return (
     <div className="flex items-center flex-col">
       <h4 className="text-center font-medium md:text-xl ">

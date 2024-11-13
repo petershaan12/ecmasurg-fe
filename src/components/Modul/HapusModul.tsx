@@ -40,7 +40,7 @@ const HapusModul = ({ id }: HapusModulProps) => {
         toast.success("Modul berhasil dihapus!", {
           id: toastId,
         });
-        navigate("/modul"); // Navigasi ke halaman modul setelah berhasil dihapus
+        navigate("/home/modul"); // Navigasi ke halaman modul setelah berhasil dihapus
       } else {
         toast.error("An error occurred while deleting the module.", {
           id: toastId,

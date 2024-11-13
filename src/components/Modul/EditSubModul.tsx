@@ -150,7 +150,7 @@ const EditSubModul = ({ submodul }: any) => {
           id: toastId,
         });
 
-        navigate(`/modul/${id}`);
+        navigate(`/home/modul/${id}`);
       } else {
         console.log(response.data);
         toast.dismiss(toastId);

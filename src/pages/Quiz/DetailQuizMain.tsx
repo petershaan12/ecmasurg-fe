@@ -8,15 +8,17 @@ import Timer from "@/components/Quiz/Timer";
 import Loading from "@/components/Loading";
 import { useQuiz } from "@/utils/QuizContext";
 import Pembahasan from "@/components/Quiz/Pembahasan";
+import { useParams } from "react-router-dom";
 
 const DetailQuizMain = () => {
   const { state } = useQuiz();
+  const { category } = useParams<{ category: string }>();
 
   return (
     <>
       {state.gameStatus === "loading" && <Loading />}
       {state.gameStatus === "error" && <Error />}
-      {state.gameStatus === "ready" && <StartScreen />}
+      {state.gameStatus === "ready" && <StartScreen judul={category || ""} />}
       {state.gameStatus === "active" && (
         <>
           <Progress />

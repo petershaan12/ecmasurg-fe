@@ -173,21 +173,21 @@ const SubModul = () => {
             {isModulOwner && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 my-2">
                 <Link
-                  to={`/modul/${id}/create`}
+                  to={`/home/modul/${id}/create`}
                   className="bg-primary text-white px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
                 >
                   <FaPlus />
                   <span>Add Task</span>
                 </Link>
                 <Link
-                  to={`/modul/${id}/evaluasi/create`}
+                  to={`/home/modul/${id}/evaluasi/create`}
                   className="bg-primary text-white px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
                 >
                   <FaPlus />
                   <span>Add Evaluation</span>
                 </Link>
                 <Link
-                  to={`/modul/${id}/edit`}
+                  to={`/home/modul/${id}/edit`}
                   className="bg-[#FDFF79] text-black px-3 py-2 space-x-2 text-center rounded flex justify-center items-center text-sm"
                 >
                   <Edit className="w-4" />
@@ -240,7 +240,7 @@ const SubModul = () => {
                 {isModulOwner && item.type && (
                   <div className="flex space-x-2">
                     <Link
-                      to={`/modul/${id}/edit/${item.id}`}
+                      to={`/home/modul/${id}/edit/${item.id}`}
                       className="text-blue-500 hover:underline"
                     >
                       Edit
@@ -251,7 +251,7 @@ const SubModul = () => {
                 {isModulOwner && !item.type && (
                   <div className="flex space-x-2">
                     <Link
-                      to={`/modul/${id}/evaluasi/edit/${item.id}`}
+                      to={`/home/modul/${id}/evaluasi/edit/${item.id}`}
                       className="text-blue-500 hover:underline"
                     >
                       Edit
@@ -262,7 +262,7 @@ const SubModul = () => {
               </motion.section>
             ))
           ) : (
-            <div className="mt-36">
+            <div className="mt-112">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}

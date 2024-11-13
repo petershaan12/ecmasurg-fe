@@ -49,7 +49,7 @@ const Modul = () => {
           <h1 className="md:text-xl font-bold">Input pembelajaran</h1>
           {user.roles === "teacher" && (
             <Link
-              to="/modul/create"
+              to="create"
               className="bg-primary text-white px-3 py-2 text-center rounded-xl md:flex hidden "
             >
               <PlusIcon />
@@ -63,7 +63,7 @@ const Modul = () => {
       <main className="mt-8">
         {user.roles === "teacher" && (
           <Link
-            to="/modul/create"
+            to="/home/modul/create"
             className="bg-primary text-white px-3 py-2 text-center rounded-xl md:hidden flex justify-center items-center text-sm mb-8 "
           >
             <PlusIcon />

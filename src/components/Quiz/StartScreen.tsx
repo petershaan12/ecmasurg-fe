@@ -1,19 +1,29 @@
 import { useQuiz } from "@/utils/QuizContext";
 import { Button } from "../ui/button";
 
-const StartScreen = () => {
+interface StartScreenProps {
+  judul: string;
+}
+
+const StartScreen = ({ judul }: StartScreenProps) => {
   const { numQuestions, dispatch, state } = useQuiz();
 
   return (
-    <div className="flex flex-col items-center mt-64">
-      <h1 className="font-bold text-3xl">The Quiz</h1>
-      <h2 className="opacity-80">Welcome to The React Quiz!</h2>
+    <div className="flex flex-col items-center mt-32">
+      <h1 className="font-bold text-3xl">Are You Ready?</h1>
+      <h2 className="text-center text-sm mt-3">
+        Each question will be timed for 30 seconds, and every submission will be
+        recorded! The result will be shown after you click the answer.
+      </h2>
       {numQuestions === 0 ? (
         <h3 className="mt-5 p-4 bg-red-100 text-red-700 rounded-full ">
           No quizzes available. Please come back later.
         </h3>
       ) : (
-        <h3>{numQuestions} questions to test your React mastery</h3>
+        <h3 className="mt-5">
+          <strong> {numQuestions} questions </strong> to test your quiz about{" "}
+          {judul}
+        </h3>
       )}
       {!state.canStartQuiz && numQuestions > 0 && (
         <h3 className="mt-5 p-4 bg-red-100 text-red-700 rounded-full ">

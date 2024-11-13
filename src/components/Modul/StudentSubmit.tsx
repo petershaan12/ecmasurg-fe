@@ -149,7 +149,7 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
         id: toastId,
         duration: 10000,
       });
-      navigate(`/modul/${id}/assignment/${idsubmodul}`);
+      navigate(`/home/modul/${id}/assignment/${idsubmodul}`);
       setUploadedFiles([]);
       setFilePreview([]);
     } catch (error) {
@@ -164,7 +164,7 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
 
   if (tugasSubmit && tugasSubmit.length > 0) {
     if (tugasSubmit[0].submited) {
-      navigate(`/modul/${id}/assignment/${idsubmodul}`);
+      navigate(`/home/modul/${id}/assignment/${idsubmodul}`);
       toast.error("Tugas sudah di kumpulkan");
     }
   }

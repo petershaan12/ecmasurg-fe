@@ -7,7 +7,9 @@ import { motion } from "framer-motion";
 import { useTypewriter } from "react-simple-typewriter";
 import axios from "axios";
 import { persistor } from "./redux/store";
-import { ArrowUp, LogOut } from "lucide-react";
+import { ArrowUp, Home, LogOut } from "lucide-react";
+import { animateScroll as scroll } from "react-scroll";
+import About from "./components/Landing/about";
 
 const Landing = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -29,8 +31,8 @@ const Landing = () => {
   }
 
   const [text] = useTypewriter({
-    words: [" Education Media Analyze, Evaluate, and Creative", "E-MSAEC"],
-    loop: 20,
+    words: [" Education Media Analyze, Evaluate, and Creative", "E-msaec"],
+    loop: 2,
     onLoopDone: () => console.log(`Loop completed after 3 runs.`),
   });
 
@@ -41,9 +43,9 @@ const Landing = () => {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
+    scroll.scrollToTop({
+      duration: 1000,
+      smooth: true,
     });
   };
 
@@ -81,7 +83,7 @@ const Landing = () => {
     <div>
       <nav
         className={`absolute w-full top-0 z-50 transition-colors duration-300 bg-transparent py-8
-        flex md:justify-between justify-center md:px-44  items-center `}
+        flex md:justify-between justify-center md:px-6 lg:px-44  items-center `}
       >
         <div>
           <motion.img
@@ -98,164 +100,140 @@ const Landing = () => {
           />
         </div>
 
-        {isLogin ? (
-          <ul className="items-center space-x-5 hidden  text-sm md:flex">
-            <li>
-              <button
-                className="text-white  rounded-md"
-                onClick={() => scrollToSection("about")}
-              >
-                About
-              </button>
-            </li>
-            <li>
-              <button
-                className="text-white  rounded-md"
-                onClick={() => scrollToSection("pelayanan")}
-              >
-                Pelayanan
-              </button>
-            </li>
-            <li>
-              <button
-                className="text-white  rounded-md"
-                onClick={() => scrollToSection("testi")}
-              >
-                Testimony
-              </button>
-            </li>
-            <li>
-              <Link
-                className={`text-white px-4 py-2  rounded-md bg-primary border-2 border-primary`}
-                to="/home"
-              >
-                Beranda
-              </Link>
-            </li>
-            <li>
+        <ul className="items-center space-x-5 hidden  text-sm md:flex">
+          <motion.li
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <button
+              className="text-white  rounded-md"
+              onClick={() => scrollToSection("about")}
+            >
+              About
+            </button>
+          </motion.li>
+          <motion.li
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <button
+              className="text-white  rounded-md"
+              onClick={() => scrollToSection("pelayanan")}
+            >
+              Pelayanan
+            </button>
+          </motion.li>
+          <motion.li
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <button
+              className="text-white  rounded-md"
+              onClick={() => scrollToSection("testi")}
+            >
+              Testimony
+            </button>
+          </motion.li>
+          <motion.li
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <Link
+              className={`flex items-center text-white px-4 py-2  rounded-md bg-primary border-primary border-2`}
+              to={isLogin ? "/home" : "/login"}
+            >
+              {isLogin ? (
+                <>
+                  <Home className="w-4 mr-2" />
+                  Beranda
+                </>
+              ) : (
+                "Login"
+              )}
+            </Link>
+          </motion.li>
+          <motion.li
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            {isLogin ? (
               <button
                 className={`flex items-center text-white
          px-4 py-2  rounded-md border-2 border-white hover:bg-primary/30`}
                 onClick={handleLogout}
               >
-                <LogOut className="w-4" /> Logout
+                <LogOut className="w-4 mr-2" /> Logout
               </button>
-            </li>
-          </ul>
-        ) : (
-          <ul className="items-center space-x-5 hidden  text-sm md:flex">
-            <li>
-              <button
-                className="text-white  rounded-md"
-                onClick={() => scrollToSection("about")}
-              >
-                About
-              </button>
-            </li>
-            <li>
-              <button
-                className="text-white  rounded-md"
-                onClick={() => scrollToSection("pelayanan")}
-              >
-                Pelayanan
-              </button>
-            </li>
-            <li>
-              <button
-                className="text-white  rounded-md"
-                onClick={() => scrollToSection("testi")}
-              >
-                Testimony
-              </button>
-            </li>
-            <li>
+            ) : (
               <Link
-                className={`text-white px-4 py-2  rounded-md bg-primary border-2 border-primary`}
-                to="/login"
-              >
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={`text-white
+                className={`flex items-center text-white
            px-4 py-2  rounded-md border-2 border-white hover:bg-primary/30`}
                 to="/signup"
               >
                 Sign Up
               </Link>
-            </li>
-          </ul>
-        )}
+            )}
+          </motion.li>
+        </ul>
       </nav>
 
       <section
-        className="py-36 lg:py-56 w-full table relative bg-[url('../public/landing/bg.jpg')] bg-top bg-no-repeat bg-cover"
+        className="py-36 lg:py-56 w-full table relative bg-[url('../public/landing/bg-1.jpg')] bg-top bg-no-repeat bg-cover"
         id="home"
+        style={{ backgroundAttachment: "fixed" }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/50"></div>
-        <div className="container relative text-center  mx-auto text-white px-24 md:px-0">
+        <div className="container relative text-center  mx-auto text-white px-6 md:px-0">
           <h3 className="font-semibold leading-normal text-lg md:text-3xl mb-5 mt-10">
             Welcome to {text}
           </h3>
-          <p className="text-slate-300 text-sm md:text-lg max-w-xl mx-auto">
-            Explore the world of knowledge with E-MSAEC, your all-in-one
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-slate-300 text-sm md:text-lg max-w-xl mx-auto"
+          >
+            Explore the world of knowledge with E-msaec, your all-in-one
             platform for an enhanced educational experience with Moodle.
-          </p>
+          </motion.p>
           <div className="mt-8 space-x-5">
             {isLogin ? (
-              <Link
-                to="/home/modul"
-                className="py-3 px-8 inline-block font-medium text-base transition-all duration-500 bg-primary hover:bg-primary/80 text-white rounded-lg"
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
               >
-                Mulai Belajar Yuk 🏫
-              </Link>
+                <Link
+                  to="/home/modul"
+                  className="py-3 px-8 inline-block font-medium text-base transition-all duration-500 bg-primary hover:bg-primary/80 text-white rounded-lg"
+                >
+                  Mulai Belajar Yuk 🏫
+                </Link>
+              </motion.div>
             ) : (
-              <Link
-                to="/login"
-                className="py-3 px-8 inline-block font-medium text-base transition-all duration-500 bg-primary hover:bg-primary/80 text-white rounded-lg"
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
               >
-                Mendaftar Sekarang ✏️
-              </Link>
+                <Link
+                  to="/signup"
+                  className="py-3 px-8 inline-block font-medium text-base transition-all duration-500 bg-primary hover:bg-primary/80 text-white rounded-lg"
+                >
+                  Mendaftar Sekarang ✏️
+                </Link>
+              </motion.div>
             )}
           </div>
         </div>
       </section>
 
-      <section className="relative px-5 md:px-44 py-12 " id="about">
-        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-5">
-            <div className="relative w-56 md:w-[300px] max-w-lg mx-auto">
-              <img
-                src="/landing/about.jpg"
-                className="rounded-lg shadow-lg"
-                alt="About EMSAEC"
-              />
-            </div>
-          </div>
-          <div className="lg:col-span-7">
-            <div className="lg:ml-7 text-black">
-              <h3 className="text-lg text-center md:text-left md:text-3xl font-bold mb-4 text-primary">
-                Tentang E-MSAEC
-              </h3>
-              <p className="text-black  text-center md:text-left  text-sm md:text-base max-w-2xl">
-                E-msaec adalah platform pembelajaran interaktif yang dirancang
-                khusus untuk mendukung mahasiswa dan profesional kesehatan dalam
-                memahami konsep mendalam tentang sistem muskulosektual dan
-                disiplin terkait ilmu bedah.
-              </p>
-              <div className="mt-8 flex md:justify-start justify-center">
-                <Link
-                  to="mailto:evelynetambunan@gmail.com"
-                  className="py-2 px-5 inline-block font-medium text-base transition-all duration-500 bg-primary text-white rounded-lg"
-                >
-                  Contact Us
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <About />
       <OurServices />
       <ClientSreview />
       <Footer />

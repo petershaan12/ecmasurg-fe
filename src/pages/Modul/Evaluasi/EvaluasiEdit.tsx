@@ -42,7 +42,7 @@ const EvaluasiEdit = () => {
   if (loading) return <Loading />;
 
   const isEvaluasiOwner =
-    user.roles === "teacher" && evaluasi.modul.asignd_teacher === user.id;
+    user.roles === "teacher" && evaluasi.modul.asignd_teacher == user.id;
 
   if (!isEvaluasiOwner) {
     console.log("Not authorized to edit this evaluasi");
@@ -72,7 +72,7 @@ const EvaluasiEdit = () => {
         <section className="md:col-end-5">
           <div className="bg-primary rounded-xl p-5 text-white text-center space-y-6 flex flex-col items-center">
             <h1>Tutorial Input Evaluasi</h1>
-            <Link to="/modul/tutorial">
+            <Link to="/home/modul/tutorial">
               <p className="bg-white px-3 py-1 text-black rounded-xl w-fit ">
                 Tonton Sekarang
               </p>

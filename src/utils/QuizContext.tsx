@@ -134,7 +134,7 @@ function QuizProvider({ children }: { children: ReactNode }) {
 
   const numQuestions = state.questions.length;
   const maxPossiblePoints = state.questions.reduce(
-    (prev, cur) => prev + cur.points,
+    (prev, cur) => prev + Number(cur.points),
     0
   );
 
@@ -142,20 +142,33 @@ function QuizProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      axios
-        .get(`${process.env.REACT_PUBLIC_API_KEY}/api/quiz/${category}`, {
-          params: {
-            category: category, // Menambahkan kategori ke dalam query
-          },
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        })
-        .then((res) => {
-          dispatch({ type: "dataReceived", payload: res.data.questions });
-        })
-        .catch(() => dispatch({ type: "dataFailed" }));
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/quiz/${category}`,
+          {
+            params: {
+              category: category,
+            },
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        // Konversi `points` menjadi number untuk setiap item dalam questions
+        const questionsWithNumbers = res.data.questions.map(
+          (question: any) => ({
+            ...question,
+            correct_option: Number(question.correct_option),
+            points: Number(question.points), // Pastikan points dalam bentuk number
+          })
+        );
+
+        dispatch({ type: "dataReceived", payload: questionsWithNumbers });
+      } catch (error) {
+        dispatch({ type: "dataFailed" });
+      }
     };
 
     const checkQuizStatus = async () => {

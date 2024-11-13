@@ -119,7 +119,7 @@ const InputSubModul = () => {
         toast.success("Task berhasil ditambahkan!", {
           id: toastId,
         });
-        navigate(`/modul/${id}`);
+        navigate(`/home/modul/${id}`);
       } else {
         console.log(response.data);
         toast.dismiss(toastId);
@@ -335,6 +335,9 @@ const InputSubModul = () => {
             {filePreview.length > 0 && (
               <div className="mt-2">
                 <strong>Files to be uploaded:</strong>
+                <span className="text-xs ml-2">
+                  ( ppt, pptx, pdf, doc, docx, jpg, jpeg, png.)
+                </span>
                 <ul>
                   {filePreview.map((fileName, index) => (
                     <li key={index} className="flex justify-between">

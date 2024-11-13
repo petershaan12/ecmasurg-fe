@@ -179,7 +179,7 @@ const EditModul = () => {
         toast.success("Modul berhasil diedit!", {
           id: toastId,
         });
-        navigate("/modul");
+        navigate("/home/modul");
       } else {
         console.log(response.data);
         toast.dismiss(toastId);

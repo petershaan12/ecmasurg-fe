@@ -55,7 +55,7 @@ const EvaluasiPage: React.FC = () => {
             </Link>
             /
             <Link
-              to={`/modul/${evaluasi.modul.id}`}
+              to={`/home/modul/${evaluasi.modul.id}`}
               className="hover:underline"
             >
               <span>{evaluasi.modul.judul}</span>

@@ -81,7 +81,7 @@ const MateriPage = () => {
               Modul Pembelajaran
             </Link>{" "}
             /{" "}
-            <Link to={`/modul/${id}`} className="hover:underline">
+            <Link to={`/home/modul/${id}`} className="hover:underline">
               {materi.modul_judul}
             </Link>
             / {materi.judul}

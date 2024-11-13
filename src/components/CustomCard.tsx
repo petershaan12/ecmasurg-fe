@@ -65,8 +65,8 @@ const CustomCard: React.FC<CustomCardProps> = ({
     y.set(0);
   };
 
-  if (linkTo === "/course") {
-    linkTo = "/modul";
+  if (linkTo === "course") {
+    linkTo = "modul";
   }
 
   return (

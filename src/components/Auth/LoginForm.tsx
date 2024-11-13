@@ -71,7 +71,9 @@ const LoginForm = () => {
   return (
     <div className="flex justify-center flex-col">
       <div className="text-center flex flex-col items-center justify-center">
-        <img src="/logo.svg" alt="logo" width={200} height={100} />
+        <Link to="/">
+          <img src="/logo.svg" alt="logo" width={200} height={100} />
+        </Link>
         <p>Sign in to your account</p>
       </div>
       <Form {...form}>

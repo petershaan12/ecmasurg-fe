@@ -137,7 +137,7 @@ const InputModul = () => {
         toast.success("Modul berhasil ditambahkan!", {
           id: toastId,
         });
-        navigate("/modul");
+        navigate("/home/modul");
       } else {
         console.log(response.data);
         toast.dismiss(toastId);

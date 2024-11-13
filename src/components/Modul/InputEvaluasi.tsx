@@ -65,8 +65,8 @@ const InputEvaluasi = () => {
     form.setValue("question1", "Bagaimana Pembelajaran Hari Ini?");
     form.setValue("question2", "Apa Saja Hal yang Belum Dipahami?");
     form.setValue("question3", "Apakah Ada Masukan untuk Pengajar?");
-    form.setValue("type1", "0"); // Default type for question 1
-    form.setValue("type2", "1"); // Default type for question 2
+    form.setValue("type1", "1"); // Default type for question 1
+    form.setValue("type2", "0"); // Default type for question 2
     form.setValue("type3", "0"); // Default type for question 3 (adjust as needed)
   }, [form]);
 
@@ -114,7 +114,7 @@ const InputEvaluasi = () => {
         toast.success("Evaluasi berhasil ditambahkan!", {
           id: toastId,
         });
-        navigate(`/modul/${id}`);
+        navigate(`/home/modul/${id}`);
       } else {
         console.log(response.data);
         toast.dismiss(toastId);

@@ -94,10 +94,10 @@ const EvaluasiStudent = ({ evaluasi, idmodul, idevaluasi }: EvaluasiProps) => {
         }
       );
       toast.success("Evaluasi submitted successfully!");
-      navigate(`/modul/${idmodul}`); // Redirect after successful submission
+      navigate(`/home/modul/${idmodul}`); // Redirect after successful submission
     } catch (error) {
       toast.error("Failed to submit evaluasi. Try again later.");
-      navigate(`/modul/${idmodul}`);
+      navigate(`/home/modul/${idmodul}`);
     }
   };
 

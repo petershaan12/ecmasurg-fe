@@ -19,7 +19,7 @@ const MenuSamping = () => {
 
   return (
     <div className="flex space-x-5 items-center">
-      <Link to="/profile/edit" className="hover:cursor-pointer">
+      <Link to="/home/profile/edit" className="hover:cursor-pointer">
         <IoSettingsOutline className="w-6 h-8" />
       </Link>
       <DropdownMenu>
@@ -40,7 +40,7 @@ const MenuSamping = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem className="hover:cursor-pointer ">
-            <Link to="/profile" className="flex items-center w-full">
+            <Link to="/home/profile" className="flex items-center w-full">
               <CgProfile className="w-4 mr-2" />
               Profile
             </Link>

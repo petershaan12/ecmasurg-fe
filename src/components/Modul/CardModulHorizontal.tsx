@@ -24,10 +24,10 @@ const CardModulHorizontal = ({ modul }: CardModulProps) => {
           alt="Card Modul"
           width={200}
           height={150}
-          className="md:h-[200px] md:w-[200px] w-[100px]  object-cover rounded-l-xl"
+          className="md:h-[200px] md:w-[160px] w-[100px]  object-cover rounded-l-xl"
         />
       ) : (
-        <div className="h-[200px] w-[200px] object-cover rounded-l-xl bg-primary"></div>
+        <div className="h-[200px] w-[160px] object-cover rounded-l-xl bg-primary"></div>
       )}
 
       <div className="w-full bg-white rounded-r-xl p-5 flex flex-col justify-between">

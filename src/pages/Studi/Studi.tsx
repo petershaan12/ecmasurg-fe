@@ -68,8 +68,14 @@ const Studi = () => {
         <div className="md:col-span-3">
           <Posting />
 
-          {posts.map((post) => (
-            <div className="mt-8" key={post.id}>
+          {posts.map((post, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.6 }}
+              className="mt-8"
+              key={post.id}
+            >
               <Post
                 id={post.id}
                 user={post.user}
@@ -78,7 +84,7 @@ const Studi = () => {
                 likes={post.likes_count}
                 comments={post.comments_count}
               />
-            </div>
+            </motion.div>
           ))}
         </div>
         <motion.div

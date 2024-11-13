@@ -122,7 +122,7 @@ const Home = () => {
                         title={item}
                         subtitle={item}
                         linkText={`Lihat ${item}`}
-                        linkTo={`/${item.toLowerCase()}`}
+                        linkTo={`${item.toLowerCase()}`}
                         iconSrc={`/icons/${item.toLowerCase()}.svg`}
                         count={item === "Course" ? 4 : item === "Quiz" ? 1 : 0}
                         bgButton={
@@ -144,13 +144,13 @@ const Home = () => {
               {loading ? (
                 <p>Loading...</p>
               ) : (
-                <div className="grid md:grid-cols-2 gap-x-5 gap-y-5">
+                <div className="grid  lg:grid-cols-2 gap-x-5 gap-y-5">
                   {modul.map((modul: any, index: number) => (
                     <motion.div
                       key={modul.id}
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.2 }}
+                      transition={{ delay: index * 0.4 }}
                     >
                       <CardModulHorizontal key={modul.id} modul={modul} />
                     </motion.div>

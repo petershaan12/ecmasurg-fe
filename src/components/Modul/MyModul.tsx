@@ -62,7 +62,7 @@ const MyModul = ({ id }: MyModulProps) => {
           <div>
             <p className="mb-2 text-xl font-semibold">Belum ada modul</p>
             <Link
-              to="/modul/create"
+              to="/home/modul/create"
               className="bg-primary text-white py-1 px-3 rounded-lg mt-5"
             >
               Buat Modul
@@ -74,7 +74,7 @@ const MyModul = ({ id }: MyModulProps) => {
           {modul.map((item: any) => (
             <li key={item.id}>
               <Link
-                to={`/modul/${item.id}`}
+                to={`/home/modul/${item.id}`}
                 className="text-blue-500 underline font-bold"
               >
                 {item.judul} {/* Tampilkan judul modul */}

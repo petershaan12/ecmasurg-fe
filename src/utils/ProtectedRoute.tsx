@@ -50,7 +50,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, [dispatch, user, loading]);
 
   if (!isTokenValid) return <Navigate to="/login" />;
-  if (!isAuthenticated()) return <Navigate to="/signup" />;
+  if (!isAuthenticated()) return <Navigate to="/" />;
   if (loading) return <Loading />;
   if (error) return <div>Error! {error.message}</div>;
   return <>{children}</>;

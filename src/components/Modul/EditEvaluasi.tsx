@@ -120,7 +120,7 @@ const EditEvaluasi = ({ evaluasi }: any) => {
         toast.success("Evaluasi berhasil diedit!", {
           id: toastId,
         });
-        navigate(`/modul/${evaluasi.modul_id}`);
+        navigate(`/home/modul/${evaluasi.modul_id}`);
       } else {
         console.log(response.data);
         toast.dismiss(toastId);

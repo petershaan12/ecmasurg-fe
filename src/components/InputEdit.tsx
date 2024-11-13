@@ -121,7 +121,7 @@ const InputEdit = ({ user }: any) => {
         setSuccess("Profile updated successfully!");
         form.reset();
         dispatch(fetchUsers() as any);
-        navigate("/profile");
+        navigate("/home/profile");
       } else {
         setError(response.data.message || "Profile update failed");
       }

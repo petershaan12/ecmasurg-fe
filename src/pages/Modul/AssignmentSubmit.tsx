@@ -73,7 +73,7 @@ const AssignmentSubmit = () => {
               Modul Pembelajaran
             </Link>{" "}
             /{" "}
-            <Link to={`/modul/${id}`} className="hover:underline">
+            <Link to={`/home/modul/${id}`} className="hover:underline">
               {tugas.modul_judul}
             </Link>
             / {tugas.judul}
