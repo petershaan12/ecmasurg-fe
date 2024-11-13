@@ -1,7 +1,4 @@
 import { useRef, useEffect } from "react";
-import image from "../../../public/landing/client/01.jpg";
-import image2 from "../../../public/landing/client/02.jpg";
-import image4 from "../../../public/landing/client/03.jpg";
 import { Link } from "react-router-dom";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { StarFilledIcon } from "@radix-ui/react-icons";
@@ -67,7 +64,7 @@ export default function ClientSreview() {
               >
                 <div className="flex items-center pb-6 border-b border-gray-100 dark:border-gray-800">
                   <img
-                    src={image}
+                    src="/landing/client/01.jpg"
                     className="h-16 w-16 rounded-full shadow"
                     alt=""
                   />
@@ -110,7 +107,7 @@ export default function ClientSreview() {
               >
                 <div className="flex items-center pb-6 border-b border-gray-100 ">
                   <img
-                    src={image2}
+                    src="/landing/client/03.jpg"
                     className="h-16 w-16 rounded-full shadow"
                     alt=""
                   />
@@ -153,7 +150,7 @@ export default function ClientSreview() {
               >
                 <div className="flex items-center pb-6 border-b border-gray-100 dark:border-gray-800">
                   <img
-                    src={image4}
+                    src="/landing/client/02.jpg"
                     className="h-16 w-16 rounded-full shadow"
                     alt=""
                   />

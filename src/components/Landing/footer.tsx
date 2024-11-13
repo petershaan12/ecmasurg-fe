@@ -1,14 +1,33 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion, useAnimation, useInView } from "framer-motion";
 
 export default function Footer() {
+  const ref = useRef<any>(null);
+  const isInView = useInView(ref, { once: true });
+
+  const mainControls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      mainControls.start("visible");
+    }
+  }, [isInView]);
   return (
     <>
-      <footer className="footer bg-slate-900 relative text-gray-200  px-5 md:px-32 ">
+      <footer
+        ref={ref}
+        className="footer bg-slate-900 relative text-gray-200  px-5 md:px-32 "
+      >
         <div className="text-center py-6 pt-12 ">
           <motion.img
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+            variants={{
+              hidden: { opacity: 0, scale: 0.4 },
+              visible: { opacity: 1, scale: 1 },
+            }}
+            initial="hidden"
+            animate={mainControls}
+            transition={{ duration: 0.5, delay: 0.2 }}
             exit={{ opacity: 0, scale: 0.8 }}
             src="/navbar/logo.svg"
             className="block mx-auto w-32 md:w-56"

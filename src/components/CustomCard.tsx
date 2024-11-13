@@ -97,10 +97,13 @@ const CustomCard: React.FC<CustomCardProps> = ({
         <div className="mt-5">
           <h1 className="text-4xl font-bold drop-shadow-lg">{count}</h1>
           <p className="text-lg">{subtitle}</p>
-          <Link to={linkTo} className="flex flex-col items-end">
-            <hr className="mt-2 w-[150px]" />
+          <Link
+            to={linkTo}
+            className="flex text-xs md:text-base flex-col md:items-end"
+          >
+            <hr className="md:mt-2 md:w-[150px]" />
             <p
-              className={`mt-3 text-white py-1 px-3 rounded-lg mr-2`}
+              className={`mt-3 text-white py-1 px-3 w-fit rounded-lg mr-2`}
               style={{
                 backgroundColor: bgButton,
               }}

@@ -17,7 +17,7 @@ type CardModulProps = {
 
 const CardModulHorizontal = ({ modul }: CardModulProps) => {
   return (
-    <div className="w-full h-[200px] relative flex drop-shadow-sm">
+    <div className="w-full md:h-[200px] relative flex drop-shadow-sm">
       {modul.gambar_modul ? (
         <img
           src={`${process.env.REACT_PUBLIC_API_KEY}/storage/modul/${modul.gambar_modul}`}

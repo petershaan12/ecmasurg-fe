@@ -2,7 +2,7 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { CgProfile } from "react-icons/cg";
+import { CgGames, CgProfile } from "react-icons/cg";
 import LogoutNavbar from "./Auth/LogoutNavbar";
 
 const MobileMenu = () => {
@@ -82,9 +82,23 @@ const MobileMenu = () => {
             </li>
             <li>
               <Link
+                to="/home/quiz"
+                className={`flex items-center space-x-3 px-5 py-3 text-sm text-white ${
+                  pathname.startsWith("/home/quiz")
+                    ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
+                    : "opacity-40"
+                }`}
+              >
+                <CgGames />
+
+                <span className="font-medium">Quiz</span>
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/home/profile"
                 className={`flex items-center space-x-3 px-5 py-3 text-sm text-white ${
-                  pathname.startsWith("/home/profil")
+                  pathname.startsWith("/home/profile")
                     ? "font-bold bg-[linear-gradient(90deg,#1C4185,#002979)] opacity-100"
                     : "opacity-40"
                 }`}
