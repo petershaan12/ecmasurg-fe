@@ -65,7 +65,7 @@ const Profile = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants}>
-            <Avatar className="cursor-pointer md:w-[180px] md:h-[180px] mx-auto md:mx-0 mt-8">
+            <Avatar className="cursor-pointer  w-[180px] h-[180px] mx-auto md:mx-0 mt-8">
               <AvatarImage
                 src={`${apiURL}/storage/profiles/${user.photo_profile}`}
                 className="object-cover"
@@ -115,13 +115,13 @@ const Profile = () => {
             {user.roles === "teacher" && <MyModul id={user.id} />}
             {user.roles === "user" && (
               <>
-                <h1 className="text-xl mb-5">Completed Course </h1>
+                <h1 className="md:text-xl mb-5">Completed Course </h1>
                 <Certificate />
               </>
             )}
           </div>
           <motion.div variants={containerVariants}>
-            <h1 className="text-xl mb-5">Biodata </h1>
+            <h1 className="md:text-xl mb-5">Biodata </h1>
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}

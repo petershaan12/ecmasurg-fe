@@ -146,7 +146,7 @@ const SubModul = () => {
           >
             <ArrowLeft className="hover:bg-primary/20 rounded-full" />
           </button>
-          <h1 className="text-base flex items-center">
+          <h1 className="text-base md:flex items-center hidden">
             <Link to="/modul" className="hover:underline ">
               Modul Pembelajaran
             </Link>{" "}

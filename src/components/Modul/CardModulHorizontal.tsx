@@ -45,7 +45,7 @@ const CardModulHorizontal = ({ modul }: CardModulProps) => {
         <div className="flex justify-between w-full text-sm md:text-base">
           <p className="text-sm">{modul.asignd_teacher.name}</p>
           <Link
-            to={`/modul/${modul.id}`}
+            to={`/home/modul/${modul.id}`}
             className="flex items-center space-x-2 hover:underline text-xs md:text-base"
           >
             lihat <ArrowRight />
