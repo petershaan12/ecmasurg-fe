@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { fetchUsers } from "@/redux/fetchUser";
 import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 
 const FinishScreen = () => {
   const userDispatch = useDispatch();
@@ -28,7 +29,7 @@ const FinishScreen = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

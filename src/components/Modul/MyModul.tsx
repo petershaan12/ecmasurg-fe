@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
 
 type MyModulProps = {
   id: string;
@@ -20,7 +21,7 @@ const MyModul = ({ id }: MyModulProps) => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

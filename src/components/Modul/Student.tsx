@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import HapusAssignment from "./HapusAssignment";
+import Cookies from "js-cookie";
 
 type StudentProps = {
   id: string | undefined;
@@ -32,7 +33,7 @@ const Student = ({ id, idsubmodul, userid }: StudentProps) => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

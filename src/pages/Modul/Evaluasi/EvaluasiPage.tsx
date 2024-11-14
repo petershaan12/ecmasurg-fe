@@ -8,6 +8,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import EvaluasiStudent from "@/components/Modul/EvaluasiStudent";
 import EvaluasiTeacher from "@/components/Modul/EvaluasiTeacher";
+import Cookies from "js-cookie";
 
 const EvaluasiPage: React.FC = () => {
   const { id, idevaluasi } = useParams<{ id: string; idevaluasi: string }>();
@@ -25,7 +26,7 @@ const EvaluasiPage: React.FC = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

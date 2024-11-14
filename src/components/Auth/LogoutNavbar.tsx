@@ -2,22 +2,26 @@ import axios from "axios";
 import { persistor } from "@/redux/store";
 import { CgLogOut } from "react-icons/cg";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const LogoutNavbar = ({ open }: any) => {
+  const navigate = useNavigate();
   const handleLogout = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_PUBLIC_API_KEY}/api/logout`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
 
-      sessionStorage.removeItem("token");
+      Cookies.remove("token");
       if (response.status === 200) {
         persistor.purge();
+        navigate("/login");
         window.location.reload();
       } else {
         console.error("Logout failed");

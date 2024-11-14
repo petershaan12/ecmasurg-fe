@@ -10,6 +10,7 @@ import { useTypewriter, Cursor } from "react-simple-typewriter";
 import CardModulHorizontal from "@/components/Modul/CardModulHorizontal";
 import CustomCard from "@/components/CustomCard";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
 
 interface RootState {
   data: any;
@@ -60,7 +61,7 @@ const Home = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

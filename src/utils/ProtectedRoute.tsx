@@ -5,9 +5,10 @@ import { fetchUsers } from "@/redux/fetchUser";
 import { RootState } from "@/redux/store";
 import Loading from "@/components/Loading";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const isAuthenticated = () => {
-  return sessionStorage.getItem("token") !== null;
+  return Cookies.get("token") !== null;
 };
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -20,14 +21,15 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const checkTokenValidity = async () => {
-      const token = sessionStorage.getItem("token");
+      const token = Cookies.get("token");
       if (token) {
         try {
           await axios.get(
             `${process.env.REACT_PUBLIC_API_KEY}/api/verifytoken`,
             {
               headers: {
-                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+                Authorization: `Bearer ${Cookies.get("token")}`,
               },
             }
           );
@@ -35,7 +37,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         } catch (err) {
           console.log("token invalid");
           setIsTokenValid(false);
-          sessionStorage.removeItem("token");
+          Cookies.remove("token");
         }
       } else {
         setIsTokenValid(false);

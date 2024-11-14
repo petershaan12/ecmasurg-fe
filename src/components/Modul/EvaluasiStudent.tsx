@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -74,7 +75,6 @@ const EvaluasiStudent = ({ evaluasi, idmodul, idevaluasi }: EvaluasiProps) => {
   };
 
   const handleSubmit = async () => {
-
     const formattedAnswers = Object.keys(answers).reduce(
       (acc, questionKey, index) => {
         acc[`answer${index + 1}`] = String(answers[questionKey]);
@@ -89,7 +89,7 @@ const EvaluasiStudent = ({ evaluasi, idmodul, idevaluasi }: EvaluasiProps) => {
         formattedAnswers,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

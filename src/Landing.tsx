@@ -13,6 +13,7 @@ import About from "./components/Landing/about";
 import { Sheet, SheetContent, SheetTrigger } from "./components/ui/sheet";
 import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
+import Cookies from "js-cookie";
 
 const Landing = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -40,7 +41,7 @@ const Landing = () => {
   });
 
   useEffect(() => {
-    if (sessionStorage.getItem("token")) {
+    if (Cookies.get("token")) {
       setIsLogin(true);
     }
   }, []);
@@ -59,11 +60,11 @@ const Landing = () => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/logout`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
-      sessionStorage.removeItem("token");
+      Cookies.remove("token");
       if (response.status === 200) {
         persistor.purge();
         toast.success("Berhasil Logout!", {
@@ -94,7 +95,7 @@ const Landing = () => {
   return (
     <div>
       <nav
-        className={`container mx-auto w-full top-0 z-50 transition-colors duration-300 bg-transparent py-8 px-8
+        className={`container md:px-32 mx-auto w-full top-0 z-50 transition-colors duration-300 bg-transparent py-8 px-8
           flex justify-between items-center absolute left-1/2 transform -translate-x-1/2`}
       >
         <div>
@@ -122,7 +123,7 @@ const Landing = () => {
               <ul className="space-y-6 text-center">
                 <li>
                   <Link
-                    className={`mt-12 flex items-center w-fit text-white text-center px-4 py-2  rounded-md bg-primary border-primary border-2`}
+                    className={`mt-12 flex items-center w-full text-white text-center px-4 py-2  rounded-md bg-primary border-primary border-2`}
                     to={isLogin ? "/home" : "/login"}
                   >
                     {isLogin ? (
@@ -138,7 +139,7 @@ const Landing = () => {
                 <li>
                   {isLogin ? (
                     <button
-                      className={`flex items-center text-white
+                      className={`flex items-center text-white w-full
          px-4 py-2  rounded-md border-2 border-white hover:bg-primary/30`}
                       onClick={handleLogout}
                     >
@@ -243,9 +244,13 @@ const Landing = () => {
       </nav>
 
       <section
-        className="py-36 lg:py-56 w-full table relative bg-[url('../public/landing/bg-1.jpg')] bg-top bg-no-repeat bg-cover"
+        className="py-36 lg:py-56 w-full table relative bg-[url('../public/landing/bg-1.jpg')] bg-top bg-no-repeat"
         id="home"
-        style={{ backgroundAttachment: "fixed", backgroundPosition: "center" }}
+        style={{
+          backgroundAttachment: "fixed",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/50"></div>
         <div className="container relative text-center  mx-auto text-white px-6 md:px-0">

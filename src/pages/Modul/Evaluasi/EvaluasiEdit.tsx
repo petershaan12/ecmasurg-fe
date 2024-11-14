@@ -7,6 +7,7 @@ import axios from "axios";
 import Loading from "@/components/Loading";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 const EvaluasiEdit = () => {
   const { id, idevaluasi } = useParams<{ id: string; idevaluasi: string }>();
@@ -24,7 +25,7 @@ const EvaluasiEdit = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

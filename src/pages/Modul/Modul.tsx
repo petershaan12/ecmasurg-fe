@@ -8,7 +8,7 @@ import axios from "axios";
 import Loading from "@/components/Loading";
 import CardModulHorizontal from "@/components/Modul/CardModulHorizontal";
 import { motion } from "framer-motion";
-
+import Cookies from "js-cookie";
 const Modul = () => {
   const user = useSelector((state: any) => state.data);
   const [modul, setModul] = useState([]);
@@ -23,7 +23,7 @@ const Modul = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

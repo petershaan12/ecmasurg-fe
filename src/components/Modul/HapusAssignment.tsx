@@ -14,6 +14,7 @@ import {
 } from "../ui/alert-dialog";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { Button } from "../ui/button";
+import Cookies from "js-cookie";
 
 interface HapusAssignment {
   id: string;
@@ -32,7 +33,7 @@ const HapusAssignment = ({ id, idsubmodul }: HapusAssignment) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${idModul}/task/${idsubmodul}/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

@@ -9,7 +9,7 @@ const EditProfile = () => {
     <>
       <header className="flex justify-between">
         <div className="flex space-x-5">
-          <h1 className="text-2xl font-bold">Edit Profil</h1>
+          <h1 className="md:text-2xl font-bold">Edit Profil</h1>
         </div>
         <MenuSamping />
       </header>

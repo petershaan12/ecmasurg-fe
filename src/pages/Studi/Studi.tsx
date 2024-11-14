@@ -6,6 +6,7 @@ import axios from "axios";
 import Loading from "@/components/Loading";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
 
 const Studi = () => {
   interface PostType {
@@ -33,7 +34,7 @@ const Studi = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

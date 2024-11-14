@@ -5,6 +5,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 type Assignment = {
   length: number;
@@ -41,7 +42,7 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -141,7 +142,7 @@ const StudentSubmit = ({ id, idsubmodul, userid }: StudentProps) => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

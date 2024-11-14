@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { toast } from "sonner";
 import HapusEvaluasiStudent from "./HapusEvaluasiStudent";
+import Cookies from "js-cookie";
 
 interface Evaluasi {
   id: string;
@@ -41,7 +42,7 @@ const EvaluasiTeacher = ({ idevaluasi, idmodul }: TeacherProps) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/answerevaluasi/${idevaluasi}`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

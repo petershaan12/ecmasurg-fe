@@ -28,6 +28,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 const InputSubModul = () => {
   const { id } = useParams<{ id: string }>();
@@ -104,7 +105,7 @@ const InputSubModul = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -176,7 +177,7 @@ const InputSubModul = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

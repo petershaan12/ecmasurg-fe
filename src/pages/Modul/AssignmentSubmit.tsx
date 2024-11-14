@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import Loading from "@/components/Loading";
 import StudentSubmit from "@/components/Modul/StudentSubmit";
+import Cookies from "js-cookie";
 
 type Assignment = {
   length: number;
@@ -36,7 +37,7 @@ const AssignmentSubmit = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

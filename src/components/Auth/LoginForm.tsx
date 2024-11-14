@@ -18,6 +18,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginSchema } from "../../schema";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const LoginForm = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("token")) {
+    if (Cookies.get("token")) {
       navigate("/home");
     }
   }, [navigate]);
@@ -56,7 +57,7 @@ const LoginForm = () => {
         toast.success("Berhasil Login!", {
           id: toastId,
         });
-        sessionStorage.setItem("token", token);
+        Cookies.set("token", token);
         setSuccess("Login successful!");
         navigate("/home");
         form.reset();
@@ -67,7 +68,7 @@ const LoginForm = () => {
         setError(response.data.message || "Login failed");
       }
     } catch (err: any) {
-      toast.error("An error occurred during logout.", {
+      toast.error("An error occurred during login.", {
         id: toastId,
       });
       if (err.response && err.response.data && err.response.data.message) {

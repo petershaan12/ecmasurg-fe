@@ -10,6 +10,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import DeleteStudi from "@/components/Studi/Hapus";
+import Cookies from "js-cookie";
 
 type Comment = {
   user: {
@@ -57,7 +58,7 @@ const DetailStudi: React.FC = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -86,7 +87,7 @@ const DetailStudi: React.FC = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

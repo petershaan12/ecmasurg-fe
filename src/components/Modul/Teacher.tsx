@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 interface Submission {
   id: string;
@@ -38,7 +39,7 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}/task/${idsubmodul}`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -95,7 +96,7 @@ const Teacher = ({ id, idsubmodul }: TeacherProps) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

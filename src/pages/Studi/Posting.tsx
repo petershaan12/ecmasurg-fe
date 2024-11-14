@@ -16,6 +16,7 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useTypewriter } from "react-simple-typewriter";
+import Cookies from "js-cookie";
 
 const Posting = () => {
   const user = useSelector((state: any) => state.data);
@@ -55,7 +56,7 @@ const Posting = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

@@ -13,6 +13,7 @@ import Loading from "@/components/Loading";
 import Evaluasi from "@/components/Modul/Evaluasi";
 import HapusEvaluasi from "@/components/Modul/HapusEvaluasi";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
 
 type Modul = {
   judul: string;
@@ -64,7 +65,7 @@ const SubModul = () => {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -82,11 +83,11 @@ const SubModul = () => {
     setLoadingSubModul(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${id}`, 
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -103,11 +104,11 @@ const SubModul = () => {
     setLoadingSubModul(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/evaluasi/${id}`,
+        `${process.env.REACT_PUBLIC_API_KEY}/api/modul/evaluasi/${id}`, 
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -159,13 +160,13 @@ const SubModul = () => {
       <main className="mt-8 ">
         <section>
           <div>
-            <h1 className="text-3xl font-bold">{modul.judul}</h1>
-            <p className="bg-primary px-5 py-1 text-white w-fit rounded-full my-2">
+            <h1 className="text-lg md:text-2xl font-bold">{modul.judul}</h1>
+            <p className="bg-primary px-5 py-1 text-white w-fit rounded-full my-2 text-sm md:text-base">
               {modul.asignd_teacher ? modul.asignd_teacher.name : "None"}
             </p>
 
             <div className="bg-white px-4 py-6 mt-8 rounded-xl">
-              <h5 className="font-bold text-xl my-2">{modul.judul}</h5>
+              <h5 className="font-bold md:text-xl my-2">{modul.judul}</h5>
               <p className="text-sm">{modul.description}</p>
             </div>
           </div>
@@ -267,11 +268,17 @@ const SubModul = () => {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="flex space-x-5 items-center justify-center mx-auto pt-8 px-8 w-full "
+                className="md:flex space-x-5 items-center justify-center mx-auto pt-8 px-8 w-full "
               >
-                <img src="/not-item.webp" alt="item" width={150} height={100} />
+                <img
+                  src="/not-item.webp"
+                  alt="item"
+                  width={150}
+                  height={100}
+                  className="mx-auto md:m-0 w-32 mb-6 "
+                />
                 <div>
-                  <p className="mb-2 text-xl font-semibold w-56">
+                  <p className="mb-2 text-xl font-semibold w-56 text-center md:text-left">
                     Belum ada sub modul yang ditambahkan
                   </p>
                 </div>

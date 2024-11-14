@@ -20,6 +20,7 @@ import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 const InputQuiz = () => {
   const apiURL = process.env.REACT_PUBLIC_API_KEY;
@@ -49,7 +50,7 @@ const InputQuiz = () => {
         const response = await axios.get(`${apiURL}/api/modul/asignteacher`, {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
         setTeachers(response.data.data);
@@ -111,7 +112,7 @@ const InputQuiz = () => {
       const response = await axios.post(`${apiURL}/api/quiz/create`, formData, {
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
 

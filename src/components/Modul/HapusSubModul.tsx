@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
+import Cookies from "js-cookie";
 
 interface HapusSubModulProps {
   id: string;
@@ -30,7 +31,7 @@ const HapusSubModul = ({ id }: HapusSubModulProps) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/modul/${idModul}/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 const Like = ({ id, updateLikes }: any) => {
   const [liked, setLiked] = useState(false);
@@ -15,7 +16,7 @@ const Like = ({ id, updateLikes }: any) => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );
@@ -39,7 +40,7 @@ const Like = ({ id, updateLikes }: any) => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

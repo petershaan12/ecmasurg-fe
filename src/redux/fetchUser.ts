@@ -2,19 +2,18 @@ import { Dispatch } from "redux";
 import { GeneralActionTypes } from "./actionTypes";
 import { fetchDataBegin, fetchDataFailure, fetchDataSuccess } from "./action";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const apiURL = process.env.REACT_PUBLIC_API_KEY;
 
 export function fetchUsers() {
-  const token = sessionStorage.getItem("token");
-
   return async (dispatch: Dispatch<GeneralActionTypes>): Promise<any> => {
     dispatch(fetchDataBegin());
     try {
       const response = await axios.get(`${apiURL}/api/profile`, {
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
 

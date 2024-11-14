@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { toast } from "sonner";
 
 const DeleteStudi = ({ idPemilik, idUser, idStudi }: any) => {
@@ -13,7 +14,7 @@ const DeleteStudi = ({ idPemilik, idUser, idStudi }: any) => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

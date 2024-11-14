@@ -13,6 +13,7 @@ import {
 } from "../ui/alert-dialog";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { Button } from "../ui/button";
+import Cookies from "js-cookie";
 
 interface HapusEvaluasiStudent {
   id: string;
@@ -30,7 +31,7 @@ const HapusEvaluasiStudent = ({ id, idevaluasi }: HapusEvaluasiStudent) => {
         `${process.env.REACT_PUBLIC_API_KEY}/api/answerevaluasi/${idevaluasi}/delete/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

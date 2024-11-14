@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Student from "@/components/Modul/Student";
 import Teacher from "@/components/Modul/Teacher";
 import Loading from "@/components/Loading";
+import Cookies from "js-cookie";
 
 type Assignment = {
   length: number;
@@ -37,7 +38,7 @@ const AssignmentPage = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

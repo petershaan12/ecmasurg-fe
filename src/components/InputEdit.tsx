@@ -28,6 +28,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { fetchUsers } from "@/redux/fetchUser";
 import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 
 const InputEdit = ({ user }: any) => {
   const dispatch = useDispatch();
@@ -83,7 +84,6 @@ const InputEdit = ({ user }: any) => {
     setSuccess("");
     setIsPending(true);
 
-
     try {
       // Send a POST request to Laravel API using axios
       const apiUrl = process.env.REACT_PUBLIC_API_KEY;
@@ -112,7 +112,7 @@ const InputEdit = ({ user }: any) => {
           headers: {
             "Content-Type": "multipart/form-data",
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

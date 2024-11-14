@@ -26,6 +26,7 @@ import { z } from "zod";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 type EvaluasiForm = z.infer<typeof IsiEvaluasiSchema> & {
   [key: `question${number}`]: string;
@@ -103,7 +104,7 @@ const InputEvaluasi = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

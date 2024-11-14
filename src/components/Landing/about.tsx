@@ -56,7 +56,7 @@ const About = () => {
               initial="hidden"
               animate={mainControls}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-black  text-center md:text-left  text-sm md:text-sm max-w-lg"
+              className="text-black md:mx-0 mx-auto text-center md:text-left  text-sm md:text-sm max-w-lg"
             >
               E-msaec adalah platform pembelajaran interaktif yang dirancang
               khusus untuk mendukung mahasiswa dan profesional kesehatan dalam

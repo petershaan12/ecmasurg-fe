@@ -5,6 +5,7 @@ import MenuSamping from "@/components/MenuSamping";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import Loading from "@/components/Loading";
+import Cookies from "js-cookie";
 
 type Materi = {
   id: string;
@@ -29,7 +30,7 @@ const MateriPage = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );

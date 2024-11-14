@@ -4,6 +4,7 @@ import EditSubModul from "@/components/Modul/EditSubModul";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
+import Cookies from "js-cookie";
 
 type subModul = {
   length: number;
@@ -30,7 +31,7 @@ const SubModulEdit = () => {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

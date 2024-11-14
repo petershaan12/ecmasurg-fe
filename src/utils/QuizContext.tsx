@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import {
   createContext,
   useContext,
@@ -151,7 +152,7 @@ function QuizProvider({ children }: { children: ReactNode }) {
             },
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );
@@ -178,10 +179,11 @@ function QuizProvider({ children }: { children: ReactNode }) {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
           }
         );
+
         if (res.data.canStart) {
           dispatch({ type: "checkQuizStatus", payload: true });
         } else {
