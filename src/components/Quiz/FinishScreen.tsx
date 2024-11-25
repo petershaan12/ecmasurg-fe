@@ -1,15 +1,13 @@
 import { useQuiz } from "@/utils/QuizContext";
 import { Button } from "../ui/button";
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { fetchUsers } from "@/redux/fetchUser";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
+import { IoMdRefresh } from "react-icons/io";
 
 const FinishScreen = () => {
   const userDispatch = useDispatch();
-  const navigate = useNavigate();
   const { state, maxPossiblePoints, dispatch } = useQuiz();
 
   const percentage = (state.points / maxPossiblePoints) * 100;
@@ -47,7 +45,7 @@ const FinishScreen = () => {
   };
 
   return (
-    <div className="flex items-center justify-center flex-col mt-64">
+    <div className="flex items-center justify-center flex-col mt-32">
       <p className="bg-primary text-white rounded-full text-center text-base px-7 py-3 w-fit mx-auto mb-6">
         <span>{emoji}</span> You scored <strong>{state.points}</strong> out of{" "}
         {maxPossiblePoints} ({Math.ceil(percentage)}%)
@@ -55,12 +53,11 @@ const FinishScreen = () => {
       <p className="text-center">(Highscore: {state.highscore} points)</p>
       <div className="flex items-center justify-center gap-x-8 mt-8">
         <button
-          onClick={() => {
-            navigate(-1);
-          }}
-          className="flex items-center hover:underline rounded-full"
+          className=" text-black flex items-center gap-x-2"
+          onClick={() => dispatch({ type: "restart" })}
         >
-          <ArrowLeft /> Back to Games
+          <IoMdRefresh />
+          Coba Lagi
         </button>
         <Button
           className="text-white text-center"

@@ -104,9 +104,10 @@ function reducer(state: State, action: Action): State {
     case "restart":
       return {
         ...initialState,
-        questions: state.questions,
-        gameStatus: "ready",
+        questions: [], // Clear the previous questions temporarily
+        gameStatus: "loading", // Set game status to loading
         highscore: state.highscore,
+        canStartQuiz: true,
       };
     case "submit":
       return {
@@ -194,9 +195,13 @@ function QuizProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    checkQuizStatus();
-    fetchQuestions();
-  }, []);
+    if (state.gameStatus === "loading") {
+      fetchQuestions();
+      checkQuizStatus();
+    }
+  }, [state.gameStatus, category]);
+
+  console.log("Start Quiz", state.canStartQuiz);
 
   return (
     <GameContext.Provider

@@ -50,7 +50,9 @@ const Home = () => {
   }, [user]);
 
   const [modul, setModul] = useState([]);
+  const [dashboard, setDashboard] = useState<any>([]);
   const [loading, setLoading] = useState<Boolean>(false);
+  const [loadingDashboard, setLoadingDashboard] = useState<Boolean>(false);
 
   useEffect(() => {
     const fetchModul = async () => {
@@ -75,6 +77,26 @@ const Home = () => {
       }
     };
 
+    const fetchDashboard = async () => {
+      setLoadingDashboard(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_PUBLIC_API_KEY}/api/dashboard`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+          }
+        );
+        setDashboard(response.data);
+        setLoadingDashboard(false);
+      } catch (error) {
+        console.error(error);
+        setLoadingDashboard(false);
+      }
+    };
+    fetchDashboard();
     fetchModul();
   }, []);
 
@@ -103,40 +125,50 @@ const Home = () => {
             <section className="mt-10">
               <div id="activity">
                 <h1 className="text-xl mb-5">Your Activity </h1>
-                <div className=" grid grid-cols-2 md:grid-cols-3 gap-5">
-                  {["Course", "Quiz", "Trophy"].map((item, index) => (
-                    <motion.div
-                      key={item}
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.5 }}
-                    >
-                      <CustomCard
-                        bgColor={
-                          item === "Course"
-                            ? "#8CE065"
-                            : item === "Quiz"
-                            ? "#F9A685"
-                            : "#39C2E7"
-                        }
-                        bgImage={`/icons/${item.toLowerCase()}-bg.png`}
-                        title={item}
-                        subtitle={item}
-                        linkText={`Lihat ${item}`}
-                        linkTo={`${item.toLowerCase()}`}
-                        iconSrc={`/icons/${item.toLowerCase()}.svg`}
-                        count={item === "Course" ? 4 : item === "Quiz" ? 1 : 0}
-                        bgButton={
-                          item === "Course"
-                            ? "#5CCC37"
-                            : item === "Quiz"
-                            ? "#EC4D36"
-                            : "#009BD8"
-                        }
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+                {loadingDashboard ? (
+                  <p>Loading...</p>
+                ) : (
+                  <div className=" grid grid-cols-2 md:grid-cols-3 gap-5">
+                    {["Course", "Quiz", "Trophy"].map((item, index) => (
+                      <motion.div
+                        key={item}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.5 }}
+                      >
+                        <CustomCard
+                          bgColor={
+                            item === "Course"
+                              ? "#8CE065"
+                              : item === "Quiz"
+                              ? "#F9A685"
+                              : "#39C2E7"
+                          }
+                          bgImage={`/icons/${item.toLowerCase()}-bg.png`}
+                          title={item}
+                          subtitle={item}
+                          linkText={`Lihat ${item}`}
+                          linkTo={`${item.toLowerCase()}`}
+                          iconSrc={`/icons/${item.toLowerCase()}.svg`}
+                          count={
+                            item === "Course"
+                              ? dashboard.modul
+                              : item === "Quiz"
+                              ? 1
+                              : dashboard.rank
+                          }
+                          bgButton={
+                            item === "Course"
+                              ? "#5CCC37"
+                              : item === "Quiz"
+                              ? "#EC4D36"
+                              : "#009BD8"
+                          }
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
 

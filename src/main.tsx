@@ -30,6 +30,7 @@ import Quiz from "./pages/Quiz/Quiz.tsx";
 import QuizCreate from "./pages/Quiz/QuizCreate.tsx";
 import DetailQuiz from "./pages/Quiz/DetailQuiz.tsx";
 import Landing from "./Landing.tsx";
+import Trophy from "./pages/Trophy/Trophy.tsx";
 
 const router = createBrowserRouter([
   {
@@ -89,6 +90,7 @@ const router = createBrowserRouter([
       { path: "quiz", element: <Quiz key="quiz" /> },
       { path: "quiz/:category", element: <DetailQuiz key="quiz-detail" /> },
       { path: "quiz/create", element: <QuizCreate key="quiz-detail" /> },
+      { path: "trophy", element: <Trophy key="trophy" /> },
     ],
   },
   {

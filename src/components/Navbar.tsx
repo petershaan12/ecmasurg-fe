@@ -90,11 +90,15 @@ const Option = ({
   pathname,
   icon,
 }: any) => {
+  const isHome = to === "/home";
+  const isModulOrSubroute = to !== "/home" && pathname.startsWith(to);
+  const isActive = (isHome && pathname === to) || isModulOrSubroute;
+
   return (
     <Link
       to={to}
       className={`relative flex h-10 w-full items-center rounded-md transition-colors hover:bg-[linear-gradient(90deg,#1C4185,#002979)] hover:font-bold hover:opacity-100 ${
-        pathname === to
+        isActive
           ? `${
               open ? "bg-[linear-gradient(90deg,#1C4185,#002979)]" : ""
             } font-bold text-white`
