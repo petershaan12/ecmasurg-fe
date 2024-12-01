@@ -73,7 +73,7 @@ export default function ClientSreview() {
                       to=""
                       className="text-lg h5 text-primary duration-500 ease-in-out"
                     >
-                      Alex Pratama
+                      Rudolf Sihombing
                     </Link>
                     <p className="text-black">Mahasiswa Keperawatan</p>
                   </div>
@@ -107,7 +107,7 @@ export default function ClientSreview() {
               >
                 <div className="flex items-center pb-6 border-b border-gray-100 ">
                   <img
-                    src="/landing/client/03.jpg"
+                    src="/landing/client/02.jpg"
                     className="h-16 w-16 rounded-full shadow"
                     alt=""
                   />
@@ -116,7 +116,7 @@ export default function ClientSreview() {
                       to=""
                       className="text-lg h5 text-primary duration-500 ease-in-out"
                     >
-                      Dina Arumsari
+                      Imanuel Sri Mei Wulandari
                     </Link>
                     <p className="text-black">Instruktur Keperawatan</p>
                   </div>
@@ -150,7 +150,7 @@ export default function ClientSreview() {
               >
                 <div className="flex items-center pb-6 border-b border-gray-100 dark:border-gray-800">
                   <img
-                    src="/landing/client/02.jpg"
+                    src="/landing/client/03.jpg"
                     className="h-16 w-16 rounded-full shadow"
                     alt=""
                   />
@@ -159,7 +159,7 @@ export default function ClientSreview() {
                       to=""
                       className="text-lg h5 text-primary duration-500 ease-in-out"
                     >
-                      Reza Santoso
+                      Alvin Salim
                     </Link>
                     <p className="text-black">Alumni</p>
                   </div>

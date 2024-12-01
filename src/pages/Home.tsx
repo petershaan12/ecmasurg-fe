@@ -232,8 +232,8 @@ const Home = () => {
                 <p className="mt-5 text-sm">
                   E-msaec adalah platform pembelajaran interaktif yang dirancang
                   khusus untuk mendukung mahasiswa dan profesional kesehatan
-                  dalam memahami konsep mendalam tentang sistem muskulosektual
-                  dan disiplin terkait ilmu bedah.
+                  dalam memahami konsep mendalam tentang asuhan keperawatan
+                  dewasa dan disiplin terkait ilmu keperawatan medikal bedah.
                 </p>
                 <motion.img
                   src="/learn-teacher.png"

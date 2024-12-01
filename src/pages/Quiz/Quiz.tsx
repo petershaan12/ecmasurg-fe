@@ -29,7 +29,7 @@ const Quiz = () => {
         <div className="w-full md:w-[300px] relative drop-shadow-lg flex flex-col items-center">
           <div className="h-[50px] w-full object-cover rounded-t-xl bg-[#faaf91]"></div>
           <div className="w-full bg-white rounded-b-xl p-5 flex flex-col items-start">
-            <h1 className="text-lg font-bold mb-2">Sistem Pensarafan</h1>
+            <h1 className="text-lg font-bold mb-2">Sistem Persarafan</h1>
             <div className="flex items-center space-x-2 mb-3">
               <FaClipboardList />
               <p className="text-sm md:text-base">15 questions</p>

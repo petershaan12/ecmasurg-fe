@@ -244,7 +244,7 @@ const Landing = () => {
       </nav>
 
       <section
-        className="py-36 lg:py-56 w-full table relative bg-[url('../public/landing/bg-1.jpg')] bg-top bg-no-repeat"
+        className="py-36 lg:py-56 w-full table relative bg-[url('../public/landing/bg-2.jpg')] bg-top bg-no-repeat"
         id="home"
         style={{
           backgroundAttachment: "fixed",
@@ -252,7 +252,7 @@ const Landing = () => {
           backgroundSize: "cover",
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/50"></div>
         <div className="container relative text-center  mx-auto text-white px-6 md:px-0">
           <h3 className="font-semibold leading-normal text-lg md:text-3xl mb-5 mt-10">
             Welcome to {text}
