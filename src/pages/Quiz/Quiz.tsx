@@ -37,7 +37,7 @@ const Quiz = () => {
             <div className="flex justify-between w-full text-xs md:text-base">
               <p className="text-sm"></p>
               <Link
-                to="pensarafan"
+                to="persarafan"
                 className="flex items-center space-x-2 hover:underline text-xs md:text-base hover:cursor-pointer"
               >
                 Let's Start
