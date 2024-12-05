@@ -51,7 +51,7 @@ const Trophy = () => {
       const weekEnd = current.endOf("week");
       weeks.push({
         original: `${weekStart.format("YYYY-MM-DD")} - ${weekEnd.format("YYYY-MM-DD")}`,
-        formatted: `${weekStart.format("dddd, DD MMM YYYY")} - ${weekEnd.format("dddd, DD MMM YYYY")}`,
+        formatted: `${weekStart.format("DD MMM")} - ${weekEnd.format("DD MMM")}`,
       });
       current = current.add(1, "week");
     }
@@ -141,7 +141,7 @@ const Trophy = () => {
               </SelectItem>
               {availableWeeks.map((week) => (
                 <SelectItem key={week.original} value={week.original}>
-                  {week.formatted}
+                  Minggu {availableWeeks.indexOf(week) + 1}: ({week.formatted}) 
                 </SelectItem>
               ))}
             </SelectContent>
